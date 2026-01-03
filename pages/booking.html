@@ -20,22 +20,26 @@
     <header class="header" id="header" role="banner">
         <div class="header__container">
             <a href="../index.html" class="header__logo">ChefWeb</a>
-            <button class="header__menu-toggle" id="menuToggle" aria-label="Toggle menu">
+            
+            <!-- Mobile Menu Toggle -->
+            <button class="header__menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mainNav">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
-            <nav class="header__nav" id="mainNav">
+            
+            <!-- Navigation -->
+            <nav class="header__nav" id="mainNav" role="navigation" aria-label="Main navigation">
                 <ul class="header__nav-list">
                     <li><a href="../index.html" class="header__nav-link">Home</a></li>
-                    <li><a href="packages.html" class="header__nav-link">Packages/Menu</a></li>
+                    <li><a href="packages.html" class="header__nav-link">Packages & Pricing</a></li>
                     <li><a href="service-areas.html" class="header__nav-link">Service Areas</a></li>
-                    <li><a href="gallery.html" class="header__nav-link">Gallery</a></li>
-                    <li><a href="reviews.html" class="header__nav-link">Reviews</a></li>
-                    <li><a href="faq.html" class="header__nav-link">FAQ</a></li>
-                    <li><a href="contact.html" class="header__nav-link">Contact</a></li>
+                    <li><a href="gallery.html" class="header__nav-link">Photo Gallery</a></li>
+                    <li><a href="reviews.html" class="header__nav-link">Customer Reviews</a></li>
+                    <li><a href="faq.html" class="header__nav-link">Help & FAQ</a></li>
+                    <li><a href="contact.html" class="header__nav-link">Contact Us</a></li>
                 </ul>
-                <a href="booking.html" class="btn btn--primary">Book Now</a>
+                <a href="booking.html" class="btn btn--primary" aria-current="page" aria-label="Book your private chef experience">Book Now</a>
             </nav>
         </div>
     </header>

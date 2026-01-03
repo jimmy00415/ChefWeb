@@ -16,28 +16,30 @@
     <a href="#mainNav" class="skip-link" style="left: 140px;">Skip to navigation</a>
     
     <!-- Header -->
-    <header class="header" role="banner">
-        <div class="container">
-            <div class="header__content">
-                <a href="../index.html" class="logo">
-                    <span class="logo__icon">🔥</span>
-                    <span class="logo__text">ChefWeb</span>
-                </a>
-                <nav class="nav" id="mainNav" role="navigation" aria-label="Main navigation">
-                    <a href="../index.html" class="nav__link">Home</a>
-                    <a href="packages.html" class="nav__link">Packages</a>
-                    <a href="service-areas.html" class="nav__link">Service Areas</a>
-                    <a href="reviews.html" class="nav__link">Reviews</a>
-                    <a href="gallery.html" class="nav__link">Gallery</a>
-                    <a href="contact.html" class="nav__link">Contact</a>
-                    <a href="booking.html" class="btn btn--primary btn--sm">Book Now</a>
-                </nav>
-                <button class="nav-toggle" aria-label="Toggle navigation">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-            </div>
+    <header class="header" id="header" role="banner">
+        <div class="header__container">
+            <a href="../index.html" class="header__logo">ChefWeb</a>
+            
+            <!-- Mobile Menu Toggle -->
+            <button class="header__menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mainNav">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <!-- Navigation -->
+            <nav class="header__nav" id="mainNav" role="navigation" aria-label="Main navigation">
+                <ul class="header__nav-list">
+                    <li><a href="../index.html" class="header__nav-link">Home</a></li>
+                    <li><a href="packages.html" class="header__nav-link">Packages & Pricing</a></li>
+                    <li><a href="service-areas.html" class="header__nav-link">Service Areas</a></li>
+                    <li><a href="gallery.html" class="header__nav-link">Photo Gallery</a></li>
+                    <li><a href="reviews.html" class="header__nav-link">Customer Reviews</a></li>
+                    <li><a href="faq.html" class="header__nav-link" aria-current="page">Help & FAQ</a></li>
+                    <li><a href="contact.html" class="header__nav-link">Contact Us</a></li>
+                </ul>
+                <a href="booking.html" class="btn btn--primary" aria-label="Book your private chef experience">Book Now</a>
+            </nav>
         </div>
     </header>
 

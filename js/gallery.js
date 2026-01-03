@@ -9,18 +9,18 @@
 
 // Gallery data (in production this would come from backend)
 const galleryImages = [
-    { src: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&h=800&fit=crop', alt: 'Birthday party hibachi setup', event: 'birthday', dish: 'entrees' },
-    { src: 'https://images.unsplash.com/photo-1559847844-5315695dadae?w=600&h=400&fit=crop', alt: 'Wedding rehearsal dinner', event: 'wedding', dish: 'seafood' },
-    { src: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=600&h=600&fit=crop', alt: 'Corporate event dining', event: 'corporate', dish: 'steak' },
-    { src: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=700&fit=crop', alt: 'Seafood hibachi preparation', event: 'birthday', dish: 'seafood' },
-    { src: 'https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?w=600&h=500&fit=crop', alt: 'Family dinner hibachi grill', event: 'family', dish: 'entrees' },
-    { src: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=800&fit=crop', alt: 'Anniversary steak dinner', event: 'anniversary', dish: 'steak' },
-    { src: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=600&h=450&fit=crop', alt: 'Hibachi appetizers', event: 'birthday', dish: 'appetizers' },
-    { src: 'https://images.unsplash.com/photo-1625944525533-473f1a3d54e7?w=600&h=650&fit=crop', alt: 'Wedding dinner service', event: 'wedding', dish: 'entrees' },
-    { src: 'https://images.unsplash.com/photo-1529042410759-befb1204b468?w=600&h=550&fit=crop', alt: 'Corporate team dinner', event: 'corporate', dish: 'entrees' },
-    { src: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600&h=700&fit=crop', alt: 'Fresh seafood selection', event: 'family', dish: 'seafood' },
-    { src: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=600&h=500&fit=crop', alt: 'Birthday dessert', event: 'birthday', dish: 'desserts' },
-    { src: 'https://images.unsplash.com/photo-1580959375944-57c216f1fb5a?w=600&h=800&fit=crop', alt: 'Premium lobster tail', event: 'anniversary', dish: 'seafood' }
+    { src: 'https://via.placeholder.com/600x800/ff6b35/ffffff?text=Birthday+Hibachi', alt: 'Birthday party hibachi setup with chef performing', event: 'birthday', dish: 'entrees' },
+    { src: 'https://via.placeholder.com/600x400/ff6b35/ffffff?text=Wedding+Dinner', alt: 'Wedding rehearsal dinner with hibachi chef', event: 'wedding', dish: 'seafood' },
+    { src: 'https://via.placeholder.com/600x600/ff6b35/ffffff?text=Corporate+Event', alt: 'Corporate event hibachi dining experience', event: 'corporate', dish: 'steak' },
+    { src: 'https://via.placeholder.com/600x700/ff6b35/ffffff?text=Seafood+Hibachi', alt: 'Seafood hibachi preparation by private chef', event: 'birthday', dish: 'seafood' },
+    { src: 'https://via.placeholder.com/600x500/ff6b35/ffffff?text=Family+Dinner', alt: 'Family dinner with hibachi grill at home', event: 'family', dish: 'entrees' },
+    { src: 'https://via.placeholder.com/600x800/ff6b35/ffffff?text=Anniversary+Steak', alt: 'Anniversary steak dinner with private chef', event: 'anniversary', dish: 'steak' },
+    { src: 'https://via.placeholder.com/600x450/ff6b35/ffffff?text=Hibachi+Appetizers', alt: 'Hibachi appetizers prepared at home', event: 'birthday', dish: 'appetizers' },
+    { src: 'https://via.placeholder.com/600x650/ff6b35/ffffff?text=Wedding+Service', alt: 'Wedding dinner service with hibachi chef', event: 'wedding', dish: 'entrees' },
+    { src: 'https://via.placeholder.com/600x550/ff6b35/ffffff?text=Team+Dinner', alt: 'Corporate team dinner hibachi experience', event: 'corporate', dish: 'entrees' },
+    { src: 'https://via.placeholder.com/600x700/ff6b35/ffffff?text=Fresh+Seafood', alt: 'Fresh seafood selection for private chef service', event: 'family', dish: 'seafood' },
+    { src: 'https://via.placeholder.com/600x500/ff6b35/ffffff?text=Birthday+Dessert', alt: 'Birthday dessert with hibachi chef', event: 'birthday', dish: 'desserts' },
+    { src: 'https://via.placeholder.com/600x800/ff6b35/ffffff?text=Premium+Lobster', alt: 'Premium lobster tail hibachi preparation', event: 'anniversary', dish: 'seafood' }
 ];
 
 // State
@@ -33,11 +33,24 @@ let currentLightboxIndex = 0;
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('🎬 Gallery.js - DOMContentLoaded fired');
+    console.log('📊 Gallery images count:', galleryImages.length);
+    
+    const grid = document.getElementById('galleryGrid');
+    console.log('🎯 Gallery grid element:', grid);
+    
+    if (!grid) {
+        console.error('❌ CRITICAL: galleryGrid element not found!');
+        return;
+    }
+    
     initFilters();
     initLightbox();
     initLazyLoading();
     initUgcModal();
     renderGallery();
+    
+    console.log('✅ Gallery initialization complete');
 });
 
 // Filter initialization
@@ -76,10 +89,17 @@ function applyFilters() {
 
 // Render gallery
 function renderGallery() {
+    console.log('🎨 renderGallery() called');
     const grid = document.getElementById('galleryGrid');
     const countSpan = document.getElementById('galleryCount');
     
-    if (!grid) return;
+    console.log('📍 Grid element:', grid);
+    console.log('📊 Filtered images:', filteredImages.length);
+    
+    if (!grid) {
+        console.error('❌ Cannot render - grid element not found');
+        return;
+    }
     
     // Update count
     if (countSpan) {
@@ -88,6 +108,7 @@ function renderGallery() {
     
     // Clear grid
     grid.innerHTML = '';
+    console.log('🧹 Grid cleared');
     
     // Show empty state if no results
     if (filteredImages.length === 0) {
@@ -101,10 +122,14 @@ function renderGallery() {
     }
     
     // Render filtered images
+    console.log('🔄 Starting to render', filteredImages.length, 'images');
     filteredImages.forEach((image, index) => {
         const item = createGalleryItem(image, index);
         grid.appendChild(item);
+        console.log(`✅ Added image ${index + 1}:`, image.src.substring(0, 50));
     });
+    
+    console.log('✨ All images appended to grid');
     
     // Reinitialize lazy loading for new images
     initLazyLoading();
@@ -127,13 +152,16 @@ window.resetAllFilters = function() {
 
 // Create gallery item
 function createGalleryItem(image, index) {
+    console.log(`🏗️ Creating gallery item ${index}:`, image.src.substring(0, 60));
     const div = document.createElement('div');
     div.className = 'gallery-item';
     div.dataset.event = image.event;
     div.dataset.dish = image.dish;
+    div.style.height = '320px';
+    div.style.minHeight = '320px';
     
     div.innerHTML = `
-        <img src="${image.src}" alt="${image.alt}" loading="lazy" data-index="${index}">
+        <img src="${image.src}" alt="${image.alt}" data-index="${index}" style="width:100%;height:100%;object-fit:cover;" onerror="console.error('❌ Image failed to load:', this.src); this.style.background='#f0f0f0';">
         <div class="gallery-item__overlay">
             <span class="gallery-item__badge">${getBadgeIcon(image.event)} ${capitalizeFirst(image.event)}</span>
         </div>
@@ -144,6 +172,17 @@ function createGalleryItem(image, index) {
     if (img) {
         img.addEventListener('click', () => {
             openLightbox(index);
+        });
+        
+        // Ensure image loads and handles errors
+        img.addEventListener('load', () => {
+            console.log(`✅ Image ${index} loaded successfully`);
+        });
+        
+        img.addEventListener('error', () => {
+            console.error('❌ Failed to load image:', image.src);
+            img.style.background = '#f0f0f0';
+            div.style.background = '#f0f0f0';
         });
     }
     
@@ -286,15 +325,16 @@ function updateLightboxImage() {
 
 // Lazy loading with Intersection Observer
 function initLazyLoading() {
-    const images = document.querySelectorAll('.gallery-item img[loading="lazy"]');
+    const images = document.querySelectorAll('.gallery-item img');
+    console.log('🔍 Lazy loading: Found', images.length, 'images to observe');
     
     if ('IntersectionObserver' in window) {
         const imageObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const img = entry.target;
-                    // Image will load automatically due to loading="lazy" attribute
-                    // This observer is mainly for potential future enhancements
+                    // Images load immediately now (no lazy attribute)
+                    console.log('👁️ Image in viewport:', img.src.substring(0, 50));
                     observer.unobserve(img);
                 }
             });
@@ -303,6 +343,8 @@ function initLazyLoading() {
         });
         
         images.forEach(img => imageObserver.observe(img));
+    } else {
+        console.log('⚠️ IntersectionObserver not supported');
     }
 }
 

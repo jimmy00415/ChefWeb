@@ -1437,12 +1437,23 @@
     display: flex;
     align-items: center;
     gap: var(--spacing-xl);
+    /* Ensure desktop defaults */
+    position: static;
+    flex-direction: row;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+    transition: none;
 }
 
 .header__nav-list {
     display: flex;
     align-items: center;
     gap: var(--spacing-lg);
+    flex-direction: row;
 }
 
 .header__nav-link {
@@ -1451,6 +1462,7 @@
     transition: color var(--transition-fast);
     position: relative;
     padding: var(--spacing-sm) 0;
+    width: auto;
 }
 
 .header__nav-link:hover {
@@ -1478,6 +1490,9 @@
     flex-direction: column;
     gap: 5px;
     padding: var(--spacing-sm);
+    background: transparent;
+    border: none;
+    cursor: pointer;
 }
 
 .header__menu-toggle span {
@@ -2712,6 +2727,34 @@
     }
 }
 
+/* Desktop: Ensure navigation is always visible and properly styled */
+@media (min-width: 769px) {
+    .header__nav {
+        position: static !important;
+        transform: none !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        flex-direction: row !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+    }
+    
+    .header__nav-list {
+        flex-direction: row !important;
+        width: auto !important;
+    }
+    
+    .header__nav-link {
+        width: auto !important;
+        padding: var(--spacing-sm) 0 !important;
+    }
+    
+    .header__menu-toggle {
+        display: none !important;
+    }
+}
+
 /* Responsive Header */
 @media (max-width: 768px) {
     .header__menu-toggle {
@@ -3859,7 +3902,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: var(--spacing-lg);
-    grid-auto-rows: 10px; /* Fine-grained row control for masonry effect */
+    /* Removed grid-auto-rows for simpler layout */
 }
 
 .gallery-item {
@@ -3869,6 +3912,10 @@
     cursor: pointer;
     transition: var(--transition-base);
     break-inside: avoid; /* Prevent breaking across columns */
+    background: #f5f5f5; /* Show background while loading */
+    min-height: 320px; /* Explicit minimum height */
+    height: 320px; /* Explicit height for all items */
+    aspect-ratio: 3 / 4; /* Consistent aspect ratio */
 }
 
 .gallery-item:hover {
@@ -3878,10 +3925,11 @@
 
 .gallery-item img {
     width: 100%;
-    height: auto;
+    height: 100%;
     display: block;
     object-fit: cover;
     transition: var(--transition-base);
+    background: #e0e0e0; /* Gray background for broken images */
 }
 
 .gallery-item:hover img {

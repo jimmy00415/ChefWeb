@@ -16,28 +16,30 @@
     <a href="#mainNav" class="skip-link" style="left: 140px;">Skip to navigation</a>
     
     <!-- Header -->
-    <header class="header" role="banner">
-        <div class="container">
-            <div class="header__content">
-                <a href="../index.html" class="logo">
-                    <span class="logo__icon">🔥</span>
-                    <span class="logo__text">ChefWeb</span>
-                </a>
-                <nav class="nav" id="mainNav" role="navigation" aria-label="Main navigation">
-                    <a href="../index.html" class="nav__link">Home</a>
-                    <a href="packages.html" class="nav__link">Packages</a>
-                    <a href="service-areas.html" class="nav__link">Service Areas</a>
-                    <a href="reviews.html" class="nav__link">Reviews</a>
-                    <a href="gallery.html" class="nav__link nav__link--active">Gallery</a>
-                    <a href="contact.html" class="nav__link">Contact</a>
-                    <a href="booking.html" class="btn btn--primary btn--sm">Book Now</a>
-                </nav>
-                <button class="nav-toggle" aria-label="Toggle navigation">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-            </div>
+    <header class="header" id="header" role="banner">
+        <div class="header__container">
+            <a href="../index.html" class="header__logo">ChefWeb</a>
+            
+            <!-- Mobile Menu Toggle -->
+            <button class="header__menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mainNav">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <!-- Navigation -->
+            <nav class="header__nav" id="mainNav" role="navigation" aria-label="Main navigation">
+                <ul class="header__nav-list">
+                    <li><a href="../index.html" class="header__nav-link">Home</a></li>
+                    <li><a href="packages.html" class="header__nav-link">Packages & Pricing</a></li>
+                    <li><a href="service-areas.html" class="header__nav-link">Service Areas</a></li>
+                    <li><a href="gallery.html" class="header__nav-link" aria-current="page">Photo Gallery</a></li>
+                    <li><a href="reviews.html" class="header__nav-link">Customer Reviews</a></li>
+                    <li><a href="faq.html" class="header__nav-link">Help & FAQ</a></li>
+                    <li><a href="contact.html" class="header__nav-link">Contact Us</a></li>
+                </ul>
+                <a href="booking.html" class="btn btn--primary" aria-label="Book your private chef experience">Book Now</a>
+            </nav>
         </div>
     </header>
 
@@ -85,83 +87,10 @@
     <section class="section" style="padding-top: 0;">
         <div class="container">
             <div class="gallery-results">
-                <span id="galleryCount">48</span> photos
+                <span id="galleryCount">12</span> photos
             </div>
             <div class="gallery-masonry" id="galleryGrid">
-                <!-- Images will be loaded dynamically by JavaScript -->
-                <!-- Static examples for SEO and non-JS fallback -->
-                <div class="gallery-item" data-event="birthday" data-dish="entrees">
-                    <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&h=800&fit=crop" alt="Birthday party hibachi setup" loading="lazy" data-index="0">
-                    <div class="gallery-item__overlay">
-                        <span class="gallery-item__badge">🎂 Birthday</span>
-                    </div>
-                </div>
-                <div class="gallery-item" data-event="wedding" data-dish="seafood">
-                    <img src="https://images.unsplash.com/photo-1559847844-5315695dadae?w=600&h=400&fit=crop" alt="Wedding rehearsal dinner" loading="lazy" data-index="1">
-                    <div class="gallery-item__overlay">
-                        <span class="gallery-item__badge">💍 Wedding</span>
-                    </div>
-                </div>
-                <div class="gallery-item" data-event="corporate" data-dish="steak">
-                    <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=600&h=600&fit=crop" alt="Corporate event dining" loading="lazy" data-index="2">
-                    <div class="gallery-item__overlay">
-                        <span class="gallery-item__badge">💼 Corporate</span>
-                    </div>
-                </div>
-                <div class="gallery-item" data-event="birthday" data-dish="seafood">
-                    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=700&fit=crop" alt="Seafood hibachi preparation" loading="lazy" data-index="3">
-                    <div class="gallery-item__overlay">
-                        <span class="gallery-item__badge">🦞 Seafood</span>
-                    </div>
-                </div>
-                <div class="gallery-item" data-event="family" data-dish="entrees">
-                    <img src="https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?w=600&h=500&fit=crop" alt="Family dinner hibachi grill" loading="lazy" data-index="4">
-                    <div class="gallery-item__overlay">
-                        <span class="gallery-item__badge">👨‍👩‍👧‍👦 Family</span>
-                    </div>
-                </div>
-                <div class="gallery-item" data-event="anniversary" data-dish="steak">
-                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=800&fit=crop" alt="Anniversary steak dinner" loading="lazy" data-index="5">
-                    <div class="gallery-item__overlay">
-                        <span class="gallery-item__badge">🥩 Steak</span>
-                    </div>
-                </div>
-                <div class="gallery-item" data-event="birthday" data-dish="appetizers">
-                    <img src="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=600&h=450&fit=crop" alt="Hibachi appetizers" loading="lazy" data-index="6">
-                    <div class="gallery-item__overlay">
-                        <span class="gallery-item__badge">🍤 Appetizers</span>
-                    </div>
-                </div>
-                <div class="gallery-item" data-event="wedding" data-dish="entrees">
-                    <img src="https://images.unsplash.com/photo-1625944525533-473f1a3d54e7?w=600&h=650&fit=crop" alt="Wedding dinner service" loading="lazy" data-index="7">
-                    <div class="gallery-item__overlay">
-                        <span class="gallery-item__badge">💍 Wedding</span>
-                    </div>
-                </div>
-                <div class="gallery-item" data-event="corporate" data-dish="entrees">
-                    <img src="https://images.unsplash.com/photo-1529042410759-befb1204b468?w=600&h=550&fit=crop" alt="Corporate team dinner" loading="lazy" data-index="8">
-                    <div class="gallery-item__overlay">
-                        <span class="gallery-item__badge">💼 Corporate</span>
-                    </div>
-                </div>
-                <div class="gallery-item" data-event="family" data-dish="seafood">
-                    <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600&h=700&fit=crop" alt="Fresh seafood selection" loading="lazy" data-index="9">
-                    <div class="gallery-item__overlay">
-                        <span class="gallery-item__badge">🦞 Seafood</span>
-                    </div>
-                </div>
-                <div class="gallery-item" data-event="birthday" data-dish="desserts">
-                    <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=600&h=500&fit=crop" alt="Birthday dessert" loading="lazy" data-index="10">
-                    <div class="gallery-item__overlay">
-                        <span class="gallery-item__badge">🍰 Desserts</span>
-                    </div>
-                </div>
-                <div class="gallery-item" data-event="anniversary" data-dish="seafood">
-                    <img src="https://images.unsplash.com/photo-1580959375944-57c216f1fb5a?w=600&h=800&fit=crop" alt="Premium lobster tail" loading="lazy" data-index="11">
-                    <div class="gallery-item__overlay">
-                        <span class="gallery-item__badge">🦞 Seafood</span>
-                    </div>
-                </div>
+                <!-- Static fallback removed - JavaScript will render all images -->
             </div>
         </div>
     </section>
@@ -190,7 +119,7 @@
                     <button class="btn btn--primary btn--lg" id="openUgcFormBtn">Submit Your Photos</button>
                 </div>
                 <div class="ugc-cta__image">
-                    <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=600&h=400&fit=crop" alt="Happy customers at hibachi event" loading="lazy">
+                    <img src="https://via.placeholder.com/600x400/ff6b35/ffffff?text=Happy+Customers" alt="Happy customers at hibachi event" loading="lazy">
                 </div>
             </div>
         </div>
