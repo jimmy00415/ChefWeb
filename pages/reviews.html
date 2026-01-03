@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Read verified customer reviews of ChefWeb's private chef services. 4.9/5 stars from 247+ satisfied customers. Real experiences, real photos.">
+    <title>Customer Reviews | ChefWeb - 4.9★ Rated</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+    <!-- Skip Navigation -->
+    <a href="#mainContent" class="skip-link">Skip to main content</a>
+    <a href="#mainNav" class="skip-link" style="left: 140px;">Skip to navigation</a>
+    
+    <!-- Header -->
+    <header class="header" role="banner">
+        <div class="container">
+            <div class="header__content">
+                <a href="../index.html" class="logo">
+                    <span class="logo__icon">🔥</span>
+                    <span class="logo__text">ChefWeb</span>
+                </a>
+                <nav class="nav" id="mainNav" role="navigation" aria-label="Main navigation">
+                    <a href="../index.html" class="nav__link">Home</a>
+                    <a href="packages.html" class="nav__link">Packages</a>
+                    <a href="service-areas.html" class="nav__link">Service Areas</a>
+                    <a href="reviews.html" class="nav__link nav__link--active">Reviews</a>
+                    <a href="gallery.html" class="nav__link">Gallery</a>
+                    <a href="contact.html" class="nav__link">Contact</a>
+                    <a href="booking.html" class="btn btn--primary btn--sm">Book Now</a>
+                </nav>
+                <button class="nav-toggle" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="mainContent" role="main">
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-header__title">Customer Reviews</h1>
+            <p class="page-header__subtitle">Real experiences from real customers</p>
+        </div>
+    </section>
+
+    <!-- Rating Summary -->
+    <section class="section" style="padding-top: var(--spacing-2xl); padding-bottom: 0;">
+        <div class="container">
+            <div class="rating-summary">
+                <div class="rating-summary__main">
+                    <div class="rating-summary__score">4.9</div>
+                    <div class="rating-summary__stars">
+                        ★★★★★
+                    </div>
+                    <div class="rating-summary__count">Based on 247 verified reviews</div>
+                    <div class="rating-summary__source">
+                        <span class="badge badge--info">✓ Google Verified</span>
+                    </div>
+                </div>
+                <div class="rating-summary__breakdown">
+                    <div class="rating-bar">
+                        <span class="rating-bar__label">5 stars</span>
+                        <div class="rating-bar__track">
+                            <div class="rating-bar__fill" style="width: 82%;"></div>
+                        </div>
+                        <span class="rating-bar__count">203</span>
+                    </div>
+                    <div class="rating-bar">
+                        <span class="rating-bar__label">4 stars</span>
+                        <div class="rating-bar__track">
+                            <div class="rating-bar__fill" style="width: 12%;"></div>
+                        </div>
+                        <span class="rating-bar__count">30</span>
+                    </div>
+                    <div class="rating-bar">
+                        <span class="rating-bar__label">3 stars</span>
+                        <div class="rating-bar__track">
+                            <div class="rating-bar__fill" style="width: 4%;"></div>
+                        </div>
+                        <span class="rating-bar__count">10</span>
+                    </div>
+                    <div class="rating-bar">
+                        <span class="rating-bar__label">2 stars</span>
+                        <div class="rating-bar__track">
+                            <div class="rating-bar__fill" style="width: 1%;"></div>
+                        </div>
+                        <span class="rating-bar__count">3</span>
+                    </div>
+                    <div class="rating-bar">
+                        <span class="rating-bar__label">1 star</span>
+                        <div class="rating-bar__track">
+                            <div class="rating-bar__fill" style="width: 0.4%;"></div>
+                        </div>
+                        <span class="rating-bar__count">1</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filters & Sort -->
+    <section class="section" style="padding-top: var(--spacing-xl);">
+        <div class="container">
+            <div class="review-controls">
+                <div class="review-controls__filters">
+                    <div class="filter-group">
+                        <label for="ratingFilter" class="filter-group__label">Filter by Rating:</label>
+                        <select id="ratingFilter" class="form-select">
+                            <option value="all">All Ratings</option>
+                            <option value="5">5 Stars Only</option>
+                            <option value="4">4+ Stars</option>
+                            <option value="3">3+ Stars</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="packageFilter" class="filter-group__label">Package:</label>
+                        <select id="packageFilter" class="form-select">
+                            <option value="all">All Packages</option>
+                            <option value="essential">Essential</option>
+                            <option value="signature">Signature</option>
+                            <option value="premium">Premium</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="photoFilter" class="filter-group__label">
+                            <input type="checkbox" id="photoFilter" class="form-checkbox">
+                            With Photos Only
+                        </label>
+                    </div>
+                </div>
+                <div class="review-controls__sort">
+                    <label for="sortSelect" class="filter-group__label">Sort by:</label>
+                    <select id="sortSelect" class="form-select">
+                        <option value="recent">Most Recent</option>
+                        <option value="rating-high">Highest Rating</option>
+                        <option value="rating-low">Lowest Rating</option>
+                        <option value="helpful">Most Helpful</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Results Count -->
+            <div class="review-results">
+                Showing <span id="resultsCount">247</span> reviews
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Grid -->
+    <section class="section" style="padding-top: 0;">
+        <div class="container">
+            <div class="reviews-grid" id="reviewsGrid">
+                <!-- Review cards will be dynamically generated by JavaScript -->
+                <!-- Static examples for SEO and non-JS fallback -->
+                
+                <article class="review-card-full">
+                    <div class="review-card-full__header">
+                        <div class="review-card-full__avatar">
+                            <span>SJ</span>
+                        </div>
+                        <div class="review-card-full__author">
+                            <h3 class="review-card-full__name">Sarah Johnson</h3>
+                            <div class="review-card-full__meta">
+                                <span class="review-card-full__stars">★★★★★</span>
+                                <span class="review-card-full__date">December 28, 2025</span>
+                                <span class="badge badge--success badge--sm">✓ Verified</span>
+                            </div>
+                            <div class="review-card-full__package">
+                                <span class="badge badge--secondary badge--sm">Premium Package</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card-full__content">
+                        <h4 class="review-card-full__title">Best birthday party ever!</h4>
+                        <p class="review-card-full__text">We hired ChefWeb for my husband's 40th birthday and it exceeded all expectations. Chef Michael was incredible - not only was the food amazing but the entertainment was top-notch. He had all 25 guests laughing and engaged throughout the cooking. The wagyu beef and lobster tail were cooked to perfection. Worth every penny!</p>
+                        <div class="review-card-full__photos">
+                            <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=300&h=200&fit=crop" alt="Hibachi dinner setup" loading="lazy">
+                            <img src="https://images.unsplash.com/photo-1559847844-5315695dadae?w=300&h=200&fit=crop" alt="Chef cooking performance" loading="lazy">
+                        </div>
+                    </div>
+                    <div class="review-card-full__footer">
+                        <button class="review-card-full__helpful">👍 Helpful (24)</button>
+                    </div>
+                </article>
+
+                <article class="review-card-full">
+                    <div class="review-card-full__header">
+                        <div class="review-card-full__avatar">
+                            <span>ML</span>
+                        </div>
+                        <div class="review-card-full__author">
+                            <h3 class="review-card-full__name">Michael Lee</h3>
+                            <div class="review-card-full__meta">
+                                <span class="review-card-full__stars">★★★★★</span>
+                                <span class="review-card-full__date">December 22, 2025</span>
+                                <span class="badge badge--success badge--sm">✓ Verified</span>
+                            </div>
+                            <div class="review-card-full__package">
+                                <span class="badge badge--secondary badge--sm">Signature Package</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card-full__content">
+                        <h4 class="review-card-full__title">Perfect for corporate events</h4>
+                        <p class="review-card-full__text">Booked ChefWeb for our company holiday party (18 people). The booking process was seamless, pricing was transparent with no hidden fees, and Chef Lisa was phenomenal. She accommodated all dietary restrictions (we had 3 vegetarians and 1 gluten-free) without any issues. Highly recommend the Signature package - great value!</p>
+                    </div>
+                    <div class="review-card-full__footer">
+                        <button class="review-card-full__helpful">👍 Helpful (18)</button>
+                    </div>
+                </article>
+
+                <article class="review-card-full">
+                    <div class="review-card-full__header">
+                        <div class="review-card-full__avatar">
+                            <span>RP</span>
+                        </div>
+                        <div class="review-card-full__author">
+                            <h3 class="review-card-full__name">Rachel Patel</h3>
+                            <div class="review-card-full__meta">
+                                <span class="review-card-full__stars">★★★★★</span>
+                                <span class="review-card-full__date">December 15, 2025</span>
+                                <span class="badge badge--success badge--sm">✓ Verified</span>
+                            </div>
+                            <div class="review-card-full__package">
+                                <span class="badge badge--secondary badge--sm">Essential Package</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card-full__content">
+                        <h4 class="review-card-full__title">Great family dinner experience</h4>
+                        <p class="review-card-full__text">Had 12 family members over for a reunion and decided to try ChefWeb. Even the Essential package was impressive! Chef David was patient with our kids (ages 5-10) and taught them some cooking tricks. Food was delicious and the cleanup was seamless. Already planning to book again for Thanksgiving!</p>
+                        <div class="review-card-full__photos">
+                            <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=300&h=200&fit=crop" alt="Family dining experience" loading="lazy">
+                        </div>
+                    </div>
+                    <div class="review-card-full__footer">
+                        <button class="review-card-full__helpful">👍 Helpful (15)</button>
+                    </div>
+                </article>
+
+                <article class="review-card-full">
+                    <div class="review-card-full__header">
+                        <div class="review-card-full__avatar">
+                            <span>JC</span>
+                        </div>
+                        <div class="review-card-full__author">
+                            <h3 class="review-card-full__name">James Chen</h3>
+                            <div class="review-card-full__meta">
+                                <span class="review-card-full__stars">★★★★☆</span>
+                                <span class="review-card-full__date">December 10, 2025</span>
+                                <span class="badge badge--success badge--sm">✓ Verified</span>
+                            </div>
+                            <div class="review-card-full__package">
+                                <span class="badge badge--secondary badge--sm">Signature Package</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card-full__content">
+                        <h4 class="review-card-full__title">Good experience, minor timing issue</h4>
+                        <p class="review-card-full__text">Overall great service and food quality was excellent. Chef arrived 15 minutes late which pushed our dinner schedule back, but he made up for it with extra tricks and stayed a bit longer. Would definitely book again but maybe build in some buffer time for your event schedule.</p>
+                    </div>
+                    <div class="review-card-full__footer">
+                        <button class="review-card-full__helpful">👍 Helpful (12)</button>
+                    </div>
+                </article>
+
+                <article class="review-card-full">
+                    <div class="review-card-full__header">
+                        <div class="review-card-full__avatar">
+                            <span>EW</span>
+                        </div>
+                        <div class="review-card-full__author">
+                            <h3 class="review-card-full__name">Emily Wilson</h3>
+                            <div class="review-card-full__meta">
+                                <span class="review-card-full__stars">★★★★★</span>
+                                <span class="review-card-full__date">December 5, 2025</span>
+                                <span class="badge badge--success badge--sm">✓ Verified</span>
+                            </div>
+                            <div class="review-card-full__package">
+                                <span class="badge badge--secondary badge--sm">Premium Package</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card-full__content">
+                        <h4 class="review-card-full__title">Wedding rehearsal dinner perfection</h4>
+                        <p class="review-card-full__text">Used ChefWeb for our wedding rehearsal dinner (22 guests) and it was absolutely perfect. The personalized menu cards were a beautiful touch, and the chef's formal presentation matched our upscale event. Several guests asked for ChefWeb's contact info for their own events. Can't recommend highly enough!</p>
+                    </div>
+                    <div class="review-card-full__footer">
+                        <button class="review-card-full__helpful">👍 Helpful (31)</button>
+                    </div>
+                </article>
+
+                <article class="review-card-full">
+                    <div class="review-card-full__header">
+                        <div class="review-card-full__avatar">
+                            <span>DM</span>
+                        </div>
+                        <div class="review-card-full__author">
+                            <h3 class="review-card-full__name">David Martinez</h3>
+                            <div class="review-card-full__meta">
+                                <span class="review-card-full__stars">★★★★★</span>
+                                <span class="review-card-full__date">November 28, 2025</span>
+                                <span class="badge badge--success badge--sm">✓ Verified</span>
+                            </div>
+                            <div class="review-card-full__package">
+                                <span class="badge badge--secondary badge--sm">Signature Package</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card-full__content">
+                        <h4 class="review-card-full__title">Anniversary celebration success</h4>
+                        <p class="review-card-full__text">Celebrated our 10th anniversary with ChefWeb and it was magical. The chef created an intimate dining experience for just the two of us (plus our 2 kids). The filet mignon and shrimp combo was restaurant-quality. Such a unique way to celebrate at home. Thank you!</p>
+                        <div class="review-card-full__photos">
+                            <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=300&h=200&fit=crop" alt="Anniversary dinner" loading="lazy">
+                            <img src="https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?w=300&h=200&fit=crop" alt="Hibachi cooking" loading="lazy">
+                        </div>
+                    </div>
+                    <div class="review-card-full__footer">
+                        <button class="review-card-full__helpful">👍 Helpful (22)</button>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination" id="pagination">
+                <button class="pagination__btn pagination__btn--disabled" id="prevPage" disabled>← Previous</button>
+                <div class="pagination__pages" id="paginationPages">
+                    <button class="pagination__page pagination__page--active">1</button>
+                    <button class="pagination__page">2</button>
+                    <button class="pagination__page">3</button>
+                    <button class="pagination__page">4</button>
+                    <span class="pagination__ellipsis">...</span>
+                    <button class="pagination__page">21</button>
+                </div>
+                <button class="pagination__btn" id="nextPage">Next →</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Submit Review CTA -->
+    <section class="section section--gray">
+        <div class="container">
+            <div class="cta-box">
+                <h2 class="cta-box__title">Had a Great Experience?</h2>
+                <p class="cta-box__text">Share your ChefWeb story and help others discover our service</p>
+                <div class="cta-box__actions">
+                    <button class="btn btn--primary btn--lg" id="openReviewFormBtn">Write a Review</button>
+                    <a href="booking.html" class="btn btn--secondary btn--lg">Book Your Event</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Review Submission Modal -->
+    <div class="modal" id="reviewModal" role="dialog" aria-modal="true" aria-labelledby="reviewModalTitle">
+        <div class="modal__overlay"></div>
+        <div class="modal__content modal__content--lg">
+            <button class="modal__close" aria-label="Close modal">×</button>
+            <h2 class="modal__title" id="reviewModalTitle">Share Your Experience</h2>
+            
+            <form class="review-form" id="reviewForm">
+                <div class="form-group">
+                    <label for="reviewName" class="form-label">Your Name <span class="required">*</span></label>
+                    <input type="text" id="reviewName" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="reviewEmail" class="form-label">Email (not published) <span class="required">*</span></label>
+                    <input type="email" id="reviewEmail" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="reviewPackage" class="form-label">Package <span class="required">*</span></label>
+                    <select id="reviewPackage" class="form-select" required>
+                        <option value="">Select package</option>
+                        <option value="essential">Essential</option>
+                        <option value="signature">Signature</option>
+                        <option value="premium">Premium</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Rating <span class="required">*</span></label>
+                    <div class="star-rating" id="starRating" role="radiogroup" aria-label="Rating">
+                        <button type="button" class="star-rating__star" data-rating="1" aria-label="Rate 1 star">☆</button>
+                        <button type="button" class="star-rating__star" data-rating="2" aria-label="Rate 2 stars">☆</button>
+                        <button type="button" class="star-rating__star" data-rating="3" aria-label="Rate 3 stars">☆</button>
+                        <button type="button" class="star-rating__star" data-rating="4" aria-label="Rate 4 stars">☆</button>
+                        <button type="button" class="star-rating__star" data-rating="5" aria-label="Rate 5 stars">☆</button>
+                    </div>
+                    <input type="hidden" id="reviewRating" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="reviewTitle" class="form-label">Review Title <span class="required">*</span></label>
+                    <input type="text" id="reviewTitle" class="form-input" placeholder="Sum up your experience" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="reviewText" class="form-label">Your Review <span class="required">*</span></label>
+                    <textarea id="reviewText" class="form-textarea" rows="6" placeholder="Share details about your experience..." required></textarea>
+                    <span class="form-hint">Minimum 50 characters</span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Add Photos (Optional)</label>
+                    <div class="file-upload">
+                        <input type="file" id="reviewPhotos" accept="image/*" multiple class="file-upload__input">
+                        <label for="reviewPhotos" class="file-upload__label">
+                            <span class="file-upload__icon">📷</span>
+                            <span class="file-upload__text">Choose photos or drag here</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn--primary btn--lg">Submit Review</button>
+                    <button type="button" class="btn btn--secondary" id="cancelReviewBtn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__section">
+                    <h3 class="footer__title">ChefWeb</h3>
+                    <p class="footer__text">Premium private hibachi chef experiences for events across 10 states.</p>
+                </div>
+                <div class="footer__section">
+                    <h4 class="footer__subtitle">Quick Links</h4>
+                    <ul class="footer__links">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="packages.html">Packages</a></li>
+                        <li><a href="service-areas.html">Service Areas</a></li>
+                        <li><a href="reviews.html">Reviews</a></li>
+                    </ul>
+                </div>
+                <div class="footer__section">
+                    <h4 class="footer__subtitle">Support</h4>
+                    <ul class="footer__links">
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer__section">
+                    <h4 class="footer__subtitle">Contact</h4>
+                    <p class="footer__text">
+                        <a href="tel:1-888-555-CHEF">1-888-555-CHEF</a><br>
+                        <a href="mailto:book@chefweb.com">book@chefweb.com</a>
+                    </p>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2026 ChefWeb. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/components.js"></script>
+    <script src="../js/reviews.js"></script>
+</body>
+</html>

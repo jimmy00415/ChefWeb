@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Browse ChefWeb's gallery of private hibachi chef experiences. View photos from real events including birthdays, weddings, corporate gatherings, and delicious dishes.">
+    <title>Gallery | ChefWeb - Event & Food Photos</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+    <!-- Skip Navigation -->
+    <a href="#mainContent" class="skip-link">Skip to main content</a>
+    <a href="#mainNav" class="skip-link" style="left: 140px;">Skip to navigation</a>
+    
+    <!-- Header -->
+    <header class="header" role="banner">
+        <div class="container">
+            <div class="header__content">
+                <a href="../index.html" class="logo">
+                    <span class="logo__icon">🔥</span>
+                    <span class="logo__text">ChefWeb</span>
+                </a>
+                <nav class="nav" id="mainNav" role="navigation" aria-label="Main navigation">
+                    <a href="../index.html" class="nav__link">Home</a>
+                    <a href="packages.html" class="nav__link">Packages</a>
+                    <a href="service-areas.html" class="nav__link">Service Areas</a>
+                    <a href="reviews.html" class="nav__link">Reviews</a>
+                    <a href="gallery.html" class="nav__link nav__link--active">Gallery</a>
+                    <a href="contact.html" class="nav__link">Contact</a>
+                    <a href="booking.html" class="btn btn--primary btn--sm">Book Now</a>
+                </nav>
+                <button class="nav-toggle" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="mainContent" role="main">
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-header__title">Event Gallery</h1>
+            <p class="page-header__subtitle">Real moments from real events</p>
+        </div>
+    </section>
+
+    <!-- Gallery Filters -->
+    <section class="section" style="padding-top: var(--spacing-2xl); padding-bottom: var(--spacing-xl);">
+        <div class="container">
+            <div class="gallery-filters">
+                <div class="gallery-filters__group">
+                    <h3 class="gallery-filters__title">Event Type</h3>
+                    <div class="gallery-filters__buttons">
+                        <button class="filter-chip filter-chip--active" data-category="all" data-type="event">All Events</button>
+                        <button class="filter-chip" data-category="birthday" data-type="event">Birthday</button>
+                        <button class="filter-chip" data-category="wedding" data-type="event">Wedding</button>
+                        <button class="filter-chip" data-category="corporate" data-type="event">Corporate</button>
+                        <button class="filter-chip" data-category="anniversary" data-type="event">Anniversary</button>
+                        <button class="filter-chip" data-category="family" data-type="event">Family Gathering</button>
+                    </div>
+                </div>
+                <div class="gallery-filters__group">
+                    <h3 class="gallery-filters__title">Dish Type</h3>
+                    <div class="gallery-filters__buttons">
+                        <button class="filter-chip filter-chip--active" data-category="all" data-type="dish">All Dishes</button>
+                        <button class="filter-chip" data-category="appetizers" data-type="dish">Appetizers</button>
+                        <button class="filter-chip" data-category="entrees" data-type="dish">Entrees</button>
+                        <button class="filter-chip" data-category="seafood" data-type="dish">Seafood</button>
+                        <button class="filter-chip" data-category="steak" data-type="dish">Steak & Beef</button>
+                        <button class="filter-chip" data-category="desserts" data-type="dish">Desserts</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Grid -->
+    <section class="section" style="padding-top: 0;">
+        <div class="container">
+            <div class="gallery-results">
+                <span id="galleryCount">48</span> photos
+            </div>
+            <div class="gallery-masonry" id="galleryGrid">
+                <!-- Images will be loaded dynamically by JavaScript -->
+                <!-- Static examples for SEO and non-JS fallback -->
+                <div class="gallery-item" data-event="birthday" data-dish="entrees">
+                    <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&h=800&fit=crop" alt="Birthday party hibachi setup" loading="lazy" data-index="0">
+                    <div class="gallery-item__overlay">
+                        <span class="gallery-item__badge">🎂 Birthday</span>
+                    </div>
+                </div>
+                <div class="gallery-item" data-event="wedding" data-dish="seafood">
+                    <img src="https://images.unsplash.com/photo-1559847844-5315695dadae?w=600&h=400&fit=crop" alt="Wedding rehearsal dinner" loading="lazy" data-index="1">
+                    <div class="gallery-item__overlay">
+                        <span class="gallery-item__badge">💍 Wedding</span>
+                    </div>
+                </div>
+                <div class="gallery-item" data-event="corporate" data-dish="steak">
+                    <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=600&h=600&fit=crop" alt="Corporate event dining" loading="lazy" data-index="2">
+                    <div class="gallery-item__overlay">
+                        <span class="gallery-item__badge">💼 Corporate</span>
+                    </div>
+                </div>
+                <div class="gallery-item" data-event="birthday" data-dish="seafood">
+                    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=700&fit=crop" alt="Seafood hibachi preparation" loading="lazy" data-index="3">
+                    <div class="gallery-item__overlay">
+                        <span class="gallery-item__badge">🦞 Seafood</span>
+                    </div>
+                </div>
+                <div class="gallery-item" data-event="family" data-dish="entrees">
+                    <img src="https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?w=600&h=500&fit=crop" alt="Family dinner hibachi grill" loading="lazy" data-index="4">
+                    <div class="gallery-item__overlay">
+                        <span class="gallery-item__badge">👨‍👩‍👧‍👦 Family</span>
+                    </div>
+                </div>
+                <div class="gallery-item" data-event="anniversary" data-dish="steak">
+                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=800&fit=crop" alt="Anniversary steak dinner" loading="lazy" data-index="5">
+                    <div class="gallery-item__overlay">
+                        <span class="gallery-item__badge">🥩 Steak</span>
+                    </div>
+                </div>
+                <div class="gallery-item" data-event="birthday" data-dish="appetizers">
+                    <img src="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=600&h=450&fit=crop" alt="Hibachi appetizers" loading="lazy" data-index="6">
+                    <div class="gallery-item__overlay">
+                        <span class="gallery-item__badge">🍤 Appetizers</span>
+                    </div>
+                </div>
+                <div class="gallery-item" data-event="wedding" data-dish="entrees">
+                    <img src="https://images.unsplash.com/photo-1625944525533-473f1a3d54e7?w=600&h=650&fit=crop" alt="Wedding dinner service" loading="lazy" data-index="7">
+                    <div class="gallery-item__overlay">
+                        <span class="gallery-item__badge">💍 Wedding</span>
+                    </div>
+                </div>
+                <div class="gallery-item" data-event="corporate" data-dish="entrees">
+                    <img src="https://images.unsplash.com/photo-1529042410759-befb1204b468?w=600&h=550&fit=crop" alt="Corporate team dinner" loading="lazy" data-index="8">
+                    <div class="gallery-item__overlay">
+                        <span class="gallery-item__badge">💼 Corporate</span>
+                    </div>
+                </div>
+                <div class="gallery-item" data-event="family" data-dish="seafood">
+                    <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600&h=700&fit=crop" alt="Fresh seafood selection" loading="lazy" data-index="9">
+                    <div class="gallery-item__overlay">
+                        <span class="gallery-item__badge">🦞 Seafood</span>
+                    </div>
+                </div>
+                <div class="gallery-item" data-event="birthday" data-dish="desserts">
+                    <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=600&h=500&fit=crop" alt="Birthday dessert" loading="lazy" data-index="10">
+                    <div class="gallery-item__overlay">
+                        <span class="gallery-item__badge">🍰 Desserts</span>
+                    </div>
+                </div>
+                <div class="gallery-item" data-event="anniversary" data-dish="seafood">
+                    <img src="https://images.unsplash.com/photo-1580959375944-57c216f1fb5a?w=600&h=800&fit=crop" alt="Premium lobster tail" loading="lazy" data-index="11">
+                    <div class="gallery-item__overlay">
+                        <span class="gallery-item__badge">🦞 Seafood</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- UGC Submission CTA -->
+    <section class="section section--gray">
+        <div class="container">
+            <div class="ugc-cta">
+                <div class="ugc-cta__content">
+                    <h2 class="ugc-cta__title">Share Your ChefWeb Experience</h2>
+                    <p class="ugc-cta__text">Had an amazing event? Share your photos and videos with us! Get featured in our gallery and inspire others.</p>
+                    <div class="ugc-cta__benefits">
+                        <div class="ugc-benefit">
+                            <span class="ugc-benefit__icon">📸</span>
+                            <span class="ugc-benefit__text">Get Featured</span>
+                        </div>
+                        <div class="ugc-benefit">
+                            <span class="ugc-benefit__icon">🎁</span>
+                            <span class="ugc-benefit__text">Earn Rewards</span>
+                        </div>
+                        <div class="ugc-benefit">
+                            <span class="ugc-benefit__icon">❤️</span>
+                            <span class="ugc-benefit__text">Inspire Others</span>
+                        </div>
+                    </div>
+                    <button class="btn btn--primary btn--lg" id="openUgcFormBtn">Submit Your Photos</button>
+                </div>
+                <div class="ugc-cta__image">
+                    <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=600&h=400&fit=crop" alt="Happy customers at hibachi event" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox Modal -->
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-labelledby="lightboxCaption" aria-describedby="lightboxCounter">
+        <div class="lightbox__overlay"></div>
+        <div class="lightbox__content">
+            <button class="lightbox__close" aria-label="Close lightbox">×</button>
+            <button class="lightbox__prev" aria-label="Previous image">‹</button>
+            <button class="lightbox__next" aria-label="Next image">›</button>
+            <div class="lightbox__image-container">
+                <img src="" alt="" class="lightbox__image" id="lightboxImage">
+                <div class="lightbox__caption" id="lightboxCaption"></div>
+            </div>
+            <div class="lightbox__counter" id="lightboxCounter" aria-live="polite">1 / 12</div>
+        </div>
+    </div>
+
+    <!-- UGC Submission Modal -->
+    <div class="modal" id="ugcModal" role="dialog" aria-modal="true" aria-labelledby="ugcModalTitle" aria-describedby="ugcModalDesc">
+        <div class="modal__overlay"></div>
+        <div class="modal__content modal__content--lg">
+            <button class="modal__close" aria-label="Close modal">×</button>
+            <h2 class="modal__title" id="ugcModalTitle">Share Your Photos & Videos</h2>
+            <p class="modal__subtitle" id="ugcModalDesc">Help us showcase the ChefWeb experience!</p>
+            
+            <form class="ugc-form" id="ugcForm">
+                <div class="form-group">
+                    <label for="ugcName" class="form-label">Your Name <span class="required">*</span></label>
+                    <input type="text" id="ugcName" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="ugcEmail" class="form-label">Email <span class="required">*</span></label>
+                    <input type="email" id="ugcEmail" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="ugcEventType" class="form-label">Event Type <span class="required">*</span></label>
+                    <select id="ugcEventType" class="form-select" required>
+                        <option value="">Select event type</option>
+                        <option value="birthday">Birthday</option>
+                        <option value="wedding">Wedding</option>
+                        <option value="corporate">Corporate Event</option>
+                        <option value="anniversary">Anniversary</option>
+                        <option value="family">Family Gathering</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="ugcEventDate" class="form-label">Event Date <span class="required">*</span></label>
+                    <input type="date" id="ugcEventDate" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="ugcCaption" class="form-label">Caption (Optional)</label>
+                    <textarea id="ugcCaption" class="form-textarea" rows="3" placeholder="Tell us about your experience..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Upload Photos/Videos <span class="required">*</span></label>
+                    <div class="file-upload file-upload--multiple">
+                        <input type="file" id="ugcFiles" accept="image/*,video/*" multiple class="file-upload__input" required>
+                        <label for="ugcFiles" class="file-upload__label">
+                            <span class="file-upload__icon">📤</span>
+                            <span class="file-upload__text">Choose files or drag here</span>
+                            <span class="file-upload__hint">Max 10 files, 20MB each</span>
+                        </label>
+                        <div class="file-upload__preview" id="filePreview"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-checkbox-wrapper">
+                        <input type="checkbox" id="ugcConsent" class="form-checkbox" required>
+                        <span>I grant ChefWeb permission to use these photos/videos for marketing purposes <span class="required">*</span></span>
+                    </label>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn--primary btn--lg">Submit Photos</button>
+                    <button type="button" class="btn btn--secondary" id="cancelUgcBtn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__section">
+                    <h3 class="footer__title">ChefWeb</h3>
+                    <p class="footer__text">Premium private hibachi chef experiences for events across 10 states.</p>
+                </div>
+                <div class="footer__section">
+                    <h4 class="footer__subtitle">Quick Links</h4>
+                    <ul class="footer__links">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="packages.html">Packages</a></li>
+                        <li><a href="service-areas.html">Service Areas</a></li>
+                        <li><a href="reviews.html">Reviews</a></li>
+                    </ul>
+                </div>
+                <div class="footer__section">
+                    <h4 class="footer__subtitle">Support</h4>
+                    <ul class="footer__links">
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer__section">
+                    <h4 class="footer__subtitle">Contact</h4>
+                    <p class="footer__text">
+                        <a href="tel:1-888-555-CHEF">1-888-555-CHEF</a><br>
+                        <a href="mailto:book@chefweb.com">book@chefweb.com</a>
+                    </p>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2026 ChefWeb. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/components.js"></script>
+    <script src="../js/gallery.js"></script>
+</body>
+</html>

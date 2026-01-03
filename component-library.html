@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Component Library - ChefWeb</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/components.css">
+    <style>
+        .demo-section {
+            padding: var(--spacing-2xl) 0;
+            border-bottom: 2px solid var(--color-border-light);
+        }
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-xl);
+            margin-top: var(--spacing-xl);
+        }
+    </style>
+</head>
+<body>
+    <div class="container" style="padding: var(--spacing-3xl) var(--container-padding);">
+        <h1 class="heading-1">Component Library</h1>
+        <p class="text-large text-muted">All reusable UI components for ChefWeb</p>
+
+        <!-- Buttons -->
+        <section class="demo-section">
+            <h2 class="heading-2">Buttons</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-md); margin-top: var(--spacing-lg);">
+                <button class="btn btn--primary">Primary Button</button>
+                <button class="btn btn--secondary">Secondary Button</button>
+                <button class="btn btn--outline">Outline Button</button>
+                <button class="btn btn--ghost">Ghost Button</button>
+                <button class="btn btn--primary" disabled>Disabled</button>
+                <button class="btn btn--primary btn--small">Small</button>
+                <button class="btn btn--primary btn--large">Large</button>
+            </div>
+        </section>
+
+        <!-- Form Fields -->
+        <section class="demo-section">
+            <h2 class="heading-2">Form Fields</h2>
+            <div class="demo-grid">
+                <div class="form-group">
+                    <label class="form-label form-label--required">Full Name</label>
+                    <input type="text" class="form-input" placeholder="Enter your name">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Email (with error)</label>
+                    <input type="email" class="form-input form-input--error" value="invalid-email">
+                    <span class="form-error">Please enter a valid email address</span>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Service Area</label>
+                    <select class="form-select">
+                        <option>Select your state</option>
+                        <option>California</option>
+                        <option>New York</option>
+                        <option>Texas</option>
+                    </select>
+                    <span class="form-hint">Choose the state where you need service</span>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Special Requests</label>
+                    <textarea class="form-textarea" placeholder="Any dietary restrictions or special requests?"></textarea>
+                </div>
+            </div>
+            
+            <div style="margin-top: var(--spacing-xl);">
+                <div class="form-checkbox" style="margin-bottom: var(--spacing-md);">
+                    <input type="checkbox" id="agree">
+                    <label class="form-checkbox__label" for="agree">I have disclosed all known allergies and dietary restrictions</label>
+                </div>
+                
+                <div class="form-radio">
+                    <input type="radio" name="contact" id="email" checked>
+                    <label class="form-radio__label" for="email">Preferred contact: Email</label>
+                </div>
+            </div>
+        </section>
+
+        <!-- Package Cards -->
+        <section class="demo-section">
+            <h2 class="heading-2">Package Cards</h2>
+            <div class="demo-grid">
+                <div class="package-card">
+                    <span class="package-card__badge">Most Popular</span>
+                    <h3 class="package-card__title">Signature Experience</h3>
+                    <div class="package-card__price">
+                        $75
+                        <span class="package-card__price-unit">per person</span>
+                    </div>
+                    <p class="package-card__description">Our signature hibachi experience with premium ingredients</p>
+                    <ul class="package-card__features">
+                        <li class="package-card__feature">Chef & equipment included</li>
+                        <li class="package-card__feature">Premium protein options</li>
+                        <li class="package-card__feature">Full hibachi show</li>
+                        <li class="package-card__feature">Minimum 10 guests</li>
+                    </ul>
+                    <button class="btn btn--primary btn--full">Select Package</button>
+                </div>
+                
+                <div class="package-card package-card--selected">
+                    <h3 class="package-card__title">Premium Experience</h3>
+                    <div class="package-card__price">
+                        $95
+                        <span class="package-card__price-unit">per person</span>
+                    </div>
+                    <p class="package-card__description">Elevated experience with premium seafood and wagyu</p>
+                    <ul class="package-card__features">
+                        <li class="package-card__feature">Everything in Signature</li>
+                        <li class="package-card__feature">Wagyu beef upgrade</li>
+                        <li class="package-card__feature">Lobster tail included</li>
+                        <li class="package-card__feature">Premium sake pairing</li>
+                    </ul>
+                    <button class="btn btn--primary btn--full">Select Package</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Review Cards -->
+        <section class="demo-section">
+            <h2 class="heading-2">Review Cards</h2>
+            <div class="demo-grid">
+                <div class="review-card">
+                    <div class="review-card__header">
+                        <div class="review-card__avatar">JD</div>
+                        <div class="review-card__info">
+                            <div class="review-card__name">John Doe</div>
+                            <div class="review-card__meta">
+                                <div class="review-card__rating">
+                                    <span class="review-card__star">★</span>
+                                    <span class="review-card__star">★</span>
+                                    <span class="review-card__star">★</span>
+                                    <span class="review-card__star">★</span>
+                                    <span class="review-card__star">★</span>
+                                </div>
+                                <span>2 weeks ago</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="review-card__content review-card__content--collapsed">
+                        Amazing experience! The chef was professional and entertaining. The food was absolutely delicious, and our guests couldn't stop talking about it. Highly recommend for any special occasion!
+                    </p>
+                    <button class="review-card__read-more">Read more</button>
+                    <div class="review-card__badge">
+                        ✓ Verified via Google
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chips (Add-ons) -->
+        <section class="demo-section">
+            <h2 class="heading-2">Chips (Add-ons)</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-md); margin-top: var(--spacing-lg);">
+                <div class="chip">
+                    <span>Fried Rice Upgrade</span>
+                    <div class="chip__quantity">
+                        <button class="chip__qty-btn chip__qty-btn--decrease">-</button>
+                        <span class="chip__qty-display">0</span>
+                        <button class="chip__qty-btn chip__qty-btn--increase">+</button>
+                    </div>
+                </div>
+                
+                <div class="chip chip--selected">
+                    <span>Premium Sake</span>
+                    <div class="chip__quantity">
+                        <button class="chip__qty-btn chip__qty-btn--decrease">-</button>
+                        <span class="chip__qty-display">2</span>
+                        <button class="chip__qty-btn chip__qty-btn--increase">+</button>
+                    </div>
+                </div>
+                
+                <div class="chip">
+                    <span>Extra Protein</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stepper -->
+        <section class="demo-section">
+            <h2 class="heading-2">Stepper</h2>
+            <div class="stepper" style="margin-top: var(--spacing-xl);">
+                <div class="stepper__step stepper__step--completed">
+                    <div class="stepper__circle">1</div>
+                    <div class="stepper__label">Service Area</div>
+                </div>
+                <div class="stepper__step stepper__step--active">
+                    <div class="stepper__circle">2</div>
+                    <div class="stepper__label">Party Size</div>
+                </div>
+                <div class="stepper__step">
+                    <div class="stepper__circle">3</div>
+                    <div class="stepper__label">Package</div>
+                </div>
+                <div class="stepper__step">
+                    <div class="stepper__circle">4</div>
+                    <div class="stepper__label">Add-ons</div>
+                </div>
+                <div class="stepper__step">
+                    <div class="stepper__circle">5</div>
+                    <div class="stepper__label">Details</div>
+                </div>
+                <div class="stepper__step">
+                    <div class="stepper__circle">6</div>
+                    <div class="stepper__label">Contact</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Accordion -->
+        <section class="demo-section">
+            <h2 class="heading-2">Accordion</h2>
+            <div class="accordion" style="margin-top: var(--spacing-xl); max-width: 800px;">
+                <div class="accordion__item">
+                    <button class="accordion__header accordion__header--active">
+                        <span class="accordion__title">What is the minimum party size?</span>
+                        <span class="accordion__icon accordion__icon--active">▼</span>
+                    </button>
+                    <div class="accordion__content accordion__content--active">
+                        <div class="accordion__body">
+                            Our minimum party size is 10 adults. This ensures the best experience and value for your event. For smaller parties, we can provide a quote based on the minimum spend requirement.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion__item">
+                    <button class="accordion__header">
+                        <span class="accordion__title">Do you accommodate dietary restrictions?</span>
+                        <span class="accordion__icon">▼</span>
+                    </button>
+                    <div class="accordion__content">
+                        <div class="accordion__body">
+                            Yes! We can accommodate most dietary restrictions including vegetarian, vegan, gluten-free, and food allergies. Please let us know in advance so we can prepare accordingly.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Badges & Alerts -->
+        <section class="demo-section">
+            <h2 class="heading-2">Badges & Alerts</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-md); margin-top: var(--spacing-lg);">
+                <span class="badge badge--primary">Most Popular</span>
+                <span class="badge badge--success">Available</span>
+                <span class="badge badge--warning">Limited Spots</span>
+                <span class="badge badge--info">New</span>
+                <span class="badge badge--outline">Optional</span>
+            </div>
+            
+            <div style="margin-top: var(--spacing-xl);">
+                <div class="alert alert--success">
+                    <div class="alert__title">Booking Confirmed!</div>
+                    <div class="alert__message">Your booking request has been received. We'll contact you within 24 hours.</div>
+                </div>
+                
+                <div class="alert alert--warning">
+                    <div class="alert__title">Minimum Spend Not Met</div>
+                    <div class="alert__message">Your current party size is below the minimum spend of $500. Please add more guests or upgrade your package.</div>
+                </div>
+                
+                <div class="alert alert--info">
+                    <div class="alert__title">Travel Fee May Apply</div>
+                    <div class="alert__message">Depending on your location, a travel fee of $50-$100 may apply. We'll confirm this in your quote.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modal Demo Button -->
+        <section class="demo-section">
+            <h2 class="heading-2">Modal</h2>
+            <button class="btn btn--primary" onclick="document.querySelector('.demo-modal').classList.add('modal--active')">
+                Open Modal
+            </button>
+        </section>
+    </div>
+
+    <!-- Demo Modal -->
+    <div class="modal demo-modal">
+        <div class="modal__content">
+            <div class="modal__header">
+                <h3 class="modal__title">Example Modal</h3>
+                <button class="modal__close" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal__body">
+                <p>This is an example modal dialog. It can contain any content including forms, images, or text.</p>
+            </div>
+            <div class="modal__footer">
+                <button class="btn btn--outline">Cancel</button>
+                <button class="btn btn--primary">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/components.js"></script>
+</body>
+</html>

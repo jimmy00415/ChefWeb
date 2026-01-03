@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Book your private chef experience - customizable menus and professional service.">
+    <title>Book Now - ChefWeb</title>
+    
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+    <!-- Skip Navigation -->
+    <a href="#mainContent" class="skip-link">Skip to main content</a>
+    <a href="#mainNav" class="skip-link" style="left: 140px;">Skip to navigation</a>
+    
+    <!-- Header -->
+    <header class="header" id="header" role="banner">
+        <div class="header__container">
+            <a href="../index.html" class="header__logo">ChefWeb</a>
+            <button class="header__menu-toggle" id="menuToggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <nav class="header__nav" id="mainNav">
+                <ul class="header__nav-list">
+                    <li><a href="../index.html" class="header__nav-link">Home</a></li>
+                    <li><a href="packages.html" class="header__nav-link">Packages/Menu</a></li>
+                    <li><a href="service-areas.html" class="header__nav-link">Service Areas</a></li>
+                    <li><a href="gallery.html" class="header__nav-link">Gallery</a></li>
+                    <li><a href="reviews.html" class="header__nav-link">Reviews</a></li>
+                    <li><a href="faq.html" class="header__nav-link">FAQ</a></li>
+                    <li><a href="contact.html" class="header__nav-link">Contact</a></li>
+                </ul>
+                <a href="booking.html" class="btn btn--primary">Book Now</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Booking Container -->
+    <div class="booking-container">
+        <div class="booking-layout">
+            <!-- Main Booking Form -->
+            <div class="booking-main">
+                <div class="booking-header">
+                    <h1 class="booking-title">Book Your Experience</h1>
+                    <p class="booking-subtitle">Complete the form below to request your booking</p>
+                </div>
+
+                <!-- Stepper -->
+                <div class="stepper" id="bookingStepper">
+                    <div class="stepper__step stepper__step--active" data-step="1">
+                        <div class="stepper__circle">1</div>
+                        <div class="stepper__label">Location & Date</div>
+                    </div>
+                    <div class="stepper__step" data-step="2">
+                        <div class="stepper__circle">2</div>
+                        <div class="stepper__label">Party Size</div>
+                    </div>
+                    <div class="stepper__step" data-step="3">
+                        <div class="stepper__circle">3</div>
+                        <div class="stepper__label">Package</div>
+                    </div>
+                    <div class="stepper__step" data-step="4">
+                        <div class="stepper__circle">4</div>
+                        <div class="stepper__label">Add-ons</div>
+                    </div>
+                    <div class="stepper__step" data-step="5">
+                        <div class="stepper__circle">5</div>
+                        <div class="stepper__label">Event Details</div>
+                    </div>
+                    <div class="stepper__step" data-step="6">
+                        <div class="stepper__circle">6</div>
+                        <div class="stepper__label">Contact Info</div>
+                    </div>
+                </div>
+
+                <!-- Booking Form -->
+                <form id="bookingForm" novalidate>
+                    <!-- Step 1: Service Area & Date/Time -->
+                    <div class="booking-step booking-step--active" data-step="1">
+                        <h2 class="step-title">Where and When?</h2>
+                        <p class="step-description">
+                            Let us know your location and preferred event date. We'll confirm availability and any travel fees.
+                        </p>
+
+                        <div class="step-fields">
+                            <div class="form-group">
+                                <label class="form-label form-label--required" for="serviceState">Service State</label>
+                                <select class="form-select" id="serviceState" name="serviceState" required>
+                                    <option value="">Select your state</option>
+                                    <option value="CA">California</option>
+                                    <option value="NY">New York</option>
+                                    <option value="TX">Texas</option>
+                                    <option value="FL">Florida</option>
+                                    <option value="IL">Illinois</option>
+                                    <option value="PA">Pennsylvania</option>
+                                    <option value="OH">Ohio</option>
+                                    <option value="GA">Georgia</option>
+                                    <option value="NC">North Carolina</option>
+                                    <option value="MI">Michigan</option>
+                                </select>
+                                <span class="form-hint">We'll confirm if your specific city is covered</span>
+                                <span class="form-error" id="serviceStateError"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label form-label--required" for="city">City</label>
+                                <input type="text" class="form-input" id="city" name="city" placeholder="Enter your city" required>
+                                <span class="form-error" id="cityError"></span>
+                            </div>
+
+                            <div class="field-group--inline">
+                                <div class="form-group">
+                                    <label class="form-label form-label--required" for="eventDate">Event Date</label>
+                                    <input type="date" class="form-input" id="eventDate" name="eventDate" required>
+                                    <span class="form-hint">Minimum 3 days in advance</span>
+                                    <span class="form-error" id="eventDateError"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label form-label--required" for="eventTime">Preferred Time</label>
+                                    <select class="form-select" id="eventTime" name="eventTime" required>
+                                        <option value="">Select time</option>
+                                        <option value="11:00">11:00 AM</option>
+                                        <option value="12:00">12:00 PM</option>
+                                        <option value="13:00">1:00 PM</option>
+                                        <option value="14:00">2:00 PM</option>
+                                        <option value="15:00">3:00 PM</option>
+                                        <option value="16:00">4:00 PM</option>
+                                        <option value="17:00">5:00 PM</option>
+                                        <option value="18:00">6:00 PM</option>
+                                        <option value="19:00">7:00 PM</option>
+                                        <option value="20:00">8:00 PM</option>
+                                    </select>
+                                    <span class="form-error" id="eventTimeError"></span>
+                                </div>
+                            </div>
+
+                            <!-- Travel Fee Info (shown after state selection) -->
+                            <div id="travelFeeInfo" class="hidden">
+                                <div class="validation-message validation-message--info">
+                                    <span class="validation-message__icon">ℹ️</span>
+                                    <div>
+                                        <strong>Travel Fee:</strong> <span id="travelFeeText">We'll confirm the exact travel fee for your location.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="booking-nav">
+                            <a href="../index.html" class="btn btn--outline booking-nav__back">← Back to Home</a>
+                            <button type="button" class="btn btn--primary booking-nav__next" data-next-step="2">
+                                Continue to Party Size →
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Party Size -->
+                    <div class="booking-step" data-step="2">
+                        <h2 class="step-title">How Many Guests?</h2>
+                        <p class="step-description">
+                            Tell us your party size. Pricing is per person with a $500 minimum spend.
+                        </p>
+
+                        <div class="step-fields">
+                            <div class="field-group--inline">
+                                <div class="form-group">
+                                    <label class="form-label form-label--required" for="numAdults">Number of Adults</label>
+                                    <input type="number" class="form-input" id="numAdults" name="numAdults" min="1" max="100" value="10" required>
+                                    <span class="form-hint">Minimum 10 adults recommended</span>
+                                    <span class="form-error" id="numAdultsError"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="numChildren">Number of Children</label>
+                                    <input type="number" class="form-input" id="numChildren" name="numChildren" min="0" max="50" value="0">
+                                    <span class="form-hint">Under 12 years old</span>
+                                    <span class="form-error" id="numChildrenError"></span>
+                                </div>
+                            </div>
+
+                            <!-- Live Pricing Preview -->
+                            <div class="card">
+                                <div class="card__header">
+                                    <h3 class="card__title">Estimated Pricing</h3>
+                                    <p class="card__subtitle">Based on Signature package ($75/adult, $50/child)</p>
+                                </div>
+                                <div class="card__body">
+                                    <div class="price-summary__item">
+                                        <span class="price-summary__item-label">
+                                            <span id="previewAdults">10</span> Adults × $75
+                                        </span>
+                                        <span class="price-summary__item-value" id="previewAdultTotal">$750</span>
+                                    </div>
+                                    <div class="price-summary__item">
+                                        <span class="price-summary__item-label">
+                                            <span id="previewChildren">0</span> Children × $50
+                                        </span>
+                                        <span class="price-summary__item-value" id="previewChildTotal">$0</span>
+                                    </div>
+                                    <div class="price-summary__total" style="margin-top: var(--spacing-md); padding-top: var(--spacing-md);">
+                                        <span class="price-summary__total-label">Subtotal</span>
+                                        <span class="price-summary__total-value" id="previewSubtotal">$750</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Minimum Spend Validation -->
+                            <div id="minimumSpendMessage" class="hidden">
+                                <!-- Dynamic message inserted here -->
+                            </div>
+
+                            <!-- Large Event Notice (50+ guests) -->
+                            <div id="largeEventNotice" class="large-event-notice hidden">
+                                <h3 class="large-event-notice__title">🎉 Large Event Detected</h3>
+                                <p class="large-event-notice__description">
+                                    For events with 50+ guests, we recommend our custom quote service to ensure optimal chef coverage and service.
+                                </p>
+                                <div class="large-event-notice__actions">
+                                    <button type="button" class="btn btn--primary" id="requestQuoteBtn">Request Custom Quote</button>
+                                    <button type="button" class="btn btn--outline" id="continueStandardBtn">Continue Standard Booking</button>
+                                </div>
+                            </div>
+
+                            <!-- Additional Chef Notice (30-49 guests) -->
+                            <div id="additionalChefNotice" class="hidden">
+                                <div class="validation-message validation-message--info">
+                                    <span class="validation-message__icon">👨‍🍳</span>
+                                    <div>
+                                        <strong>Additional Chef Recommended:</strong> For parties of 30+, we recommend a second chef for optimal service ($200 additional fee).
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="booking-nav">
+                            <button type="button" class="btn btn--outline booking-nav__back" data-prev-step="1">
+                                ← Back
+                            </button>
+                            <button type="button" class="btn btn--primary booking-nav__next" data-next-step="3">
+                                Continue to Package Selection →
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Package Selection -->
+                    <div class="booking-step" data-step="3">
+                        <h2 class="step-title">Choose Your Package</h2>
+                        <p class="step-description">
+                            Select the dining experience that best fits your event. All packages include setup, service, and cleanup.
+                        </p>
+
+                        <div class="step-fields">
+                            <div class="package-selection">
+                                <!-- Essential Package -->
+                                <label class="package-card package-card--selectable" data-package="essential">
+                                    <input type="radio" name="package" value="essential" class="package-card__radio">
+                                    <div class="package-card__badge">Best Value</div>
+                                    <div class="package-card__header">
+                                        <h3 class="package-card__title">Essential</h3>
+                                        <div class="package-card__price">
+                                            <span class="package-card__amount">$65</span>
+                                            <span class="package-card__unit">per adult</span>
+                                        </div>
+                                        <p class="package-card__subtitle">Classic flavors, premium quality</p>
+                                    </div>
+                                    <ul class="package-card__features">
+                                        <li class="package-card__feature">Choice of 3 protein options</li>
+                                        <li class="package-card__feature">Seasonal vegetable medley</li>
+                                        <li class="package-card__feature">Fried rice or noodles</li>
+                                        <li class="package-card__feature">House salad with ginger dressing</li>
+                                        <li class="package-card__feature">Basic sauces & condiments</li>
+                                        <li class="package-card__feature">Standard chef performance</li>
+                                    </ul>
+                                    <div class="package-card__footer">
+                                        <span class="package-card__footnote">Children (under 12): $43</span>
+                                    </div>
+                                </label>
+
+                                <!-- Signature Package -->
+                                <label class="package-card package-card--selectable package-card--selected package-card--featured" data-package="signature">
+                                    <input type="radio" name="package" value="signature" class="package-card__radio" checked>
+                                    <div class="package-card__badge package-card__badge--primary">Most Popular</div>
+                                    <div class="package-card__header">
+                                        <h3 class="package-card__title">Signature</h3>
+                                        <div class="package-card__price">
+                                            <span class="package-card__amount">$75</span>
+                                            <span class="package-card__unit">per adult</span>
+                                        </div>
+                                        <p class="package-card__subtitle">Elevated experience with premium ingredients</p>
+                                    </div>
+                                    <ul class="package-card__features">
+                                        <li class="package-card__feature">Choice of 4 premium proteins (includes seafood)</li>
+                                        <li class="package-card__feature">Grilled vegetables with garlic butter</li>
+                                        <li class="package-card__feature">Fried rice AND noodles</li>
+                                        <li class="package-card__feature">Signature house salad</li>
+                                        <li class="package-card__feature">Premium sauces (yum yum, ginger, teriyaki)</li>
+                                        <li class="package-card__feature">Enhanced chef performance with tricks</li>
+                                        <li class="package-card__feature">Complimentary appetizer (soup or spring rolls)</li>
+                                    </ul>
+                                    <div class="package-card__footer">
+                                        <span class="package-card__footnote">Children (under 12): $50</span>
+                                    </div>
+                                </label>
+
+                                <!-- Premium Package -->
+                                <label class="package-card package-card--selectable" data-package="premium">
+                                    <input type="radio" name="package" value="premium" class="package-card__radio">
+                                    <div class="package-card__badge">Luxury</div>
+                                    <div class="package-card__header">
+                                        <h3 class="package-card__title">Premium</h3>
+                                        <div class="package-card__price">
+                                            <span class="package-card__amount">$95</span>
+                                            <span class="package-card__unit">per adult</span>
+                                        </div>
+                                        <p class="package-card__subtitle">Ultimate hibachi experience</p>
+                                    </div>
+                                    <ul class="package-card__features">
+                                        <li class="package-card__feature">Choice of 5 luxury proteins (wagyu, lobster available)</li>
+                                        <li class="package-card__feature">Premium grilled vegetables</li>
+                                        <li class="package-card__feature">Fried rice AND garlic noodles</li>
+                                        <li class="package-card__feature">Signature salad with premium toppings</li>
+                                        <li class="package-card__feature">All signature sauces + special chef sauce</li>
+                                        <li class="package-card__feature">Full theatrical chef performance</li>
+                                        <li class="package-card__feature">Appetizer trio (soup, salad, spring rolls)</li>
+                                        <li class="package-card__feature">Complimentary sake tasting for adults</li>
+                                    </ul>
+                                    <div class="package-card__footer">
+                                        <span class="package-card__footnote">Children (under 12): $63</span>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <!-- Package Comparison Link -->
+                            <div style="text-align: center; margin-top: var(--spacing-xl);">
+                                <a href="packages.html" target="_blank" class="btn btn--ghost">
+                                    View Detailed Menu Comparison →
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="booking-nav">
+                            <button type="button" class="btn btn--outline booking-nav__back" data-prev-step="2">
+                                ← Back
+                            </button>
+                            <button type="button" class="btn btn--primary booking-nav__next" data-next-step="4">
+                                Continue to Add-ons →
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Add-ons -->
+                    <div class="booking-step" data-step="4">
+                        <h2 class="step-title">Enhance Your Experience</h2>
+                        <p class="step-description">
+                            Optional add-ons to make your event even more memorable. All items are priced per event.
+                        </p>
+
+                        <div class="step-fields">
+                            <!-- Beverages Section -->
+                            <div class="addon-category">
+                                <h3 class="addon-category__title">🍹 Beverages</h3>
+                                <div class="addon-category__grid">
+                                    <div class="chip chip--addon" data-addon-id="soft-drinks" data-addon-price="75">
+                                        <div class="chip__content">
+                                            <div class="chip__info">
+                                                <span class="chip__name">Soft Drinks Package</span>
+                                                <span class="chip__description">Unlimited sodas, iced tea, lemonade</span>
+                                            </div>
+                                            <span class="chip__price">$75</span>
+                                        </div>
+                                        <div class="chip__controls">
+                                            <button type="button" class="chip__btn chip__btn--minus" aria-label="Remove">−</button>
+                                            <span class="chip__quantity">0</span>
+                                            <button type="button" class="chip__btn chip__btn--plus" aria-label="Add">+</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="chip chip--addon" data-addon-id="sake-upgrade" data-addon-price="150">
+                                        <div class="chip__content">
+                                            <div class="chip__info">
+                                                <span class="chip__name">Premium Sake Selection</span>
+                                                <span class="chip__description">3 bottles premium sake (serves 12-15)</span>
+                                            </div>
+                                            <span class="chip__price">$150</span>
+                                        </div>
+                                        <div class="chip__controls">
+                                            <button type="button" class="chip__btn chip__btn--minus" aria-label="Remove">−</button>
+                                            <span class="chip__quantity">0</span>
+                                            <button type="button" class="chip__btn chip__btn--plus" aria-label="Add">+</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="chip chip--addon" data-addon-id="beer-wine" data-addon-price="200">
+                                        <div class="chip__content">
+                                            <div class="chip__info">
+                                                <span class="chip__name">Beer & Wine Package</span>
+                                                <span class="chip__description">Assorted beers & house wines (serves 15-20)</span>
+                                            </div>
+                                            <span class="chip__price">$200</span>
+                                        </div>
+                                        <div class="chip__controls">
+                                            <button type="button" class="chip__btn chip__btn--minus" aria-label="Remove">−</button>
+                                            <span class="chip__quantity">0</span>
+                                            <button type="button" class="chip__btn chip__btn--plus" aria-label="Add">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Desserts Section -->
+                            <div class="addon-category">
+                                <h3 class="addon-category__title">🍰 Desserts</h3>
+                                <div class="addon-category__grid">
+                                    <div class="chip chip--addon" data-addon-id="mochi-ice-cream" data-addon-price="4" data-addon-per-person="true">
+                                        <div class="chip__content">
+                                            <div class="chip__info">
+                                                <span class="chip__name">Mochi Ice Cream</span>
+                                                <span class="chip__description">Assorted flavors (per person)</span>
+                                            </div>
+                                            <span class="chip__price">$4/person</span>
+                                        </div>
+                                        <div class="chip__controls">
+                                            <button type="button" class="chip__btn chip__btn--minus" aria-label="Remove">−</button>
+                                            <span class="chip__quantity">0</span>
+                                            <button type="button" class="chip__btn chip__btn--plus" aria-label="Add">+</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="chip chip--addon" data-addon-id="cake" data-addon-price="75">
+                                        <div class="chip__content">
+                                            <div class="chip__info">
+                                                <span class="chip__name">Celebration Cake</span>
+                                                <span class="chip__description">Custom cake (serves 12-15)</span>
+                                            </div>
+                                            <span class="chip__price">$75</span>
+                                        </div>
+                                        <div class="chip__controls">
+                                            <button type="button" class="chip__btn chip__btn--minus" aria-label="Remove">−</button>
+                                            <span class="chip__quantity">0</span>
+                                            <button type="button" class="chip__btn chip__btn--plus" aria-label="Add">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Entertainment Section -->
+                            <div class="addon-category">
+                                <h3 class="addon-category__title">🎉 Entertainment & Extras</h3>
+                                <div class="addon-category__grid">
+                                    <div class="chip chip--addon" data-addon-id="additional-chef" data-addon-price="200">
+                                        <div class="chip__content">
+                                            <div class="chip__info">
+                                                <span class="chip__name">Additional Chef</span>
+                                                <span class="chip__description">Recommended for 30+ guests</span>
+                                            </div>
+                                            <span class="chip__price">$200</span>
+                                        </div>
+                                        <div class="chip__controls">
+                                            <button type="button" class="chip__btn chip__btn--minus" aria-label="Remove">−</button>
+                                            <span class="chip__quantity">0</span>
+                                            <button type="button" class="chip__btn chip__btn--plus" aria-label="Add">+</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="chip chip--addon" data-addon-id="photographer" data-addon-price="300">
+                                        <div class="chip__content">
+                                            <div class="chip__info">
+                                                <span class="chip__name">Professional Photography</span>
+                                                <span class="chip__description">2 hours coverage, digital photos delivered</span>
+                                            </div>
+                                            <span class="chip__price">$300</span>
+                                        </div>
+                                        <div class="chip__controls">
+                                            <button type="button" class="chip__btn chip__btn--minus" aria-label="Remove">−</button>
+                                            <span class="chip__quantity">0</span>
+                                            <button type="button" class="chip__btn chip__btn--plus" aria-label="Add">+</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="chip chip--addon" data-addon-id="tableware-upgrade" data-addon-price="100">
+                                        <div class="chip__content">
+                                            <div class="chip__info">
+                                                <span class="chip__name">Premium Tableware</span>
+                                                <span class="chip__description">Ceramic plates, metal cutlery, cloth napkins</span>
+                                            </div>
+                                            <span class="chip__price">$100</span>
+                                        </div>
+                                        <div class="chip__controls">
+                                            <button type="button" class="chip__btn chip__btn--minus" aria-label="Remove">−</button>
+                                            <span class="chip__quantity">0</span>
+                                            <button type="button" class="chip__btn chip__btn--plus" aria-label="Add">+</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="chip chip--addon" data-addon-id="decorations" data-addon-price="125">
+                                        <div class="chip__content">
+                                            <div class="chip__info">
+                                                <span class="chip__name">Event Decorations</span>
+                                                <span class="chip__description">Table centerpieces, themed decor package</span>
+                                            </div>
+                                            <span class="chip__price">$125</span>
+                                        </div>
+                                        <div class="chip__controls">
+                                            <button type="button" class="chip__btn chip__btn--minus" aria-label="Remove">−</button>
+                                            <span class="chip__quantity">0</span>
+                                            <button type="button" class="chip__btn chip__btn--plus" aria-label="Add">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Add-ons Summary -->
+                            <div id="addonsSummary" class="hidden" style="margin-top: var(--spacing-xl);">
+                                <div class="validation-message validation-message--info">
+                                    <span class="validation-message__icon">📋</span>
+                                    <div>
+                                        <strong>Selected Add-ons:</strong>
+                                        <ul id="addonsList" style="margin: var(--spacing-sm) 0 0; padding-left: var(--spacing-lg);"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="booking-nav">
+                            <button type="button" class="btn btn--outline booking-nav__back" data-prev-step="3">
+                                ← Back
+                            </button>
+                            <button type="button" class="btn btn--primary booking-nav__next" data-next-step="5">
+                                Continue to Event Details →
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 5: Event Details -->
+                    <div class="booking-step" data-step="5">
+                        <h2 class="step-title">Event Details & Venue</h2>
+                        <p class="step-description">
+                            Help us prepare for your event. Let us know where you'll be hosting and what setup you need.
+                        </p>
+
+                        <div class="step-fields">
+                            <!-- Address Information -->
+                            <div class="form-group">
+                                <label class="form-label form-label--required" for="streetAddress">Street Address</label>
+                                <input type="text" class="form-input" id="streetAddress" name="streetAddress" placeholder="123 Main Street" required>
+                                <span class="form-error" id="streetAddressError"></span>
+                            </div>
+
+                            <div class="field-group--inline">
+                                <div class="form-group">
+                                    <label class="form-label" for="addressLine2">Apt/Suite (Optional)</label>
+                                    <input type="text" class="form-input" id="addressLine2" name="addressLine2" placeholder="Apt 4B">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label form-label--required" for="zipCode">ZIP Code</label>
+                                    <input type="text" class="form-input" id="zipCode" name="zipCode" placeholder="12345" required>
+                                    <span class="form-error" id="zipCodeError"></span>
+                                </div>
+                            </div>
+
+                            <!-- Venue Type -->
+                            <div class="form-group">
+                                <label class="form-label form-label--required" for="venueType">Venue Type</label>
+                                <select class="form-select" id="venueType" name="venueType" required>
+                                    <option value="">Select venue type</option>
+                                    <option value="home">Private Home</option>
+                                    <option value="backyard">Backyard/Outdoor</option>
+                                    <option value="community-center">Community Center</option>
+                                    <option value="office">Office/Corporate Space</option>
+                                    <option value="rental-venue">Rental Venue</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <span class="form-hint">This helps us prepare the right equipment</span>
+                                <span class="form-error" id="venueTypeError"></span>
+                            </div>
+
+                            <!-- Setup Checklist -->
+                            <div class="setup-checklist">
+                                <h3 class="setup-checklist__title">Setup Requirements</h3>
+                                <p class="setup-checklist__description">Please confirm what you have available at your venue:</p>
+                                
+                                <div class="checklist-grid">
+                                    <label class="checkbox-card">
+                                        <input type="checkbox" name="setup[]" value="flat-cooking-surface" id="setupFlatSurface">
+                                        <div class="checkbox-card__content">
+                                            <span class="checkbox-card__icon">🏠</span>
+                                            <span class="checkbox-card__label">Flat cooking surface (table/counter)</span>
+                                        </div>
+                                    </label>
+
+                                    <label class="checkbox-card">
+                                        <input type="checkbox" name="setup[]" value="electrical-outlet" id="setupElectrical">
+                                        <div class="checkbox-card__content">
+                                            <span class="checkbox-card__icon">⚡</span>
+                                            <span class="checkbox-card__label">Electrical outlets nearby</span>
+                                        </div>
+                                    </label>
+
+                                    <label class="checkbox-card">
+                                        <input type="checkbox" name="setup[]" value="water-access" id="setupWater">
+                                        <div class="checkbox-card__content">
+                                            <span class="checkbox-card__icon">💧</span>
+                                            <span class="checkbox-card__label">Water access for cleanup</span>
+                                        </div>
+                                    </label>
+
+                                    <label class="checkbox-card">
+                                        <input type="checkbox" name="setup[]" value="seating-arranged" id="setupSeating">
+                                        <div class="checkbox-card__content">
+                                            <span class="checkbox-card__icon">🪑</span>
+                                            <span class="checkbox-card__label">Seating arranged for guests</span>
+                                        </div>
+                                    </label>
+                                </div>
+
+                                <div class="validation-message validation-message--info" style="margin-top: var(--spacing-md);">
+                                    <span class="validation-message__icon">💡</span>
+                                    <div>
+                                        <strong>We Provide:</strong> All cooking equipment (hibachi grill, propane, utensils), ingredients, serving dishes, and disposable plates/cutlery. We'll work with whatever space you have!
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Special Requests -->
+                            <div class="form-group">
+                                <label class="form-label" for="specialRequests">Special Requests or Notes (Optional)</label>
+                                <textarea class="form-textarea" id="specialRequests" name="specialRequests" rows="4" placeholder="Any special setup requirements, parking instructions, or other details we should know?"></textarea>
+                                <span class="form-hint">Max 500 characters</span>
+                            </div>
+                        </div>
+
+                        <div class="booking-nav">
+                            <button type="button" class="btn btn--outline booking-nav__back" data-prev-step="4">
+                                ← Back
+                            </button>
+                            <button type="button" class="btn btn--primary booking-nav__next" data-next-step="6">
+                                Continue to Contact Info →
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 6: Contact Information & Final Details -->
+                    <div class="booking-step" data-step="6">
+                        <h2 class="step-title">Almost Done!</h2>
+                        <p class="step-description">
+                            Final step: your contact information and dietary needs. We'll review and confirm within 24 hours.
+                        </p>
+
+                        <div class="step-fields">
+                            <!-- Contact Information -->
+                            <h3 style="font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-lg); padding-bottom: var(--spacing-sm); border-bottom: 2px solid var(--color-border-light);">Contact Information</h3>
+                            
+                            <div class="form-group">
+                                <label class="form-label form-label--required" for="contactName">Full Name</label>
+                                <input type="text" class="form-input" id="contactName" name="contactName" placeholder="John Doe" required>
+                                <span class="form-error" id="contactNameError"></span>
+                            </div>
+
+                            <div class="field-group--inline">
+                                <div class="form-group">
+                                    <label class="form-label form-label--required" for="contactEmail">Email Address</label>
+                                    <input type="email" class="form-input" id="contactEmail" name="contactEmail" placeholder="john@example.com" required>
+                                    <span class="form-error" id="contactEmailError"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label form-label--required" for="contactPhone">Phone Number</label>
+                                    <input type="tel" class="form-input" id="contactPhone" name="contactPhone" placeholder="(555) 123-4567" required>
+                                    <span class="form-error" id="contactPhoneError"></span>
+                                </div>
+                            </div>
+
+                            <!-- Dietary Restrictions -->
+                            <h3 style="font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); margin: var(--spacing-2xl) 0 var(--spacing-lg); padding-bottom: var(--spacing-sm); border-bottom: 2px solid var(--color-border-light);">Dietary Needs</h3>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="dietaryRestrictions">Dietary Restrictions & Preferences</label>
+                                <textarea class="form-textarea" id="dietaryRestrictions" name="dietaryRestrictions" rows="4" placeholder="Vegetarian, vegan, gluten-free, kosher, halal, etc. Please list all dietary needs for your guests."></textarea>
+                                <span class="form-hint">List all dietary requirements so we can customize the menu</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="hasAllergies" id="hasAllergies">
+                                    <span>One or more guests have food allergies</span>
+                                </label>
+                            </div>
+
+                            <div class="form-group hidden" id="allergiesGroup">
+                                <label class="form-label form-label--required" for="allergies">Food Allergies (Required if checked above)</label>
+                                <textarea class="form-textarea" id="allergies" name="allergies" rows="3" placeholder="Peanuts, shellfish, tree nuts, eggs, dairy, soy, etc."></textarea>
+                                <span class="form-hint">⚠️ Please be specific - this is critical for guest safety</span>
+                                <span class="form-error" id="allergiesError"></span>
+                            </div>
+
+                            <!-- Policies & Agreement -->
+                            <h3 style="font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); margin: var(--spacing-2xl) 0 var(--spacing-lg); padding-bottom: var(--spacing-sm); border-bottom: 2px solid var(--color-border-light);">Booking Policies</h3>
+                            
+                            <div class="policy-box">
+                                <h4 class="policy-box__title">Payment & Cancellation</h4>
+                                <ul class="policy-box__list">
+                                    <li><strong>Deposit:</strong> A 25% non-refundable deposit is required to secure your booking.</li>
+                                    <li><strong>Payment:</strong> Remaining balance due 48 hours before event via credit card, cash, or Venmo.</li>
+                                    <li><strong>Cancellation:</strong> Cancel up to 7 days before for a 50% refund. Within 7 days: no refund.</li>
+                                    <li><strong>Rescheduling:</strong> One free reschedule up to 14 days before event (subject to availability).</li>
+                                    <li><strong>Final Count:</strong> Guest count must be finalized 48 hours prior. You'll be charged for confirmed count.</li>
+                                </ul>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="agreeToTerms" id="agreeToTerms" required>
+                                    <span>I agree to the <a href="#" class="text-link">Terms of Service</a> and <a href="#" class="text-link">Cancellation Policy</a></span>
+                                </label>
+                                <span class="form-error" id="agreeToTermsError"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="marketingConsent" id="marketingConsent">
+                                    <span>Send me special offers and updates (optional)</span>
+                                </label>
+                            </div>
+
+                            <!-- Submission Notice -->
+                            <div class="validation-message validation-message--info">
+                                <span class="validation-message__icon">📧</span>
+                                <div>
+                                    <strong>What happens next?</strong> After submitting, you'll receive a confirmation email within 24 hours with next steps, deposit payment link, and your chef assignment. We're excited to cook for you!
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="booking-nav">
+                            <button type="button" class="btn btn--outline booking-nav__back" data-prev-step="5">
+                                ← Back
+                            </button>
+                            <button type="submit" class="btn btn--primary booking-nav__next" id="submitBookingBtn">
+                                Submit Booking Request →
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Price Summary Sidebar (Desktop) -->
+            <aside class="price-summary" id="priceSummary">
+                <div class="price-summary__header">
+                    <h3 class="price-summary__title">Booking Summary</h3>
+                    <p class="price-summary__subtitle">Live pricing estimate</p>
+                </div>
+
+                <!-- Location Section -->
+                <div class="price-summary__section">
+                    <div class="price-summary__label">Location</div>
+                    <div class="price-summary__value" id="summaryLocation">Not selected</div>
+                </div>
+
+                <!-- Date & Time Section -->
+                <div class="price-summary__section">
+                    <div class="price-summary__label">Date & Time</div>
+                    <div class="price-summary__value" id="summaryDateTime">Not selected</div>
+                </div>
+
+                <!-- Party Size Section -->
+                <div class="price-summary__section">
+                    <div class="price-summary__label">Party Size</div>
+                    <div class="price-summary__value" id="summaryPartySize">0 guests</div>
+                </div>
+
+                <!-- Package Section -->
+                <div class="price-summary__section">
+                    <div class="price-summary__label">Package</div>
+                    <div class="price-summary__value" id="summaryPackage">Not selected</div>
+                </div>
+
+                <!-- Price Breakdown -->
+                <div class="price-summary__section">
+                    <h4 style="font-size: var(--font-size-base); font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-md);">Price Breakdown</h4>
+                    
+                    <div class="price-summary__item">
+                        <span class="price-summary__item-label">Base Price</span>
+                        <span class="price-summary__item-value" id="summaryBasePrice">$0</span>
+                    </div>
+                    
+                    <div class="price-summary__item">
+                        <span class="price-summary__item-label">
+                            Travel Fee
+                            <span class="travel-fee-badge travel-fee-badge--tbd" id="travelFeeBadge">TBD</span>
+                        </span>
+                        <span class="price-summary__item-value" id="summaryTravelFee">TBD</span>
+                    </div>
+                    
+                    <div class="price-summary__item" id="addonsRow" style="display: none;">
+                        <span class="price-summary__item-label">Add-ons</span>
+                        <span class="price-summary__item-value" id="summaryAddons">$0</span>
+                    </div>
+                </div>
+
+                <!-- Total -->
+                <div class="price-summary__total">
+                    <span class="price-summary__total-label">Estimated Total</span>
+                    <span class="price-summary__total-value" id="summaryTotal">$0</span>
+                </div>
+
+                <!-- Minimum Spend Notice -->
+                <div class="price-summary__note" id="minimumSpendNotice">
+                    <strong>Minimum Spend:</strong> $500 per event
+                </div>
+
+                <!-- Contact Options -->
+                <div style="margin-top: var(--spacing-xl); padding-top: var(--spacing-xl); border-top: 1px solid var(--color-border-light);">
+                    <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); margin-bottom: var(--spacing-md);">
+                        Questions? We're here to help!
+                    </p>
+                    <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
+                        <a href="tel:+1234567890" class="btn btn--outline btn--small" style="justify-content: center;">
+                            📞 Call (123) 456-7890
+                        </a>
+                        <a href="sms:+1234567890" class="btn btn--outline btn--small" style="justify-content: center;">
+                            💬 Text Us
+                        </a>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Mobile Price Summary (Sticky Drawer) -->
+    <div class="price-summary-mobile price-summary-mobile--collapsed" id="priceSummaryMobile">
+        <button class="price-summary-mobile__toggle" id="priceSummaryToggle">
+            <span>
+                <strong>Estimated Total:</strong> 
+                <span id="summaryTotalMobile">$0</span>
+            </span>
+            <span id="toggleIcon">▲</span>
+        </button>
+        <div class="price-summary-mobile__content">
+            <!-- Copy of desktop summary -->
+            <div class="price-summary__section">
+                <div class="price-summary__label">Location</div>
+                <div class="price-summary__value" id="summaryLocationMobile">Not selected</div>
+            </div>
+            <div class="price-summary__section">
+                <div class="price-summary__label">Date & Time</div>
+                <div class="price-summary__value" id="summaryDateTimeMobile">Not selected</div>
+            </div>
+            <div class="price-summary__section">
+                <div class="price-summary__label">Party Size</div>
+                <div class="price-summary__value" id="summaryPartySizeMobile">0 guests</div>
+            </div>
+            <div class="price-summary__section">
+                <h4 style="font-size: var(--font-size-base); font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-md);">Price Breakdown</h4>
+                <div class="price-summary__item">
+                    <span class="price-summary__item-label">Base Price</span>
+                    <span class="price-summary__item-value" id="summaryBasePriceMobile">$0</span>
+                </div>
+                <div class="price-summary__item" id="addonsRowMobile" style="display: none;">
+                    <span class="price-summary__item-label">Add-ons</span>
+                    <span class="price-summary__item-value" id="summaryAddonsMobile">$0</span>
+                </div>
+                <div class="price-summary__item">
+                    <span class="price-summary__item-label">Travel Fee</span>
+                    <span class="price-summary__item-value" id="summaryTravelFeeMobile">TBD</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/components.js"></script>
+    <script src="../js/booking.js"></script>
+</body>
+</html>

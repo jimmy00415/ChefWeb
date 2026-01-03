@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ChefWeb serves 10 states with professional private chef services. Check availability in California, New York, Texas, Florida, Illinois, Pennsylvania, Ohio, Georgia, North Carolina, and Michigan.">
+    <title>Service Areas | ChefWeb - Where We Cook</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+    <!-- Skip Navigation -->
+    <a href="#mainContent" class="skip-link">Skip to main content</a>
+    <a href="#mainNav" class="skip-link" style="left: 140px;">Skip to navigation</a>
+    
+    <!-- Header -->
+    <header class="header" role="banner">
+        <div class="container">
+            <div class="header__content">
+                <a href="../index.html" class="logo">
+                    <span class="logo__icon">🔥</span>
+                    <span class="logo__text">ChefWeb</span>
+                </a>
+                <nav class="nav" id="mainNav" role="navigation" aria-label="Main navigation">
+                    <a href="../index.html" class="nav__link">Home</a>
+                    <a href="packages.html" class="nav__link">Packages</a>
+                    <a href="service-areas.html" class="nav__link nav__link--active">Service Areas</a>
+                    <a href="reviews.html" class="nav__link">Reviews</a>
+                    <a href="gallery.html" class="nav__link">Gallery</a>
+                    <a href="contact.html" class="nav__link">Contact</a>
+                    <a href="booking.html" class="btn btn--primary btn--sm">Book Now</a>
+                </nav>
+                <button class="nav-toggle" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-header__title">Where We Serve</h1>
+            <p class="page-header__subtitle">Professional private chef services across 10 states</p>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="section" style="padding-top: var(--spacing-2xl); padding-bottom: 0;">
+        <div class="container">
+            <div class="service-search">
+                <div class="service-search__content">
+                    <h2 class="service-search__title">Find Service In Your Area</h2>
+                    <p class="service-search__subtitle">Enter your city or ZIP code to check availability</p>
+                </div>
+                <div class="service-search__form">
+                    <input 
+                        type="text" 
+                        id="locationSearch" 
+                        class="form-input" 
+                        placeholder="Enter city or ZIP code"
+                        aria-label="Search location">
+                    <button class="btn btn--primary" id="searchBtn">Check Availability</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Service States Grid -->
+    <section class="section">
+        <div class="container">
+            <div class="section__header">
+                <h2 class="section__title">Our Service States</h2>
+                <p class="section__subtitle">Click any state to view details and book</p>
+            </div>
+
+            <div class="service-grid">
+                <!-- California -->
+                <div class="service-card service-card--included" data-state="CA">
+                    <div class="service-card__header">
+                        <h3 class="service-card__title">California</h3>
+                        <span class="badge badge--success">Travel Fee Included</span>
+                    </div>
+                    <div class="service-card__body">
+                        <p class="service-card__coverage">
+                            <strong>Major Cities:</strong> Los Angeles, San Diego, San Francisco, San Jose, Sacramento
+                        </p>
+                        <p class="service-card__note">
+                            <span class="service-card__icon">✓</span> No additional travel fees for California bookings
+                        </p>
+                    </div>
+                    <div class="service-card__footer">
+                        <a href="booking.html?state=CA" class="btn btn--primary btn--block">Book in California</a>
+                    </div>
+                </div>
+
+                <!-- New York -->
+                <div class="service-card service-card--included" data-state="NY">
+                    <div class="service-card__header">
+                        <h3 class="service-card__title">New York</h3>
+                        <span class="badge badge--success">Travel Fee Included</span>
+                    </div>
+                    <div class="service-card__body">
+                        <p class="service-card__coverage">
+                            <strong>Major Cities:</strong> New York City, Buffalo, Rochester, Albany, Syracuse
+                        </p>
+                        <p class="service-card__note">
+                            <span class="service-card__icon">✓</span> No additional travel fees for New York bookings
+                        </p>
+                    </div>
+                    <div class="service-card__footer">
+                        <a href="booking.html?state=NY" class="btn btn--primary btn--block">Book in New York</a>
+                    </div>
+                </div>
+
+                <!-- Texas -->
+                <div class="service-card service-card--estimated" data-state="TX">
+                    <div class="service-card__header">
+                        <h3 class="service-card__title">Texas</h3>
+                        <span class="badge badge--warning">Estimated $50 Travel Fee</span>
+                    </div>
+                    <div class="service-card__body">
+                        <p class="service-card__coverage">
+                            <strong>Major Cities:</strong> Houston, Dallas, Austin, San Antonio, Fort Worth
+                        </p>
+                        <p class="service-card__note">
+                            <span class="service-card__icon">📍</span> Travel fee varies by distance, typically $50
+                        </p>
+                    </div>
+                    <div class="service-card__footer">
+                        <a href="booking.html?state=TX" class="btn btn--primary btn--block">Book in Texas</a>
+                    </div>
+                </div>
+
+                <!-- Florida -->
+                <div class="service-card service-card--estimated" data-state="FL">
+                    <div class="service-card__header">
+                        <h3 class="service-card__title">Florida</h3>
+                        <span class="badge badge--warning">Estimated $75 Travel Fee</span>
+                    </div>
+                    <div class="service-card__body">
+                        <p class="service-card__coverage">
+                            <strong>Major Cities:</strong> Miami, Orlando, Tampa, Jacksonville, Fort Lauderdale
+                        </p>
+                        <p class="service-card__note">
+                            <span class="service-card__icon">📍</span> Travel fee varies by distance, typically $75
+                        </p>
+                    </div>
+                    <div class="service-card__footer">
+                        <a href="booking.html?state=FL" class="btn btn--primary btn--block">Book in Florida</a>
+                    </div>
+                </div>
+
+                <!-- Illinois -->
+                <div class="service-card service-card--estimated" data-state="IL">
+                    <div class="service-card__header">
+                        <h3 class="service-card__title">Illinois</h3>
+                        <span class="badge badge--warning">Estimated $100 Travel Fee</span>
+                    </div>
+                    <div class="service-card__body">
+                        <p class="service-card__coverage">
+                            <strong>Major Cities:</strong> Chicago, Aurora, Rockford, Joliet, Naperville
+                        </p>
+                        <p class="service-card__note">
+                            <span class="service-card__icon">📍</span> Travel fee varies by distance, typically $100
+                        </p>
+                    </div>
+                    <div class="service-card__footer">
+                        <a href="booking.html?state=IL" class="btn btn--primary btn--block">Book in Illinois</a>
+                    </div>
+                </div>
+
+                <!-- Pennsylvania -->
+                <div class="service-card service-card--estimated" data-state="PA">
+                    <div class="service-card__header">
+                        <h3 class="service-card__title">Pennsylvania</h3>
+                        <span class="badge badge--warning">Estimated $75 Travel Fee</span>
+                    </div>
+                    <div class="service-card__body">
+                        <p class="service-card__coverage">
+                            <strong>Major Cities:</strong> Philadelphia, Pittsburgh, Allentown, Erie, Reading
+                        </p>
+                        <p class="service-card__note">
+                            <span class="service-card__icon">📍</span> Travel fee varies by distance, typically $75
+                        </p>
+                    </div>
+                    <div class="service-card__footer">
+                        <a href="booking.html?state=PA" class="btn btn--primary btn--block">Book in Pennsylvania</a>
+                    </div>
+                </div>
+
+                <!-- Ohio -->
+                <div class="service-card service-card--estimated" data-state="OH">
+                    <div class="service-card__header">
+                        <h3 class="service-card__title">Ohio</h3>
+                        <span class="badge badge--warning">Estimated $100 Travel Fee</span>
+                    </div>
+                    <div class="service-card__body">
+                        <p class="service-card__coverage">
+                            <strong>Major Cities:</strong> Columbus, Cleveland, Cincinnati, Toledo, Akron
+                        </p>
+                        <p class="service-card__note">
+                            <span class="service-card__icon">📍</span> Travel fee varies by distance, typically $100
+                        </p>
+                    </div>
+                    <div class="service-card__footer">
+                        <a href="booking.html?state=OH" class="btn btn--primary btn--block">Book in Ohio</a>
+                    </div>
+                </div>
+
+                <!-- Georgia -->
+                <div class="service-card service-card--estimated" data-state="GA">
+                    <div class="service-card__header">
+                        <h3 class="service-card__title">Georgia</h3>
+                        <span class="badge badge--warning">Estimated $100 Travel Fee</span>
+                    </div>
+                    <div class="service-card__body">
+                        <p class="service-card__coverage">
+                            <strong>Major Cities:</strong> Atlanta, Augusta, Columbus, Savannah, Athens
+                        </p>
+                        <p class="service-card__note">
+                            <span class="service-card__icon">📍</span> Travel fee varies by distance, typically $100
+                        </p>
+                    </div>
+                    <div class="service-card__footer">
+                        <a href="booking.html?state=GA" class="btn btn--primary btn--block">Book in Georgia</a>
+                    </div>
+                </div>
+
+                <!-- North Carolina -->
+                <div class="service-card service-card--estimated" data-state="NC">
+                    <div class="service-card__header">
+                        <h3 class="service-card__title">North Carolina</h3>
+                        <span class="badge badge--warning">Estimated $125 Travel Fee</span>
+                    </div>
+                    <div class="service-card__body">
+                        <p class="service-card__coverage">
+                            <strong>Major Cities:</strong> Charlotte, Raleigh, Greensboro, Durham, Winston-Salem
+                        </p>
+                        <p class="service-card__note">
+                            <span class="service-card__icon">📍</span> Travel fee varies by distance, typically $125
+                        </p>
+                    </div>
+                    <div class="service-card__footer">
+                        <a href="booking.html?state=NC" class="btn btn--primary btn--block">Book in North Carolina</a>
+                    </div>
+                </div>
+
+                <!-- Michigan -->
+                <div class="service-card service-card--estimated" data-state="MI">
+                    <div class="service-card__header">
+                        <h3 class="service-card__title">Michigan</h3>
+                        <span class="badge badge--warning">Estimated $125 Travel Fee</span>
+                    </div>
+                    <div class="service-card__body">
+                        <p class="service-card__coverage">
+                            <strong>Major Cities:</strong> Detroit, Grand Rapids, Warren, Sterling Heights, Ann Arbor
+                        </p>
+                        <p class="service-card__note">
+                            <span class="service-card__icon">📍</span> Travel fee varies by distance, typically $125
+                        </p>
+                    </div>
+                    <div class="service-card__footer">
+                        <a href="booking.html?state=MI" class="btn btn--primary btn--block">Book in Michigan</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Travel Fee Info -->
+    <section class="section section--gray">
+        <div class="container">
+            <div class="info-box">
+                <h2 class="info-box__title">Understanding Travel Fees</h2>
+                <div class="info-box__content">
+                    <p>Travel fees help cover our chefs' transportation costs to bring the hibachi experience to your door. The fee structure varies by state:</p>
+                    <ul class="feature-list" style="margin-top: var(--spacing-lg);">
+                        <li class="feature-list__item feature-list__item--check">
+                            <strong>Included States (CA, NY):</strong> No additional travel fee - it's built into our pricing
+                        </li>
+                        <li class="feature-list__item feature-list__item--check">
+                            <strong>Estimated Fee States:</strong> Travel fee ranges from $50-$125 depending on distance from our chef's base
+                        </li>
+                        <li class="feature-list__item feature-list__item--check">
+                            <strong>Exact Fee Confirmation:</strong> We'll confirm your specific travel fee within 24 hours of your booking request
+                        </li>
+                        <li class="feature-list__item feature-list__item--check">
+                            <strong>Transparent Pricing:</strong> Travel fees are always disclosed upfront before you finalize your booking
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section">
+        <div class="container">
+            <div class="cta-box">
+                <h2 class="cta-box__title">Don't See Your Location?</h2>
+                <p class="cta-box__text">We're constantly expanding our service areas. Contact us to check if we can accommodate your event.</p>
+                <div class="cta-box__actions">
+                    <a href="contact.html" class="btn btn--primary btn--lg">Contact Us</a>
+                    <a href="tel:1-888-555-CHEF" class="btn btn--secondary btn--lg">Call 1-888-555-CHEF</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__section">
+                    <h3 class="footer__title">ChefWeb</h3>
+                    <p class="footer__text">Premium private hibachi chef experiences for events across 10 states.</p>
+                </div>
+                <div class="footer__section">
+                    <h4 class="footer__subtitle">Quick Links</h4>
+                    <ul class="footer__links">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="packages.html">Packages</a></li>
+                        <li><a href="service-areas.html">Service Areas</a></li>
+                        <li><a href="reviews.html">Reviews</a></li>
+                    </ul>
+                </div>
+                <div class="footer__section">
+                    <h4 class="footer__subtitle">Support</h4>
+                    <ul class="footer__links">
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer__section">
+                    <h4 class="footer__subtitle">Contact</h4>
+                    <p class="footer__text">
+                        <a href="tel:1-888-555-CHEF">1-888-555-CHEF</a><br>
+                        <a href="mailto:book@chefweb.com">book@chefweb.com</a>
+                    </p>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2026 ChefWeb. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/service-areas.js"></script>
+</body>
+</html>

@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Premium private chef service at your home. Customizable menus, professional hibachi chefs, and unforgettable dining experiences.">
+    <meta name="keywords" content="private chef, hibachi at home, personal chef service, event catering">
+    <title>ChefWeb - Private Chef At Your Home</title>
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/components.css">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="ChefWeb - Private Chef At Your Home">
+    <meta property="og:description" content="Premium private chef service at your home. Book your unforgettable dining experience today.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourwebsite.com">
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+</head>
+<body>
+    <!-- Skip Navigation -->
+    <a href="#mainContent" class="skip-link">Skip to main content</a>
+    <a href="#mainNav" class="skip-link" style="left: 140px;">Skip to navigation</a>
+    
+    <!-- Header -->
+    <header class="header" id="header" role="banner">
+        <div class="header__container">
+            <a href="index.html" class="header__logo">ChefWeb</a>
+            
+            <!-- Mobile Menu Toggle -->
+            <button class="header__menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mainNav">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <!-- Navigation -->
+            <nav class="header__nav" id="mainNav" role="navigation" aria-label="Main navigation">
+                <ul class="header__nav-list">
+                    <li><a href="index.html" class="header__nav-link" aria-current="page">Home</a></li>
+                    <li><a href="pages/packages.html" class="header__nav-link">Packages/Menu</a></li>
+                    <li><a href="pages/service-areas.html" class="header__nav-link">Service Areas</a></li>
+                    <li><a href="pages/gallery.html" class="header__nav-link">Gallery</a></li>
+                    <li><a href="pages/reviews.html" class="header__nav-link">Reviews</a></li>
+                    <li><a href="pages/faq.html" class="header__nav-link">FAQ</a></li>
+                    <li><a href="pages/contact.html" class="header__nav-link">Contact</a></li>
+                </ul>
+                <a href="pages/booking.html" class="btn btn--primary">Book Now</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="mainContent" role="main">
+        <!-- Hero Section -->
+        <section class="hero" aria-labelledby="heroHeading">
+            <div class="container">
+                <div class="hero__container">
+                    <!-- Left Side: Content -->
+                    <div class="hero__content">
+                        <h1 class="hero__headline" id="heroHeading">
+                            Experience Private Chef Excellence at Your Home
+                        </h1>
+                        <p class="hero__subheadline">
+                            Professional hibachi chefs bring the restaurant experience to your doorstep. Customizable menus, unforgettable moments.
+                        </p>
+                        
+                        <div class="hero__trust-bullets">
+                            <div class="hero__trust-item">
+                                <span class="hero__trust-icon">✓</span>
+                                <span>Licensed & Insured Professional Chefs</span>
+                            </div>
+                            <div class="hero__trust-item">
+                                <span class="hero__trust-icon">✓</span>
+                                <span>Customizable Menus for All Dietary Needs</span>
+                            </div>
+                            <div class="hero__trust-item">
+                                <span class="hero__trust-icon">✓</span>
+                                <span>Serving Multiple States & Regions</span>
+                            </div>
+                        </div>
+                        
+                        <div class="hero__cta-group">
+                            <a href="pages/booking.html" class="btn btn--primary btn--large">Book Your Experience</a>
+                            <a href="pages/packages.html" class="btn btn--secondary btn--large">View Packages</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Side: Quick Booking Widget -->
+                    <div class="quick-booking">
+                        <h2 class="quick-booking__title">Get Your Estimate</h2>
+                        <p class="quick-booking__subtitle">See pricing instantly</p>
+                        
+                        <form class="quick-booking__form" id="quickBookingForm">
+                            <div class="quick-booking__field">
+                                <label class="quick-booking__label" for="quickLocation">Where do you need service?</label>
+                                <select class="form-select" id="quickLocation" required>
+                                    <option value="">Select your state</option>
+                                    <option value="CA">California</option>
+                                    <option value="NY">New York</option>
+                                    <option value="TX">Texas</option>
+                                    <option value="FL">Florida</option>
+                                    <option value="IL">Illinois</option>
+                                    <option value="PA">Pennsylvania</option>
+                                    <option value="OH">Ohio</option>
+                                    <option value="GA">Georgia</option>
+                                    <option value="NC">North Carolina</option>
+                                    <option value="MI">Michigan</option>
+                                </select>
+                            </div>
+                            
+                            <div class="quick-booking__field">
+                                <label class="quick-booking__label" for="quickDate">Preferred Date</label>
+                                <input type="date" class="form-input" id="quickDate" required>
+                            </div>
+                            
+                            <div class="quick-booking__field">
+                                <label class="quick-booking__label">Party Size</label>
+                                <div class="quick-booking__input-group">
+                                    <input type="number" class="form-input" id="quickAdults" placeholder="Adults" min="1" value="10" required>
+                                    <input type="number" class="form-input" id="quickChildren" placeholder="Children" min="0" value="0">
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn--primary btn--full btn--large">See Estimate →</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- How It Works Section -->
+        <section class="how-it-works">
+            <div class="container">
+                <div class="how-it-works__header">
+                    <h2 class="how-it-works__title">How It Works</h2>
+                    <p class="how-it-works__description">
+                        From booking to cleanup, we handle everything. Just gather your guests and enjoy!
+                    </p>
+                </div>
+                
+                <div class="how-it-works__steps">
+                    <div class="how-it-works__step">
+                        <div class="how-it-works__step-number">
+                            <span class="how-it-works__step-icon">📅</span>
+                        </div>
+                        <h3 class="how-it-works__step-title">1. Book Your Date</h3>
+                        <p class="how-it-works__step-description">
+                            Select your date, party size, and package. Choose from our curated menus or customize your own.
+                        </p>
+                    </div>
+                    
+                    <div class="how-it-works__step">
+                        <div class="how-it-works__step-number">
+                            <span class="how-it-works__step-icon">👨‍🍳</span>
+                        </div>
+                        <h3 class="how-it-works__step-title">2. We Prepare</h3>
+                        <p class="how-it-works__step-description">
+                            Our professional chef arrives with all equipment, ingredients, and setup. You provide tables and chairs.
+                        </p>
+                    </div>
+                    
+                    <div class="how-it-works__step">
+                        <div class="how-it-works__step-number">
+                            <span class="how-it-works__step-icon">🎉</span>
+                        </div>
+                        <h3 class="how-it-works__step-title">3. Enjoy & Relax</h3>
+                        <p class="how-it-works__step-description">
+                            Experience the show, savor amazing food, and create memories. We handle cooking and cleanup!
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="how-it-works__cta">
+                    <a href="pages/booking.html" class="btn btn--primary btn--large">Start Booking Now</a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Pricing Anchor Section -->
+        <section class="pricing-anchor">
+            <div class="container">
+                <div class="pricing-anchor__header">
+                    <h2 class="pricing-anchor__title">Transparent Pricing</h2>
+                    <p class="pricing-anchor__subtitle">
+                        Starting prices per person. Final cost depends on package selection and party size.
+                    </p>
+                </div>
+                
+                <div class="pricing-anchor__grid">
+                    <div class="pricing-item">
+                        <div class="pricing-item__label">Essential</div>
+                        <div class="pricing-item__price">$65</div>
+                        <div class="pricing-item__unit">per person</div>
+                        <p class="pricing-item__description">
+                            Perfect for casual gatherings with quality hibachi experience
+                        </p>
+                    </div>
+                    
+                    <div class="pricing-item pricing-item--featured">
+                        <div class="pricing-item__label">Signature</div>
+                        <div class="pricing-item__price">$75</div>
+                        <div class="pricing-item__unit">per person</div>
+                        <p class="pricing-item__description">
+                            Our most popular package with premium proteins and full show
+                        </p>
+                    </div>
+                    
+                    <div class="pricing-item">
+                        <div class="pricing-item__label">Premium</div>
+                        <div class="pricing-item__price">$95</div>
+                        <div class="pricing-item__unit">per person</div>
+                        <p class="pricing-item__description">
+                            Elevated experience with wagyu beef and lobster tail
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="minimum-spend-notice">
+                    <div class="minimum-spend-notice__icon">💰</div>
+                    <h3 class="minimum-spend-notice__title">Minimum Spend: $500</h3>
+                    <p class="minimum-spend-notice__description">
+                        To ensure the best experience and value, we require a minimum spend of $500 per event. 
+                        Most parties of 10+ adults naturally meet this requirement.
+                    </p>
+                    <p class="minimum-spend-notice__example">
+                        Example: 10 adults × $75 = $750 ✓ Meets minimum
+                    </p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Package Highlights Section -->
+        <section class="package-highlights">
+            <div class="container">
+                <div class="package-highlights__header">
+                    <h2 class="package-highlights__title">Choose Your Experience</h2>
+                    <p class="package-highlights__subtitle">
+                        Every package includes professional chef, equipment, ingredients, and cleanup
+                    </p>
+                </div>
+                
+                <div class="package-highlights__grid">
+                    <div class="package-card">
+                        <h3 class="package-card__title">Essential Experience</h3>
+                        <div class="package-card__price">
+                            $65
+                            <span class="package-card__price-unit">per person</span>
+                        </div>
+                        <p class="package-card__description">Perfect for casual gatherings and family celebrations</p>
+                        <ul class="package-card__features">
+                            <li class="package-card__feature">Chef & all equipment included</li>
+                            <li class="package-card__feature">Choice of chicken, steak, or shrimp</li>
+                            <li class="package-card__feature">Fried rice & vegetables</li>
+                            <li class="package-card__feature">Full hibachi show</li>
+                            <li class="package-card__feature">Minimum 10 guests</li>
+                        </ul>
+                        <a href="pages/packages.html" class="btn btn--outline btn--full">View Details</a>
+                    </div>
+                    
+                    <div class="package-card package-card--selected">
+                        <span class="package-card__badge">Most Popular</span>
+                        <h3 class="package-card__title">Signature Experience</h3>
+                        <div class="package-card__price">
+                            $75
+                            <span class="package-card__price-unit">per person</span>
+                        </div>
+                        <p class="package-card__description">Our signature offering with premium options</p>
+                        <ul class="package-card__features">
+                            <li class="package-card__feature">Everything in Essential</li>
+                            <li class="package-card__feature">Premium protein choices</li>
+                            <li class="package-card__feature">Appetizer course included</li>
+                            <li class="package-card__feature">Enhanced presentation</li>
+                            <li class="package-card__feature">Dietary accommodations</li>
+                        </ul>
+                        <a href="pages/packages.html" class="btn btn--primary btn--full">View Details</a>
+                    </div>
+                    
+                    <div class="package-card">
+                        <h3 class="package-card__title">Premium Experience</h3>
+                        <div class="package-card__price">
+                            $95
+                            <span class="package-card__price-unit">per person</span>
+                        </div>
+                        <p class="package-card__description">Luxury dining with finest ingredients</p>
+                        <ul class="package-card__features">
+                            <li class="package-card__feature">Everything in Signature</li>
+                            <li class="package-card__feature">Wagyu beef upgrade</li>
+                            <li class="package-card__feature">Lobster tail included</li>
+                            <li class="package-card__feature">Premium sake pairing option</li>
+                            <li class="package-card__feature">Extended chef performance</li>
+                        </ul>
+                        <a href="pages/packages.html" class="btn btn--outline btn--full">View Details</a>
+                    </div>
+                </div>
+                
+                <div class="package-highlights__cta">
+                    <a href="pages/packages.html" class="btn btn--secondary btn--large">Compare All Packages</a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Reviews Summary Section -->
+        <section class="reviews-summary">
+            <div class="container">
+                <div class="reviews-summary__header">
+                    <h2 class="reviews-summary__title">Loved by Hundreds of Families</h2>
+                    <p class="reviews-summary__subtitle">
+                        Real experiences from real customers
+                    </p>
+                </div>
+                
+                <div class="rating-summary">
+                    <div class="rating-summary__stars">★★★★★</div>
+                    <div class="rating-summary__score">4.9 out of 5</div>
+                    <div class="rating-summary__count">Based on 247 reviews</div>
+                    <div class="rating-summary__source">
+                        <span class="rating-summary__source-icon">✓</span>
+                        <span>Verified via Google Reviews</span>
+                    </div>
+                </div>
+                
+                <div class="reviews-summary__grid">
+                    <div class="review-card">
+                        <div class="review-card__header">
+                            <div class="review-card__avatar">SM</div>
+                            <div class="review-card__info">
+                                <div class="review-card__name">Sarah Mitchell</div>
+                                <div class="review-card__meta">
+                                    <div class="review-card__rating">
+                                        <span class="review-card__star">★</span>
+                                        <span class="review-card__star">★</span>
+                                        <span class="review-card__star">★</span>
+                                        <span class="review-card__star">★</span>
+                                        <span class="review-card__star">★</span>
+                                    </div>
+                                    <span>2 weeks ago</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="review-card__content review-card__content--collapsed">
+                            Absolutely amazing experience for my daughter's birthday! Chef Marco was professional, entertaining, and the food was incredible. All 15 guests couldn't stop raving about it. Worth every penny and so much easier than going to a restaurant. Highly recommend!
+                        </p>
+                        <button class="review-card__read-more">Read more</button>
+                        <div class="review-card__badge">
+                            ✓ Verified via Google
+                        </div>
+                    </div>
+                    
+                    <div class="review-card">
+                        <div class="review-card__header">
+                            <div class="review-card__avatar">JC</div>
+                            <div class="review-card__info">
+                                <div class="review-card__name">James Chen</div>
+                                <div class="review-card__meta">
+                                    <div class="review-card__rating">
+                                        <span class="review-card__star">★</span>
+                                        <span class="review-card__star">★</span>
+                                        <span class="review-card__star">★</span>
+                                        <span class="review-card__star">★</span>
+                                        <span class="review-card__star">★</span>
+                                    </div>
+                                    <span>1 month ago</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="review-card__content review-card__content--collapsed">
+                            We've used this service three times now for family gatherings. The chefs are always on time, super clean, and the food quality is restaurant-level. They handled my wife's gluten allergy perfectly. Great communication and easy booking process.
+                        </p>
+                        <button class="review-card__read-more">Read more</button>
+                        <div class="review-card__badge">
+                            ✓ Verified via Google
+                        </div>
+                    </div>
+                    
+                    <div class="review-card">
+                        <div class="review-card__header">
+                            <div class="review-card__avatar">EL</div>
+                            <div class="review-card__info">
+                                <div class="review-card__name">Emily Lopez</div>
+                                <div class="review-card__meta">
+                                    <div class="review-card__rating">
+                                        <span class="review-card__star">★</span>
+                                        <span class="review-card__star">★</span>
+                                        <span class="review-card__star">★</span>
+                                        <span class="review-card__star">★</span>
+                                        <span class="review-card__star">★</span>
+                                    </div>
+                                    <span>3 weeks ago</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="review-card__content review-card__content--collapsed">
+                            Best decision for our anniversary party! The chef made it feel so special and our guests were thoroughly entertained. The Premium package with wagyu was absolutely delicious. They even brought their own grill and cleaned up everything. 10/10 would book again!
+                        </p>
+                        <button class="review-card__read-more">Read more</button>
+                        <div class="review-card__badge">
+                            ✓ Verified via Google
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="reviews-summary__cta">
+                    <a href="pages/reviews.html" class="btn btn--secondary btn--large">Read All Reviews</a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Trust Badges Section -->
+        <section class="trust-badges">
+            <div class="container">
+                <div class="trust-badges__grid">
+                    <div class="trust-badge">
+                        <div class="trust-badge__icon">🎓</div>
+                        <h3 class="trust-badge__title">Licensed Chefs</h3>
+                        <p class="trust-badge__description">
+                            All chefs are professionally trained and food safety certified
+                        </p>
+                    </div>
+                    
+                    <div class="trust-badge">
+                        <div class="trust-badge__icon">🛡️</div>
+                        <h3 class="trust-badge__title">Fully Insured</h3>
+                        <p class="trust-badge__description">
+                            Complete liability coverage for your peace of mind
+                        </p>
+                    </div>
+                    
+                    <div class="trust-badge">
+                        <div class="trust-badge__icon">✨</div>
+                        <h3 class="trust-badge__title">Quality Guaranteed</h3>
+                        <p class="trust-badge__description">
+                            Premium ingredients and exceptional service every time
+                        </p>
+                    </div>
+                    
+                    <div class="trust-badge">
+                        <div class="trust-badge__icon">💯</div>
+                        <h3 class="trust-badge__title">Satisfaction Promise</h3>
+                        <p class="trust-badge__description">
+                            We're not happy unless you're thrilled with your experience
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Service Areas Preview -->
+        <section class="service-areas-preview">
+            <div class="container">
+                <div class="service-areas-preview__header">
+                    <h2 class="service-areas-preview__title">We Serve Your Area</h2>
+                    <p class="service-areas-preview__subtitle">
+                        Available in multiple states and growing. Click to see details for your region.
+                    </p>
+                </div>
+                
+                <div class="service-areas-preview__grid">
+                    <a href="pages/service-areas.html?state=CA" class="service-area-badge">California</a>
+                    <a href="pages/service-areas.html?state=NY" class="service-area-badge">New York</a>
+                    <a href="pages/service-areas.html?state=TX" class="service-area-badge">Texas</a>
+                    <a href="pages/service-areas.html?state=FL" class="service-area-badge">Florida</a>
+                    <a href="pages/service-areas.html?state=IL" class="service-area-badge">Illinois</a>
+                    <a href="pages/service-areas.html?state=PA" class="service-area-badge">Pennsylvania</a>
+                    <a href="pages/service-areas.html?state=OH" class="service-area-badge">Ohio</a>
+                    <a href="pages/service-areas.html?state=GA" class="service-area-badge">Georgia</a>
+                    <a href="pages/service-areas.html?state=NC" class="service-area-badge">North Carolina</a>
+                    <a href="pages/service-areas.html?state=MI" class="service-area-badge">Michigan</a>
+                </div>
+                
+                <div class="service-areas-preview__cta">
+                    <a href="pages/service-areas.html" class="btn btn--outline btn--large">View All Service Areas</a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Large Event Callout -->
+        <section class="section section--gray">
+            <div class="container">
+                <div class="large-event-callout">
+                    <div class="large-event-callout__content">
+                        <h2>Planning a Large Event?</h2>
+                        <p>Hosting 50+ guests? Get a custom quote for corporate events, weddings, festivals, or large gatherings.</p>
+                        <ul class="large-event-callout__benefits">
+                            <li>✓ Volume discounts available</li>
+                            <li>✓ Multiple chefs & cooking stations</li>
+                            <li>✓ Buffet-style or hibachi performances</li>
+                            <li>✓ Corporate packages with invoicing</li>
+                        </ul>
+                        <a href="pages/large-event.html" class="btn btn--primary btn--lg">Request Custom Quote</a>
+                    </div>
+                    <div class="large-event-callout__image">
+                        <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=600&h=400&fit=crop" alt="Large event hibachi catering" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA Section -->
+        <section class="final-cta">
+            <div class="container">
+                <h2 class="final-cta__title">Ready to Create Unforgettable Memories?</h2>
+                <p class="final-cta__subtitle">
+                    Book your private chef experience today and let us handle everything
+                </p>
+                <div class="final-cta__buttons">
+                    <a href="pages/booking.html" class="btn btn--secondary btn--large">Book Now</a>
+                    <a href="tel:+1234567890" class="btn btn--outline btn--large" style="border-color: #ffffff; color: #ffffff;">Call (123) 456-7890</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__section">
+                    <h3 class="footer__section-title">ChefWeb</h3>
+                    <p>Premium private chef service at your home. Unforgettable dining experiences.</p>
+                </div>
+                
+                <div class="footer__section">
+                    <h3 class="footer__section-title">Quick Links</h3>
+                    <nav aria-label="Footer navigation">
+                        <ul class="footer__links">
+                            <li><a href="pages/packages.html" class="footer__link">Packages</a></li>
+                            <li><a href="pages/service-areas.html" class="footer__link">Service Areas</a></li>
+                            <li><a href="pages/gallery.html" class="footer__link">Gallery</a></li>
+                            <li><a href="pages/reviews.html" class="footer__link">Reviews</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                
+                <div class="footer__section">
+                    <h3 class="footer__section-title">Support</h3>
+                    <ul class="footer__links">
+                        <li><a href="pages/faq.html" class="footer__link">FAQ</a></li>
+                        <li><a href="pages/contact.html" class="footer__link">Contact</a></li>
+                        <li><a href="#" class="footer__link">Terms of Service</a></li>
+                        <li><a href="#" class="footer__link">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer__section">
+                    <h3 class="footer__section-title">Contact</h3>
+                    <ul class="footer__links">
+                        <li><a href="tel:+1234567890" class="footer__link">Call: (123) 456-7890</a></li>
+                        <li><a href="sms:+1234567890" class="footer__link">Text: (123) 456-7890</a></li>
+                        <li><a href="mailto:info@chefweb.com" class="footer__link">Email: info@chefweb.com</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer__bottom">
+                <p>&copy; 2026 ChefWeb. All rights reserved. Licensed & Insured.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ARIA Live Regions for Screen Reader Announcements -->
+    <div id="ariaLivePolite" class="aria-live-region" aria-live="polite" aria-atomic="true"></div>
+    <div id="ariaLiveAssertive" class="aria-live-region" aria-live="assertive" aria-atomic="true"></div>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+    <script src="js/components.js"></script>
+    <script src="js/home.js"></script>
+</body>
+</html>

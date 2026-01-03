@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Request a custom quote for large events (50+ guests). ChefWeb offers buffet-style and corporate hibachi experiences for big groups.">
+    <title>Large Event Quote Request | ChefWeb - 50+ Guests</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+    <!-- Skip Navigation -->
+    <a href="#mainContent" class="skip-link">Skip to main content</a>
+    <a href="#mainNav" class="skip-link" style="left: 140px;">Skip to navigation</a>
+    
+    <!-- Header -->
+    <header class="header" role="banner">
+        <div class="container">
+            <div class="header__content">
+                <a href="../index.html" class="logo">
+                    <span class="logo__icon">🔥</span>
+                    <span class="logo__text">ChefWeb</span>
+                </a>
+                <nav class="nav" id="mainNav" role="navigation" aria-label="Main navigation">
+                    <a href="../index.html" class="nav__link">Home</a>
+                    <a href="packages.html" class="nav__link">Packages</a>
+                    <a href="service-areas.html" class="nav__link">Service Areas</a>
+                    <a href="reviews.html" class="nav__link">Reviews</a>
+                    <a href="gallery.html" class="nav__link">Gallery</a>
+                    <a href="contact.html" class="nav__link">Contact</a>
+                    <a href="booking.html" class="btn btn--primary btn--sm">Book Now</a>
+                </nav>
+                <button class="nav-toggle" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="mainContent" role="main">
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-header__title">Large Event Quote Request</h1>
+            <p class="page-header__subtitle">Custom pricing for events with 50+ guests</p>
+        </div>
+    </section>
+
+    <!-- Info Section -->
+    <section class="section" style="padding-top: var(--spacing-2xl);">
+        <div class="container">
+            <div class="large-event-info">
+                <div class="large-event-info__content">
+                    <h2>Planning a Big Event?</h2>
+                    <p>For events with 50 or more guests, we offer customized packages with:</p>
+                    <ul class="large-event-benefits">
+                        <li>✓ <strong>Volume discounts</strong> on per-person pricing</li>
+                        <li>✓ <strong>Multiple chefs</strong> for simultaneous cooking stations</li>
+                        <li>✓ <strong>Buffet-style service</strong> option for faster service</li>
+                        <li>✓ <strong>Corporate packages</strong> with invoicing and contracts</li>
+                        <li>✓ <strong>Dedicated event coordinator</strong> for planning support</li>
+                        <li>✓ <strong>Custom menus</strong> tailored to your group</li>
+                    </ul>
+                    <div class="alert alert--info">
+                        <strong>💡 Quick Response:</strong> We'll contact you within 4 business hours with a custom quote and event plan.
+                    </div>
+                </div>
+                <div class="large-event-info__image">
+                    <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=600&h=400&fit=crop" alt="Large corporate hibachi event" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quote Form -->
+    <section class="section section--gray">
+        <div class="container">
+            <div class="large-event-form-wrapper">
+                <h2 style="text-align: center; margin-bottom: var(--spacing-2xl);">Request Your Custom Quote</h2>
+                
+                <form class="large-event-form" id="largeEventForm">
+                    <!-- Contact Information -->
+                    <div class="form-section">
+                        <h3 class="form-section__title">Contact Information</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contactName" class="form-label">Full Name <span class="required">*</span></label>
+                                <input type="text" id="contactName" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="company" class="form-label">Company/Organization (Optional)</label>
+                                <input type="text" id="company" class="form-input">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email <span class="required">*</span></label>
+                                <input type="email" id="email" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone" class="form-label">Phone <span class="required">*</span></label>
+                                <input type="tel" id="phone" class="form-input" placeholder="(555) 123-4567" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Event Details -->
+                    <div class="form-section">
+                        <h3 class="form-section__title">Event Details</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="eventDate" class="form-label">Preferred Date <span class="required">*</span></label>
+                                <input type="date" id="eventDate" class="form-input" required>
+                                <span class="form-hint">Flexible? Let us know in Special Requests</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="eventTime" class="form-label">Preferred Time</label>
+                                <select id="eventTime" class="form-select">
+                                    <option value="">Select time</option>
+                                    <option value="morning">Morning (9 AM - 12 PM)</option>
+                                    <option value="afternoon">Afternoon (12 PM - 5 PM)</option>
+                                    <option value="evening">Evening (5 PM - 9 PM)</option>
+                                    <option value="flexible">Flexible</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="guestCount" class="form-label">Expected Guest Count <span class="required">*</span></label>
+                                <input type="number" id="guestCount" class="form-input" min="50" placeholder="e.g., 75" required>
+                                <span class="form-hint">Minimum 50 guests</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="eventType" class="form-label">Event Type <span class="required">*</span></label>
+                                <select id="eventType" class="form-select" required>
+                                    <option value="">Select event type</option>
+                                    <option value="corporate">Corporate Event</option>
+                                    <option value="wedding">Wedding Reception</option>
+                                    <option value="festival">Festival/Fair</option>
+                                    <option value="fundraiser">Fundraiser/Gala</option>
+                                    <option value="conference">Conference/Convention</option>
+                                    <option value="other">Other Large Gathering</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="form-section">
+                        <h3 class="form-section__title">Event Location</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="state" class="form-label">State <span class="required">*</span></label>
+                                <select id="state" class="form-select" required>
+                                    <option value="">Select state</option>
+                                    <option value="CA">California</option>
+                                    <option value="NY">New York</option>
+                                    <option value="TX">Texas</option>
+                                    <option value="FL">Florida</option>
+                                    <option value="IL">Illinois</option>
+                                    <option value="PA">Pennsylvania</option>
+                                    <option value="OH">Ohio</option>
+                                    <option value="GA">Georgia</option>
+                                    <option value="NC">North Carolina</option>
+                                    <option value="MI">Michigan</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="city" class="form-label">City <span class="required">*</span></label>
+                                <input type="text" id="city" class="form-input" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="venueType" class="form-label">Venue Type <span class="required">*</span></label>
+                            <select id="venueType" class="form-select" required>
+                                <option value="">Select venue type</option>
+                                <option value="indoor">Indoor Venue</option>
+                                <option value="outdoor">Outdoor Venue</option>
+                                <option value="tent">Tent/Pavilion</option>
+                                <option value="mixed">Indoor/Outdoor Mixed</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Service Preferences -->
+                    <div class="form-section">
+                        <h3 class="form-section__title">Service Preferences</h3>
+                        <div class="form-group">
+                            <label for="serviceStyle" class="form-label">Preferred Service Style <span class="required">*</span></label>
+                            <select id="serviceStyle" class="form-select" required>
+                                <option value="">Select service style</option>
+                                <option value="hibachi-stations">Hibachi Stations (chef performance)</option>
+                                <option value="buffet">Buffet Style (faster service)</option>
+                                <option value="mixed">Mixed (both options)</option>
+                                <option value="unsure">Not sure - need advice</option>
+                            </select>
+                            <span class="form-hint">We'll help you choose the best option for your group size</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="packagePreference" class="form-label">Package Preference</label>
+                            <select id="packagePreference" class="form-select">
+                                <option value="">Not sure yet</option>
+                                <option value="essential">Essential Package</option>
+                                <option value="signature">Signature Package</option>
+                                <option value="premium">Premium Package</option>
+                                <option value="custom">Custom Menu</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Budget & Special Requests -->
+                    <div class="form-section">
+                        <h3 class="form-section__title">Budget & Additional Details</h3>
+                        <div class="form-group">
+                            <label for="budget" class="form-label">Estimated Budget Range (Optional)</label>
+                            <select id="budget" class="form-select">
+                                <option value="">Prefer not to say</option>
+                                <option value="3000-5000">$3,000 - $5,000</option>
+                                <option value="5000-8000">$5,000 - $8,000</option>
+                                <option value="8000-12000">$8,000 - $12,000</option>
+                                <option value="12000+">$12,000+</option>
+                            </select>
+                            <span class="form-hint">Helps us tailor our quote to your needs</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="specialRequests" class="form-label">Special Requests or Dietary Requirements</label>
+                            <textarea id="specialRequests" class="form-textarea" rows="5" placeholder="Tell us about any dietary restrictions, theme requirements, special accommodations, or questions..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Terms & Submit -->
+                    <div class="form-group">
+                        <label class="form-checkbox-wrapper">
+                            <input type="checkbox" id="consent" class="form-checkbox" required>
+                            <span>I agree to be contacted via email or phone regarding my quote request <span class="required">*</span></span>
+                        </label>
+                    </div>
+
+                    <div class="form-actions" style="justify-content: center;">
+                        <button type="submit" class="btn btn--primary btn--lg">Request Custom Quote</button>
+                        <a href="contact.html" class="btn btn--secondary">Or Contact Us Directly</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="section">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: var(--spacing-2xl);">Why Choose ChefWeb for Large Events?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-card__icon">👨‍🍳</div>
+                    <h3 class="feature-card__title">Experienced Team</h3>
+                    <p class="feature-card__text">Multiple certified chefs with large event experience. We've catered events from 50 to 500+ guests.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card__icon">⚡</div>
+                    <h3 class="feature-card__title">Efficient Service</h3>
+                    <p class="feature-card__text">Buffet options can serve 100 guests in under 30 minutes. We keep your schedule on track.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card__icon">💼</div>
+                    <h3 class="feature-card__title">Corporate Ready</h3>
+                    <p class="feature-card__text">W9 forms, certificates of insurance, and corporate invoicing available. We handle the paperwork.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card__icon">🎯</div>
+                    <h3 class="feature-card__title">Custom Solutions</h3>
+                    <p class="feature-card__text">Every large event is unique. We'll work with you to create the perfect experience for your group.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__section">
+                    <h3 class="footer__title">ChefWeb</h3>
+                    <p class="footer__text">Premium private hibachi chef experiences for events across 10 states.</p>
+                </div>
+                <div class="footer__section">
+                    <h4 class="footer__subtitle">Quick Links</h4>
+                    <ul class="footer__links">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="packages.html">Packages</a></li>
+                        <li><a href="service-areas.html">Service Areas</a></li>
+                        <li><a href="reviews.html">Reviews</a></li>
+                    </ul>
+                </div>
+                <div class="footer__section">
+                    <h4 class="footer__subtitle">Support</h4>
+                    <ul class="footer__links">
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer__section">
+                    <h4 class="footer__subtitle">Contact</h4>
+                    <p class="footer__text">
+                        <a href="tel:1-888-555-CHEF">1-888-555-CHEF</a><br>
+                        <a href="mailto:book@chefweb.com">book@chefweb.com</a>
+                    </p>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2026 ChefWeb. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/components.js"></script>
+    <script src="../js/large-event.js"></script>
+</body>
+</html>
