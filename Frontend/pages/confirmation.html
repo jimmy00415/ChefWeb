@@ -91,8 +91,8 @@
                         <div class="timeline__item">
                             <div class="timeline__marker">3</div>
                             <div class="timeline__content">
-                                <h4 class="timeline__title">Deposit Payment Link</h4>
-                                <p class="timeline__description">Secure your booking with a 25% deposit via our secure payment portal (credit card, PayPal, or Venmo).</p>
+                                <h4 class="timeline__title" id="paymentTimelineTitle">Payment Confirmation</h4>
+                                <p class="timeline__description" id="paymentTimelineDescription">We’ll send your payment confirmation and receipt. If you chose pay later, you’ll receive a secure payment link.</p>
                             </div>
                         </div>
                         
@@ -131,6 +131,37 @@
                 <div class="card__body" id="bookingSummaryContent">
                     <!-- Populated by JavaScript -->
                     <p class="text-muted">Loading booking details...</p>
+                </div>
+            </div>
+
+            <!-- Payment Summary -->
+            <div class="card" style="margin-bottom: var(--spacing-2xl);">
+                <div class="card__header">
+                    <h3 class="card__title">Payment Summary</h3>
+                </div>
+                <div class="card__body" id="paymentSummaryContent">
+                    <div class="summary-grid">
+                        <div class="summary-section">
+                            <h4 class="summary-section__title">Payment Status</h4>
+                            <div class="summary-row">
+                                <span class="summary-label">Status:</span>
+                                <span class="summary-value" id="paymentStatus">Pending</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="summary-label">Amount Paid:</span>
+                                <span class="summary-value" id="paymentAmount">$0</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="summary-label">Balance Due:</span>
+                                <span class="summary-value" id="paymentBalance">$0</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="summary-label">Reference:</span>
+                                <span class="summary-value" id="paymentReference">Not available</span>
+                            </div>
+                            <p class="text-sm text-muted" id="paymentNote" style="margin-top: var(--spacing-sm);"></p>
+                        </div>
+                    </div>
                 </div>
             </div>
 

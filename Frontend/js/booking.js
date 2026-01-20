@@ -44,7 +44,10 @@ const BookingState = {
         contactEmail: '',
         contactPhone: '',
         agreeToTerms: false,
-        marketingConsent: false
+        marketingConsent: false,
+
+        // Step 7
+        paymentOption: 'deposit'
     },
     
     // Calculated fields
@@ -116,12 +119,20 @@ const BookingState = {
             addons: [],
             addonsTotal: 0,
             address: '',
+            addressLine2: '',
+            zipCode: '',
             venueType: '',
+            setupRequirements: [],
+            specialRequests: '',
             dietaryRestrictions: '',
             allergies: '',
+            hasAllergies: false,
             contactName: '',
             contactEmail: '',
-            contactPhone: ''
+            contactPhone: '',
+            agreeToTerms: false,
+            marketingConsent: false,
+            paymentOption: 'deposit'
         };
     }
 };
@@ -147,6 +158,16 @@ const PackagePricing = {
     essential: { price: 65, childPrice: 43 },
     signature: { price: 75, childPrice: 50 },
     premium: { price: 95, childPrice: 63 }
+};
+
+// ==================== STRIPE STATE ====================
+
+const stripeState = {
+    stripe: null,
+    elements: null,
+    card: null,
+    ready: false,
+    cardComplete: false
 };
 
 // ==================== INITIALIZATION ====================
@@ -209,13 +230,18 @@ document.addEventListener('DOMContentLoaded', () => {
     attachStep4Listeners();
     attachStep5Listeners();
     attachStep6Listeners();
+    attachStep7Listeners();
     attachFormSubmitHandler();
     
     // Initialize price summary
     updatePriceSummary();
+    updatePaymentSummary();
     
     // Mobile price summary toggle
     initMobilePriceSummary();
+
+    // Initialize Stripe Elements
+    initStripeElements();
 });
 
 // ==================== FORM POPULATION ====================
@@ -962,6 +988,77 @@ function attachStep6Listeners() {
     }
 }
 
+// ==================== STEP 7: PAYMENT ====================
+
+function attachStep7Listeners() {
+    const paymentOptions = document.querySelectorAll('input[name="paymentOption"]');
+    const paymentMethod = document.getElementById('paymentMethod');
+
+    paymentOptions.forEach(option => {
+        option.addEventListener('change', () => {
+            BookingState.formData.paymentOption = option.value;
+            syncPaymentUI();
+        });
+    });
+
+    syncPaymentUI();
+}
+
+function updatePaymentSummary() {
+    const total = BookingState.total || 0;
+    const deposit = Math.round(total * 0.25);
+    const option = BookingState.formData.paymentOption || 'deposit';
+    const dueToday = option === 'full' ? total : option === 'later' ? 0 : deposit;
+    const remaining = Math.max(total - dueToday, 0);
+
+    const depositEl = document.getElementById('depositAmount');
+    const fullEl = document.getElementById('fullPaymentAmount');
+    const totalEl = document.getElementById('paymentTotal');
+    const dueEl = document.getElementById('paymentAmountDueToday');
+    const balanceEl = document.getElementById('paymentBalanceDue');
+
+    if (depositEl) depositEl.textContent = Utils ? Utils.formatCurrency(deposit) : `$${deposit}`;
+    if (fullEl) fullEl.textContent = Utils ? Utils.formatCurrency(total) : `$${total}`;
+    if (totalEl) totalEl.textContent = Utils ? Utils.formatCurrency(total) : `$${total}`;
+    if (dueEl) dueEl.textContent = Utils ? Utils.formatCurrency(dueToday) : `$${dueToday}`;
+    if (balanceEl) balanceEl.textContent = Utils ? Utils.formatCurrency(remaining) : `$${remaining}`;
+}
+
+function syncPaymentUI() {
+    const paymentOptions = document.querySelectorAll('input[name="paymentOption"]');
+    const paymentMethod = document.getElementById('paymentMethod');
+    const submitBtn = document.getElementById('submitBookingBtn');
+    const selected = BookingState.formData.paymentOption || 'deposit';
+
+    paymentOptions.forEach(option => {
+        option.checked = option.value === selected;
+        const parentCard = option.closest('.payment-option-card');
+        if (parentCard) {
+            parentCard.classList.toggle('payment-option-card--selected', option.value === selected);
+        }
+    });
+
+    if (paymentMethod) {
+        if (selected === 'later') {
+            paymentMethod.classList.add('hidden');
+        } else {
+            paymentMethod.classList.remove('hidden');
+        }
+    }
+
+    if (submitBtn) {
+        if (selected === 'later') {
+            submitBtn.textContent = 'Submit Booking Request →';
+        } else if (selected === 'full') {
+            submitBtn.textContent = 'Pay in Full →';
+        } else {
+            submitBtn.textContent = 'Pay Deposit →';
+        }
+    }
+
+    updatePaymentSummary();
+}
+
 function validateStep6() {
     let isValid = true;
     
@@ -1031,6 +1128,47 @@ function validateStep6() {
     return isValid;
 }
 
+function validateStep7() {
+    const paymentOption = BookingState.formData.paymentOption;
+    if (paymentOption === 'later') {
+        return true;
+    }
+
+    const cardholderName = document.getElementById('cardholderName');
+    const paymentError = document.getElementById('paymentError');
+
+    if (!stripeState.ready) {
+        if (paymentError) {
+            paymentError.textContent = 'Payment system is temporarily unavailable. Please choose Pay Later.';
+        }
+        return false;
+    }
+
+    if (cardholderName && !cardholderName.value.trim()) {
+        if (paymentError) {
+            paymentError.textContent = 'Please enter the cardholder name.';
+        }
+        cardholderName.classList.add('form-input--error');
+        return false;
+    }
+
+    if (!stripeState.cardComplete) {
+        if (paymentError) {
+            paymentError.textContent = 'Please complete your card details.';
+        }
+        return false;
+    }
+
+    if (paymentError) {
+        paymentError.textContent = '';
+    }
+    if (cardholderName) {
+        cardholderName.classList.remove('form-input--error');
+    }
+
+    return true;
+}
+
 // ==================== FORM SUBMISSION ====================
 
 function attachFormSubmitHandler() {
@@ -1041,7 +1179,7 @@ function attachFormSubmitHandler() {
             e.preventDefault();
             
             // Validate final step
-            if (!validateStep6()) {
+            if (!validateStep6() || !validateStep7()) {
                 return;
             }
             
@@ -1052,13 +1190,23 @@ function attachFormSubmitHandler() {
             submitBtn.textContent = 'Submitting...';
             
             try {
-                // Simulate API call (in real implementation, this would POST to server)
-                await new Promise(resolve => setTimeout(resolve, 1500));
+                const paymentOption = BookingState.formData.paymentOption || 'deposit';
+                let paymentResult = null;
+
+                if (paymentOption !== 'later') {
+                    paymentResult = await processStripePayment();
+                }
+
+                // Simulate booking API call
+                await new Promise(resolve => setTimeout(resolve, 800));
                 
                 // Generate booking reference
                 const bookingRef = generateBookingReference();
                 sessionStorage.setItem('bookingReference', bookingRef);
                 sessionStorage.setItem('bookingComplete', 'true');
+                if (paymentResult) {
+                    sessionStorage.setItem('paymentIntentId', paymentResult.paymentIntentId || '');
+                }
                 
                 // Redirect to confirmation page
                 window.location.href = 'confirmation.html';
@@ -1070,6 +1218,106 @@ function attachFormSubmitHandler() {
             }
         });
     }
+}
+
+async function initStripeElements() {
+    const cardElement = document.getElementById('stripeCardElement');
+    if (!cardElement) return;
+
+    if (!window.Stripe) {
+        showPaymentError('Payment system unavailable. Please choose Pay Later.');
+        return;
+    }
+
+    try {
+        const configResponse = await fetch('../api/config/stripe');
+        if (!configResponse.ok) {
+            throw new Error('Stripe config failed');
+        }
+        const config = await configResponse.json();
+        if (!config.publishableKey) {
+            throw new Error('Stripe key missing');
+        }
+
+        stripeState.stripe = window.Stripe(config.publishableKey);
+        stripeState.elements = stripeState.stripe.elements({
+            appearance: { theme: 'stripe' }
+        });
+
+        stripeState.card = stripeState.elements.create('card');
+        stripeState.card.mount('#stripeCardElement');
+
+        stripeState.card.on('change', (event) => {
+            stripeState.cardComplete = event.complete;
+            if (event.error) {
+                showPaymentError(event.error.message);
+            } else {
+                showPaymentError('');
+            }
+        });
+
+        stripeState.ready = true;
+    } catch (error) {
+        showPaymentError('Payment system unavailable. Please choose Pay Later.');
+    }
+}
+
+async function processStripePayment() {
+    if (!stripeState.ready || !stripeState.card) {
+        throw new Error('Stripe not ready');
+    }
+
+    const paymentOption = BookingState.formData.paymentOption || 'deposit';
+    const total = BookingState.total || 0;
+    const deposit = Math.round(total * 0.25);
+    const amount = paymentOption === 'full' ? total : deposit;
+
+    const response = await fetch('../api/payments/create-intent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            amount: Math.round(amount * 100),
+            currency: 'usd',
+            paymentType: paymentOption,
+            bookingData: BookingState.formData
+        })
+    });
+
+    if (!response.ok) {
+        throw new Error('Unable to start payment');
+    }
+
+    const data = await response.json();
+    const clientSecret = data.clientSecret || data.client_secret;
+
+    if (!clientSecret) {
+        throw new Error('Missing payment token');
+    }
+
+    const cardholderName = document.getElementById('cardholderName');
+    const { error, paymentIntent } = await stripeState.stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+            card: stripeState.card,
+            billing_details: {
+                name: cardholderName ? cardholderName.value : ''
+            }
+        }
+    });
+
+    if (error) {
+        showPaymentError(error.message || 'Payment failed.');
+        throw error;
+    }
+
+    return {
+        paymentIntentId: paymentIntent ? paymentIntent.id : ''
+    };
+}
+
+function showPaymentError(message) {
+    const paymentError = document.getElementById('paymentError');
+    if (!paymentError) return;
+    paymentError.textContent = message;
 }
 
 function generateBookingReference() {
@@ -1094,6 +1342,8 @@ function validateStep(stepNumber) {
             return validateStep5();
         case 6:
             return validateStep6();
+        case 7:
+            return validateStep7();
         default:
             return true;
     }

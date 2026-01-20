@@ -80,6 +80,10 @@
                         <div class="stepper__circle">6</div>
                         <div class="stepper__label">Contact Info</div>
                     </div>
+                    <div class="stepper__step" data-step="7">
+                        <div class="stepper__circle">7</div>
+                        <div class="stepper__label">Payment</div>
+                    </div>
                 </div>
 
                 <!-- Booking Form -->
@@ -745,8 +749,88 @@
                             <button type="button" class="btn btn--outline booking-nav__back" data-prev-step="5">
                                 ← Back
                             </button>
+                            <button type="button" class="btn btn--primary booking-nav__next" data-next-step="7">
+                                Continue to Payment →
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 7: Payment -->
+                    <div class="booking-step" data-step="7">
+                        <h2 class="step-title">Secure Your Booking</h2>
+                        <p class="step-description">
+                            Choose how you'd like to pay. A deposit secures your chef and date instantly.
+                        </p>
+
+                        <div class="step-fields">
+                            <div class="payment-option-grid" role="radiogroup" aria-label="Payment options">
+                                <label class="payment-option-card payment-option-card--selected">
+                                    <input type="radio" name="paymentOption" value="deposit" checked>
+                                    <div class="payment-option-card__content">
+                                        <span class="payment-option-card__title">Pay Deposit Now</span>
+                                        <span class="payment-option-card__amount" id="depositAmount">$0</span>
+                                        <span class="payment-option-card__note">Secure your date. Balance due before event.</span>
+                                    </div>
+                                </label>
+
+                                <label class="payment-option-card">
+                                    <input type="radio" name="paymentOption" value="full">
+                                    <div class="payment-option-card__content">
+                                        <span class="payment-option-card__title">Pay Full Amount Now</span>
+                                        <span class="payment-option-card__amount" id="fullPaymentAmount">$0</span>
+                                        <span class="payment-option-card__note">Pay once and you're all set.</span>
+                                    </div>
+                                </label>
+
+                                <label class="payment-option-card">
+                                    <input type="radio" name="paymentOption" value="later">
+                                    <div class="payment-option-card__content">
+                                        <span class="payment-option-card__title">Pay Later</span>
+                                        <span class="payment-option-card__amount">$0</span>
+                                        <span class="payment-option-card__note">We’ll send a secure payment link.</span>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="payment-summary">
+                                <div class="payment-summary__row">
+                                    <span>Total Booking Amount</span>
+                                    <strong id="paymentTotal">$0</strong>
+                                </div>
+                                <div class="payment-summary__row">
+                                    <span>Amount Due Today</span>
+                                    <strong id="paymentAmountDueToday">$0</strong>
+                                </div>
+                                <div class="payment-summary__row">
+                                    <span>Remaining Balance</span>
+                                    <strong id="paymentBalanceDue">$0</strong>
+                                </div>
+                            </div>
+
+                            <div class="payment-method" id="paymentMethod">
+                                <h3 class="payment-method__title">Payment Details</h3>
+                                <div class="form-group">
+                                    <label class="form-label form-label--required" for="cardholderName">Cardholder Name</label>
+                                    <input type="text" class="form-input" id="cardholderName" name="cardholderName" placeholder="John Doe">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label form-label--required" for="stripeCardElement">Card Information</label>
+                                    <div class="stripe-element" id="stripeCardElement">Card form will load here.</div>
+                                    <span class="form-error" id="paymentError" role="alert" aria-live="polite"></span>
+                                </div>
+                                <div class="validation-message validation-message--info">
+                                    <span class="validation-message__icon">🔒</span>
+                                    <div>Secure payment powered by Stripe. Your card is encrypted.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="booking-nav">
+                            <button type="button" class="btn btn--outline booking-nav__back" data-prev-step="6">
+                                ← Back
+                            </button>
                             <button type="submit" class="btn btn--primary booking-nav__next" id="submitBookingBtn">
-                                Submit Booking Request →
+                                Confirm & Pay →
                             </button>
                         </div>
                     </div>
@@ -879,6 +963,7 @@
 
     <script src="../js/main.js"></script>
     <script src="../js/components.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
     <script src="../js/booking.js"></script>
 </body>
 </html>

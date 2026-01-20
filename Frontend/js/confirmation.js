@@ -26,6 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const state = JSON.parse(bookingState);
             displayBookingSummary(state);
+            displayPaymentSummary(state);
+            updatePaymentTimeline(state);
         } catch (error) {
             console.error('Error parsing booking state:', error);
         }
@@ -72,11 +74,14 @@ function displayBookingSummary(state) {
     }
     
     // Format party size
-    const partySize = `${data.numAdults} adults${data.numChildren > 0 ? `, ${data.numChildren} children` : ''}`;
+    const adults = data.numAdults ?? 0;
+    const children = data.numChildren ?? 0;
+    const partySize = `${adults} adults${children > 0 ? `, ${children} children` : ''}`;
     
     // Format package
-    const packageName = data.package.charAt(0).toUpperCase() + data.package.slice(1);
-    const packagePrice = `$${data.packagePrice}/person`;
+    const packageKey = data.package || 'signature';
+    const packageName = packageKey.charAt(0).toUpperCase() + packageKey.slice(1);
+    const packagePrice = `$${data.packagePrice || 75}/person`;
     
     // Calculate pricing
     const basePrice = calculateBasePrice(data);
@@ -147,6 +152,83 @@ function displayBookingSummary(state) {
     summaryContainer.innerHTML = html;
 }
 
+function displayPaymentSummary(state) {
+    const paymentStatusEl = document.getElementById('paymentStatus');
+    const paymentAmountEl = document.getElementById('paymentAmount');
+    const paymentBalanceEl = document.getElementById('paymentBalance');
+    const paymentReferenceEl = document.getElementById('paymentReference');
+    const paymentNoteEl = document.getElementById('paymentNote');
+
+    if (!paymentStatusEl || !paymentAmountEl || !paymentBalanceEl || !paymentReferenceEl || !paymentNoteEl) {
+        return;
+    }
+
+    const data = state.formData || {};
+    const total = calculateEstimatedTotal(data);
+    const deposit = Math.round(total * 0.25);
+    const paymentOption = data.paymentOption || 'deposit';
+    const paymentIntentId = sessionStorage.getItem('paymentIntentId');
+
+    let amountPaid = 0;
+    let status = 'Pending';
+    let note = 'We will email your secure payment link within 24 hours.';
+
+    if (paymentOption === 'full') {
+        amountPaid = total;
+        status = 'Paid in Full';
+        note = 'Thank you! Your booking is fully paid.';
+    } else if (paymentOption === 'deposit') {
+        amountPaid = deposit;
+        status = 'Deposit Paid';
+        note = 'Deposit received. Remaining balance is due before your event.';
+    } else if (paymentOption === 'later') {
+        amountPaid = 0;
+        status = 'Payment Pending';
+        note = 'We’ll send a secure payment link shortly to secure your date.';
+    }
+
+    const balanceDue = Math.max(total - amountPaid, 0);
+
+    paymentStatusEl.textContent = status;
+    paymentAmountEl.textContent = formatCurrency(amountPaid);
+    paymentBalanceEl.textContent = formatCurrency(balanceDue);
+    paymentReferenceEl.textContent = paymentIntentId || 'Not available';
+    paymentNoteEl.textContent = note;
+}
+
+function updatePaymentTimeline(state) {
+    const title = document.getElementById('paymentTimelineTitle');
+    const description = document.getElementById('paymentTimelineDescription');
+    if (!title || !description) return;
+
+    const option = state.formData?.paymentOption || 'deposit';
+
+    if (option === 'later') {
+        title.textContent = 'Secure Payment Link';
+        description.textContent = 'We’ll email a secure payment link within 24 hours to confirm your booking.';
+        return;
+    }
+
+    if (option === 'full') {
+        title.textContent = 'Payment Confirmation';
+        description.textContent = 'Your payment is confirmed. A receipt is on the way.';
+        return;
+    }
+
+    title.textContent = 'Deposit Confirmed';
+    description.textContent = 'Your deposit is confirmed. We’ll remind you about the remaining balance before your event.';
+}
+
+function calculateEstimatedTotal(data) {
+    const basePrice = calculateBasePrice(data);
+    const addonsTotal = data.addonsTotal || 0;
+    const travelFee = data.travelFeeStatus === 'included' ? 0 : (data.travelFeeAmount || 0);
+    if (data.travelFeeStatus === 'tbd') {
+        return basePrice + addonsTotal;
+    }
+    return basePrice + addonsTotal + travelFee;
+}
+
 function calculateBasePrice(data) {
     const packagePrices = {
         essential: { adult: 65, child: 43 },
@@ -155,7 +237,9 @@ function calculateBasePrice(data) {
     };
     
     const prices = packagePrices[data.package] || packagePrices.signature;
-    return (data.numAdults * prices.adult) + (data.numChildren * prices.child);
+    const adults = data.numAdults ?? 0;
+    const children = data.numChildren ?? 0;
+    return (adults * prices.adult) + (children * prices.child);
 }
 
 function formatVenueType(type) {
