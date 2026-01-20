@@ -183,7 +183,7 @@ function renderVideoPlayer(container, config) {
     container.innerHTML = `
         <div class="video-player" data-video-id="${config.videoId}">
             <div class="video-player__frame">
-                <video class="video-player__media" preload="metadata" playsinline poster="${config.posterUrl}" aria-label="${config.title}">
+                <video class="video-player__media" preload="metadata" playsinline controls poster="${config.posterUrl}" aria-label="${config.title}">
                     <source src="${config.videoUrl}" type="video/mp4">
                     Your browser does not support HTML5 video.
                 </video>
