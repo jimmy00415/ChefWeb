@@ -1,3 +1,15 @@
+## January 21, 2026 Update (CEO Requirements)
+
+**Brand:** POP Habachi (update logo + name everywhere)  
+**Primary Service Area:** San Francisco Bay Area  
+**Extended Service:** Up to 300 miles with travel fee  
+**Party Types:** Birthday, Friendsgiving, Business, Other  
+**Homepage Menu Callout:** “$60 per person includes” list (salad, chicken, shrimp, lobster, etc.)  
+**Allergy Capture:** Must be highly visible and emphasized in booking flow  
+**Booking Steps:** Reduce to 4–5 total steps (current 7 is too long)
+
+---
+
 1) Start from the business objective (so scope stays tight)
 
 For this category, the website’s job is usually one primary conversion:
@@ -96,21 +108,15 @@ hibachiomakase.com
 
 Booking funnel (MVP flow)
 
-A clean, high-converting sequence:
+A clean, high-converting sequence (reduced to 4–5 steps):
 
-Select service area (city/region)
+1) **Location & Date** (Bay Area vs 300‑mile range + travel fee visibility)
 
-Choose date/time (availability rules)
+2) **Party Details** (party size + party type)
 
-Party size (adults/children) + auto pricing + minimum spend enforcement
+3) **Package & Add-ons** (combined)
 
-Package tier + add-ons
-
-Address + constraints (outdoor/indoor, grill placement, power/water needs)
-
-Contact info
-
-Payment (deposit strongly recommended in most markets) + confirmation
+4) **Contact + Allergies + Payment** (combined; allergy block must be prominent)
 
 Reference pattern notes:
 
@@ -417,9 +423,9 @@ Hibachi Omakase - Hibachi At Home
 +1
 
 B5. Booking funnel UX spec (multi-step form)
-Step structure (recommended 6 steps)
+Step structure (final 4 steps)
 
-Use a stepper + “Step X of 6” progress indicator. 
+Use a stepper + “Step X of 4” progress indicator. 
 Nielsen Norman Group
 +2
 B13
@@ -461,7 +467,7 @@ If party size triggers additional chefs: display notice (e.g., “30+ adults may
 Hibachi Omakase - Hibachi At Home
 +1
 
-Step 3 — Package selection
+Step 3 — Package selection + add-ons
 
 UI: package cards (radio selection)
 
@@ -479,9 +485,7 @@ Include a “Large Event / Buffet / Corporate” card that routes to Quote flow.
 Hibachi Omakase - Hibachi At Home
 +1
 
-Step 4 — Menu choices + add-ons
-
-UI: “Add-on chips” + quantity controls (where relevant)
+UI: package cards + “Add-on chips” + quantity controls (where relevant)
 
 Requirements:
 
@@ -501,7 +505,7 @@ Minimum spend rule reminder (if failing)
 
 Estimated total
 
-Step 5 — Event details + setup
+Step 4 — Event details + contact + payment
 
 Fields:
 
@@ -521,8 +525,6 @@ Hibachi Omakase - Hibachi At Home
 Hibachi Omakase - Hibachi At Home
 +1
 
-Step 6 — Dietary restrictions + contact
-
 Dietary section (required):
 
 Allergy toggle: Yes/No
@@ -540,6 +542,12 @@ Contact section (required):
 Name, phone, email
 
 Preferred contact method (SMS/Call/Email)
+
+Payment section (required):
+
+Deposit/full/later options
+
+Card details when paying now
 
 Policy copy slot:
 
@@ -829,7 +837,7 @@ Identify pricing + minimum spend within 15 seconds on Home
 
 Confirm service area availability within 1 interaction
 
-Complete booking request in ≤ 6 steps with clear progress feedback 
+Complete booking request in ≤ 4 steps with clear progress feedback 
 Nielsen Norman Group
 +2
 B13

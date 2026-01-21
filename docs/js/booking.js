@@ -6,6 +6,8 @@
 
 // ==================== STATE MANAGEMENT ====================
 
+const MAX_STEPS = 4;
+
 const BookingState = {
     currentStep: 1,
     maxStepReached: 1, // Track furthest step user has reached
@@ -21,16 +23,17 @@ const BookingState = {
         // Step 2
         numAdults: 10,
         numChildren: 0,
+        partyType: '',
         
-        // Step 3 (to be implemented)
+        // Step 3: Package & Add-ons
         package: 'signature', // 'essential' | 'signature' | 'premium'
         packagePrice: 75,
-        
-        // Step 4 (to be implemented)
+
+        // Step 3: Add-ons
         addons: [],
         addonsTotal: 0,
-        
-        // Step 5-6 (to be implemented)
+
+        // Step 4: Event, Contact & Payment
         address: '',
         addressLine2: '',
         zipCode: '',
@@ -46,7 +49,7 @@ const BookingState = {
         agreeToTerms: false,
         marketingConsent: false,
 
-        // Step 7
+        // Step 4
         paymentOption: 'deposit'
     },
     
@@ -94,8 +97,8 @@ const BookingState = {
         const saved = sessionStorage.getItem('bookingState');
         if (saved) {
             const parsed = JSON.parse(saved);
-            this.currentStep = parsed.currentStep || 1;
-            this.maxStepReached = parsed.maxStepReached || 1;
+            this.currentStep = Math.min(parsed.currentStep || 1, MAX_STEPS);
+            this.maxStepReached = Math.min(parsed.maxStepReached || 1, MAX_STEPS);
             this.formData = { ...this.formData, ...parsed.formData };
         }
     },
@@ -140,16 +143,8 @@ const BookingState = {
 // ==================== TRAVEL FEE DATA ====================
 
 const TravelFeeRules = {
-    'CA': { status: 'included', amount: 0, note: 'Travel fee included for California' },
-    'NY': { status: 'included', amount: 0, note: 'Travel fee included for New York' },
-    'TX': { status: 'estimated', amount: 50, note: 'Estimated $50 travel fee' },
-    'FL': { status: 'estimated', amount: 75, note: 'Estimated $75 travel fee' },
-    'IL': { status: 'estimated', amount: 100, note: 'Estimated $100 travel fee' },
-    'PA': { status: 'estimated', amount: 75, note: 'Estimated $75 travel fee' },
-    'OH': { status: 'estimated', amount: 100, note: 'Estimated $100 travel fee' },
-    'GA': { status: 'estimated', amount: 100, note: 'Estimated $100 travel fee' },
-    'NC': { status: 'estimated', amount: 125, note: 'Estimated $125 travel fee' },
-    'MI': { status: 'estimated', amount: 125, note: 'Estimated $125 travel fee' }
+    'CA': { status: 'included', amount: 0, note: 'Travel fee included within the Bay Area' },
+    'EXT': { status: 'estimated', amount: 150, note: 'Estimated travel fee based on distance (up to 300 miles)' }
 };
 
 // ==================== PACKAGE PRICING ====================
@@ -252,6 +247,7 @@ function populateFormFields() {
         'city': BookingState.formData.city,
         'eventDate': BookingState.formData.eventDate,
         'eventTime': BookingState.formData.eventTime,
+        'partyType': BookingState.formData.partyType,
         'numAdults': BookingState.formData.numAdults,
         'numChildren': BookingState.formData.numChildren
     };
@@ -267,24 +263,28 @@ function populateFormFields() {
 // ==================== STEP NAVIGATION ====================
 
 function showStep(stepNumber) {
+    const safeStep = Number.isFinite(stepNumber)
+        ? Math.min(Math.max(stepNumber, 1), MAX_STEPS)
+        : 1;
+
     // Hide all steps
     document.querySelectorAll('.booking-step').forEach(step => {
         step.classList.remove('booking-step--active');
     });
     
     // Show target step
-    const targetStep = document.querySelector(`.booking-step[data-step="${stepNumber}"]`);
+    const targetStep = document.querySelector(`.booking-step[data-step="${safeStep}"]`);
     if (targetStep) {
         targetStep.classList.add('booking-step--active');
     }
     
     // Update stepper
-    updateStepper(stepNumber);
+    updateStepper(safeStep);
     
     // Update state
-    BookingState.currentStep = stepNumber;
-    if (stepNumber > BookingState.maxStepReached) {
-        BookingState.maxStepReached = stepNumber;
+    BookingState.currentStep = safeStep;
+    if (safeStep > BookingState.maxStepReached) {
+        BookingState.maxStepReached = safeStep;
     }
     BookingState.save();
     
@@ -312,8 +312,12 @@ function attachStepNavigationListeners() {
     // Next buttons
     document.querySelectorAll('.booking-nav__next').forEach(btn => {
         btn.addEventListener('click', (e) => {
+            const nextStepValue = btn.dataset.nextStep;
+            if (!nextStepValue) {
+                return;
+            }
             e.preventDefault();
-            const nextStep = parseInt(btn.dataset.nextStep);
+            const nextStep = parseInt(nextStepValue);
             const currentStep = BookingState.currentStep;
             
             // Validate current step before proceeding
@@ -471,6 +475,7 @@ function validateStep1() {
 function attachStep2Listeners() {
     const adultsInput = document.getElementById('numAdults');
     const childrenInput = document.getElementById('numChildren');
+    const partyTypeSelect = document.getElementById('partyType');
     const requestQuoteBtn = document.getElementById('requestQuoteBtn');
     const continueStandardBtn = document.getElementById('continueStandardBtn');
     
@@ -496,6 +501,13 @@ function attachStep2Listeners() {
             BookingState.formData.numChildren = parseInt(childrenInput.value) || 0;
             BookingState.save();
             updatePriceSummary();
+        });
+    }
+
+    if (partyTypeSelect) {
+        partyTypeSelect.addEventListener('change', () => {
+            BookingState.formData.partyType = partyTypeSelect.value;
+            BookingState.save();
         });
     }
     
@@ -580,6 +592,8 @@ function updatePartySizePreview() {
 
 function validateStep2() {
     let isValid = true;
+    const partyType = document.getElementById('partyType');
+    const partyTypeError = document.getElementById('partyTypeError');
     
     const adultsInput = document.getElementById('numAdults');
     const adultsError = document.getElementById('numAdultsError');
@@ -609,6 +623,15 @@ function validateStep2() {
     } else {
         childrenError.textContent = '';
         childrenInput.classList.remove('form-input--error');
+    }
+
+    if (!BookingState.formData.partyType) {
+        if (partyTypeError) partyTypeError.textContent = 'Please select a party type';
+        if (partyType) partyType.classList.add('form-select--error');
+        isValid = false;
+    } else {
+        if (partyTypeError) partyTypeError.textContent = '';
+        if (partyType) partyType.classList.remove('form-select--error');
     }
     
     // Check minimum spend (using current pricing estimate)
@@ -678,7 +701,7 @@ function validateStep3() {
     return true;
 }
 
-// ==================== STEP 4: ADD-ONS ====================
+// ==================== ADD-ONS (STEP 3) ====================
 
 function attachStep4Listeners() {
     const addonChips = document.querySelectorAll('.chip--addon');
@@ -801,11 +824,10 @@ function updateAddonsDisplay() {
 }
 
 function validateStep4() {
-    // Add-ons are optional, so always valid
-    return true;
+    return validateStep5() && validateStep6() && validateStep7();
 }
 
-// ==================== STEP 5: EVENT DETAILS ====================
+// ==================== EVENT DETAILS (STEP 4) ====================
 
 function attachStep5Listeners() {
     const streetAddress = document.getElementById('streetAddress');
@@ -868,7 +890,9 @@ function validateStep5() {
     // Validate street address
     const streetAddress = document.getElementById('streetAddress');
     const streetAddressError = document.getElementById('streetAddressError');
-    if (!BookingState.formData.address || BookingState.formData.address.length < 5) {
+    const addressValue = streetAddress ? streetAddress.value.trim() : BookingState.formData.address;
+    BookingState.formData.address = addressValue;
+    if (!addressValue || addressValue.length < 5) {
         streetAddressError.textContent = 'Please enter a valid street address';
         streetAddress.classList.add('form-input--error');
         isValid = false;
@@ -881,7 +905,9 @@ function validateStep5() {
     const zipCode = document.getElementById('zipCode');
     const zipCodeError = document.getElementById('zipCodeError');
     const zipPattern = /^\d{5}(-\d{4})?$/;
-    if (!BookingState.formData.zipCode || !zipPattern.test(BookingState.formData.zipCode)) {
+    const zipValue = zipCode ? zipCode.value.trim() : BookingState.formData.zipCode;
+    BookingState.formData.zipCode = zipValue;
+    if (!zipValue || !zipPattern.test(zipValue)) {
         zipCodeError.textContent = 'Please enter a valid ZIP code (e.g., 12345 or 12345-6789)';
         zipCode.classList.add('form-input--error');
         isValid = false;
@@ -893,7 +919,9 @@ function validateStep5() {
     // Validate venue type
     const venueType = document.getElementById('venueType');
     const venueTypeError = document.getElementById('venueTypeError');
-    if (!BookingState.formData.venueType) {
+    const venueValue = venueType ? venueType.value : BookingState.formData.venueType;
+    BookingState.formData.venueType = venueValue;
+    if (!venueValue) {
         venueTypeError.textContent = 'Please select a venue type';
         venueType.classList.add('form-select--error');
         isValid = false;
@@ -901,11 +929,13 @@ function validateStep5() {
         venueTypeError.textContent = '';
         venueType.classList.remove('form-select--error');
     }
+
+    BookingState.save();
     
     return isValid;
 }
 
-// ==================== STEP 6: CONTACT & DIETARY ====================
+// ==================== CONTACT & DIETARY (STEP 4) ====================
 
 function attachStep6Listeners() {
     const contactName = document.getElementById('contactName');
@@ -988,7 +1018,7 @@ function attachStep6Listeners() {
     }
 }
 
-// ==================== STEP 7: PAYMENT ====================
+// ==================== PAYMENT (STEP 4) ====================
 
 function attachStep7Listeners() {
     const paymentOptions = document.querySelectorAll('input[name="paymentOption"]');
@@ -1065,7 +1095,9 @@ function validateStep6() {
     // Validate contact name
     const contactName = document.getElementById('contactName');
     const contactNameError = document.getElementById('contactNameError');
-    if (!BookingState.formData.contactName || BookingState.formData.contactName.length < 2) {
+    const contactNameValue = contactName ? contactName.value.trim() : BookingState.formData.contactName;
+    BookingState.formData.contactName = contactNameValue;
+    if (!contactNameValue || contactNameValue.length < 2) {
         contactNameError.textContent = 'Please enter your full name';
         contactName.classList.add('form-input--error');
         isValid = false;
@@ -1078,7 +1110,9 @@ function validateStep6() {
     const contactEmail = document.getElementById('contactEmail');
     const contactEmailError = document.getElementById('contactEmailError');
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!BookingState.formData.contactEmail || !emailPattern.test(BookingState.formData.contactEmail)) {
+    const contactEmailValue = contactEmail ? contactEmail.value.trim() : BookingState.formData.contactEmail;
+    BookingState.formData.contactEmail = contactEmailValue;
+    if (!contactEmailValue || !emailPattern.test(contactEmailValue)) {
         contactEmailError.textContent = 'Please enter a valid email address';
         contactEmail.classList.add('form-input--error');
         isValid = false;
@@ -1091,7 +1125,9 @@ function validateStep6() {
     const contactPhone = document.getElementById('contactPhone');
     const contactPhoneError = document.getElementById('contactPhoneError');
     const phonePattern = /^[\d\s\-\(\)]+$/;
-    if (!BookingState.formData.contactPhone || BookingState.formData.contactPhone.length < 10 || !phonePattern.test(BookingState.formData.contactPhone)) {
+    const contactPhoneValue = contactPhone ? contactPhone.value.trim() : BookingState.formData.contactPhone;
+    BookingState.formData.contactPhone = contactPhoneValue;
+    if (!contactPhoneValue || contactPhoneValue.length < 10 || !phonePattern.test(contactPhoneValue)) {
         contactPhoneError.textContent = 'Please enter a valid phone number';
         contactPhone.classList.add('form-input--error');
         isValid = false;
@@ -1105,7 +1141,9 @@ function validateStep6() {
     if (hasAllergies && hasAllergies.checked) {
         const allergies = document.getElementById('allergies');
         const allergiesError = document.getElementById('allergiesError');
-        if (!BookingState.formData.allergies || BookingState.formData.allergies.trim().length < 3) {
+        const allergiesValue = allergies ? allergies.value.trim() : BookingState.formData.allergies;
+        BookingState.formData.allergies = allergiesValue;
+        if (!allergiesValue || allergiesValue.length < 3) {
             allergiesError.textContent = 'Please specify the food allergies';
             allergies.classList.add('form-textarea--error');
             isValid = false;
@@ -1118,12 +1156,16 @@ function validateStep6() {
     // Validate terms agreement
     const agreeToTerms = document.getElementById('agreeToTerms');
     const agreeToTermsError = document.getElementById('agreeToTermsError');
-    if (!BookingState.formData.agreeToTerms) {
+    const agreeValue = agreeToTerms ? agreeToTerms.checked : BookingState.formData.agreeToTerms;
+    BookingState.formData.agreeToTerms = agreeValue;
+    if (!agreeValue) {
         agreeToTermsError.textContent = 'You must agree to the terms to continue';
         isValid = false;
     } else {
         agreeToTermsError.textContent = '';
     }
+
+    BookingState.save();
     
     return isValid;
 }
@@ -1179,7 +1221,7 @@ function attachFormSubmitHandler() {
             e.preventDefault();
             
             // Validate final step
-            if (!validateStep6() || !validateStep7()) {
+            if (!validateStep4()) {
                 return;
             }
             
@@ -1338,12 +1380,6 @@ function validateStep(stepNumber) {
             return validateStep3();
         case 4:
             return validateStep4();
-        case 5:
-            return validateStep5();
-        case 6:
-            return validateStep6();
-        case 7:
-            return validateStep7();
         default:
             return true;
     }

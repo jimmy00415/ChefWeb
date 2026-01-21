@@ -1,16 +1,16 @@
 
 # PRD: Backend System for ChefWeb (Full-Stack Enablement)
 
-**Document Version:** 1.1  
-**Date:** January 20, 2026  
-**Project:** ChefWeb Full-Stack Development  
+**Document Version:** 1.2  
+**Date:** January 21, 2026  
+**Project:** POP Habachi Full-Stack Development  
 **Scope:** Backend services to support booking, payments, video management, AI chatbot, admin tools, and notifications
 
 ---
 
 ## 1. Executive Summary
 
-ChefWeb requires a production-grade backend to transform the current static frontend into a fully functional booking platform. This PRD defines the backend architecture, data model, APIs, integrations, security requirements, and operational needs to support:
+POP Habachi requires a production-grade backend to transform the current static frontend into a fully functional booking platform. This PRD defines the backend architecture, data model, APIs, integrations, security requirements, and operational needs to support:
 
 1. **Owner-managed video hosting** for homepage promotions
 2. **AI chatbot** for booking Q&A and booking prefill
@@ -125,7 +125,9 @@ Backend API (Express/FastAPI)
 	"confirmationNumber": "CHEF-2026-0001",
 	"customerId": "uuid",
 	"serviceState": "CA",
-	"city": "Los Angeles",
+	"city": "San Francisco",
+	"serviceArea": "bay_area|extended",
+	"partyType": "birthday|friendsgiving|business|other",
 	"eventDate": "2026-02-15",
 	"eventTime": "18:00",
 	"numAdults": 12,
@@ -140,7 +142,7 @@ Backend API (Express/FastAPI)
 	"addressLine2": "string",
 	"zipCode": "string",
 	"venueType": "home|backyard|community-center|office|rental-venue|other",
-	"setupRequirements": ["tables", "seating", "outdoor-cover"],
+	"setupRequirements": ["flat-cooking-surface", "electrical-outlet", "water-access", "seating-arranged"],
 	"specialRequests": "string",
 	"dietaryRestrictions": "string",
 	"hasAllergies": true,
@@ -218,9 +220,11 @@ Backend API (Express/FastAPI)
 ```json
 {
 	"id": "uuid",
-	"state": "CA",
-	"cities": ["Los Angeles", "San Diego"],
-	"travelFeePolicy": "included|custom",
+	"region": "bay_area",
+	"states": ["CA"],
+	"cities": ["San Francisco", "Oakland", "San Jose"],
+	"maxRadiusMiles": 300,
+	"travelFeePolicy": "included|estimated|tbd",
 	"active": true
 }
 ```
@@ -263,6 +267,7 @@ Backend API (Express/FastAPI)
 - **GET /api/packages**
 - **GET /api/addons**
 - **GET /api/service-areas**
+- **GET /api/menu** → Homepage “$60 per person includes” list
 - **PATCH /api/packages** (admin)
 
 ---
@@ -275,6 +280,23 @@ Backend API (Express/FastAPI)
 4. Stripe webhook updates booking payment status.
 
 **Backend must validate amount** based on server-side pricing rules (do not trust client totals).
+
+---
+
+## 8. CEO Requirements Alignment
+
+### 8.1 Service Area Rules
+- Primary region: **San Francisco Bay Area**
+- Accept bookings up to **300 miles** outside Bay Area
+- Travel fee applies outside Bay Area (estimated by distance tier)
+
+### 8.2 Party Type
+- Store `partyType` in booking record
+- Used for analytics and future personalization
+
+### 8.3 Allergy Emphasis
+- Backend must accept allergy details and mark high priority in booking payload
+- Admin view should highlight allergy fields
 
 **Webhook Events to handle:**
 - `payment_intent.succeeded`
@@ -339,12 +361,9 @@ The backend will maintain a system prompt with domain knowledge:
 
 ### 9.5 Booking Flow Steps
 1. Location & Date
-2. Party Size
-3. Package
-4. Add-ons
-5. Event Details
-6. Contact Info
-7. Payment
+2. Party Details (includes party type)
+3. Package & Add-ons
+4. Contact + Allergies + Payment
 
 ---
 

@@ -1,15 +1,15 @@
-# PRD2: Frontend New Functions - ChefWeb Enhancement
+# PRD2: Frontend New Functions - POP Habachi Enhancement
 
-**Document Version:** 1.0  
-**Date:** January 3, 2026  
-**Project:** ChefWeb Full-Stack Development  
+**Document Version:** 1.1  
+**Date:** January 21, 2026  
+**Project:** POP Habachi Full-Stack Development  
 **Scope:** Frontend Enhancements for Video Player, AI Chatbot, and Payment Integration
 
 ---
 
 ## 1. Executive Summary
 
-This PRD details three critical frontend enhancements to transform ChefWeb from a static marketing site into a fully functional booking platform:
+This PRD details three critical frontend enhancements to transform POP Habachi from a static marketing site into a fully functional booking platform:
 
 1. **Video Player Module** - Owner-uploaded promotional videos on homepage
 2. **AI Chatbot Assistant** - Intelligent booking support and FAQ automation
@@ -27,7 +27,7 @@ This PRD details three critical frontend enhancements to transform ChefWeb from 
 
 ### 2.1 Existing Structure
 ```
-ChefWeb/Frontend/
+ChefWeb/docs/
 ├── css/
 │   ├── reset.css           (Base reset)
 │   ├── variables.css       (Design tokens)
@@ -43,7 +43,7 @@ ChefWeb/Frontend/
 │   ├── contact.js         (Contact form)
 │   └── confirmation.js    (Booking confirmation)
 └── pages/
-    ├── booking.html       (6-step funnel)
+    ├── booking.html       (4-step funnel)
     ├── confirmation.html
     ├── packages.html
     ├── gallery.html
@@ -53,7 +53,7 @@ ChefWeb/Frontend/
 ```
 
 ### 2.2 Key Components Already Implemented
-- ✅ Multi-step booking funnel (6 steps with progress stepper)
+- ✅ Multi-step booking funnel (4 steps with progress stepper)
 - ✅ Price calculation engine (base + add-ons + travel fee)
 - ✅ SessionStorage state management
 - ✅ Form validation framework
@@ -75,6 +75,66 @@ ChefWeb/Frontend/
 ### 3.1 Business Requirements
 
 **Primary Goal**: Display owner-uploaded promotional videos on the homepage to increase engagement and showcase chef experiences visually.
+
+---
+
+## 4. CEO Requirements Update (January 21, 2026)
+
+### 4.1 Branding
+- **Brand Name**: POP Habachi
+- **Logo**: Must be present in header and footer. Provide a logo asset and apply consistently.
+
+### 4.2 Service Area & Travel Fee
+- **Primary Service Area**: San Francisco Bay Area.
+- **Occasional Service**: Up to 300 miles outside the Bay Area.
+- **Travel Fee**: Charged for travel beyond the Bay Area; displayed clearly during booking and in summary.
+
+### 4.3 Party Type Field
+- Add a **Party Type** selector (single-select, high-level categories).
+- Suggested options: **Birthday**, **Friendsgiving**, **Business**, **Other**.
+
+### 4.4 Menu Presentation on Homepage
+- Show a **“$60 per person includes”** food list on the homepage.
+- Provide a clear list of typical items (e.g., salad, chicken, shrimp, lobster).
+- This is a marketing list; final menu varies by package.
+
+### 4.5 Allergy Section Prominence
+- Allergy input must be **highly visible**, visually emphasized, and not buried.
+- Add a strong warning style and clear CTA for specifying allergies.
+
+### 4.6 Booking Flow Simplification
+- Reduced to **4 steps** to minimize drop-off while preserving required info.
+- Goal: reduce drop-off and fatigue while preserving required info.
+
+---
+
+## 5. Booking Flow (Simplified)
+
+### Proposed 4-Step Flow (Recommended)
+1. **Location & Date** (service area + travel fee visibility)
+2. **Party Details** (party size + party type)
+3. **Package & Add-ons** (combine Step 3 & 4)
+4. **Contact + Allergies + Payment** (combine Step 5–7 with prominent allergy block)
+
+**Acceptance Criteria**:
+- [x] Booking steps reduced from 7 to 4–5
+- [x] Party Type captured in Step 2
+- [x] Allergies block visible above dietary preferences in final step
+- [x] Payment can remain embedded in final step (Stripe Elements)
+
+---
+
+## 6. Menu List on Homepage
+
+### Requirements
+- Add a **“$60 per person includes”** block in the pricing or package section.
+- Display **4–6 food items** (e.g., salad, chicken, shrimp, lobster).
+- Ensure copy is adjustable from CMS later.
+
+**Acceptance Criteria**:
+- [ ] Menu list is visible without scrolling on desktop.
+- [ ] Menu list is clear and readable on mobile.
+- [ ] Menu list does not conflict with package pricing tiers.
 
 **Key Metrics**:
 - Video view rate: Target 60% of homepage visitors
@@ -669,7 +729,7 @@ Insert this section after the "How It Works" section (line ~194):
 
 ---
 
-## 4. Feature 2: AI Chatbot Assistant
+## 7. Feature 2: AI Chatbot Assistant
 
 ### 4.1 Business Requirements
 
@@ -1643,7 +1703,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 ---
 
-## 5. Feature 3: Payment Integration (Stripe - US)
+## 8. Feature 3: Payment Integration (Stripe - US)
 
 ### 5.1 Business Requirements
 
@@ -1665,14 +1725,14 @@ document.addEventListener('DOMContentLoaded', () => {
 #### FR3.1: Payment Step in Booking Funnel
 **Priority**: P0 (Must Have)
 
-**Position**: New Step 7 in booking funnel (after Contact Info step)  
+**Position**: Step 4 in booking funnel (after Contact Info section)  
 **Payment Options**:
 - Pay deposit now ($150 - configurable)
 - Pay full amount now
 - Pay later (request quote without immediate payment)
 
 **Acceptance Criteria**:
-- [ ] Payment step appears after Step 6 (Contact Info)
+- [ ] Payment step appears after Contact Info section
 - [ ] User can choose payment option (deposit/full/later)
 - [ ] Total amount and deposit amount clearly displayed
 - [ ] Payment option selection updates price summary
@@ -1705,8 +1765,8 @@ document.addEventListener('DOMContentLoaded', () => {
 **Priority**: P0 (Must Have)
 
 **Flow Steps**:
-1. User fills booking form (Steps 1-6)
-2. User reaches payment step (Step 7)
+1. User fills booking form (Steps 1-3)
+2. User reaches payment section (Step 4)
 3. User selects payment option (deposit/full/later)
 4. If payment selected:
    a. User enters card details
@@ -1791,7 +1851,7 @@ document.addEventListener('DOMContentLoaded', () => {
 #### Payment Step Layout (Desktop)
 ```
 ┌────────────────────────────────────────────────────┐
-│ Step 7: Payment                                    │
+│ Step 4: Payment                                    │
 │                                                    │
 │ ┌──────────────────────────────────────────────┐  │
 │ │ Choose Payment Option                        │  │
@@ -1849,7 +1909,7 @@ document.addEventListener('DOMContentLoaded', () => {
 #### Mobile Payment View
 ```
 ┌──────────────────────────┐
-│ Step 7 of 7             │
+│ Step 4 of 4             │
 │                          │
 │ Choose Payment           │
 │                          │

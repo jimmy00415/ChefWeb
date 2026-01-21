@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Book your private chef experience - customizable menus and professional service.">
-    <title>Book Now - ChefWeb</title>
+    <meta name="description" content="Book your private hibachi chef experience with POP Habachi - customizable menus and professional service.">
+    <title>Book Now - POP Habachi</title>
     
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/variables.css">
@@ -19,7 +19,7 @@
     <!-- Header -->
     <header class="header" id="header" role="banner">
         <div class="header__container">
-            <a href="../index.html" class="header__logo">ChefWeb</a>
+            <a href="../index.html" class="header__logo">POP Habachi</a>
             
             <!-- Mobile Menu Toggle -->
             <button class="header__menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mainNav">
@@ -62,27 +62,15 @@
                     </div>
                     <div class="stepper__step" data-step="2">
                         <div class="stepper__circle">2</div>
-                        <div class="stepper__label">Party Size</div>
+                        <div class="stepper__label">Party Details</div>
                     </div>
                     <div class="stepper__step" data-step="3">
                         <div class="stepper__circle">3</div>
-                        <div class="stepper__label">Package</div>
+                        <div class="stepper__label">Package & Add-ons</div>
                     </div>
                     <div class="stepper__step" data-step="4">
                         <div class="stepper__circle">4</div>
-                        <div class="stepper__label">Add-ons</div>
-                    </div>
-                    <div class="stepper__step" data-step="5">
-                        <div class="stepper__circle">5</div>
-                        <div class="stepper__label">Event Details</div>
-                    </div>
-                    <div class="stepper__step" data-step="6">
-                        <div class="stepper__circle">6</div>
-                        <div class="stepper__label">Contact Info</div>
-                    </div>
-                    <div class="stepper__step" data-step="7">
-                        <div class="stepper__circle">7</div>
-                        <div class="stepper__label">Payment</div>
+                        <div class="stepper__label">Event, Contact & Payment</div>
                     </div>
                 </div>
 
@@ -99,19 +87,11 @@
                             <div class="form-group">
                                 <label class="form-label form-label--required" for="serviceState">Service State</label>
                                 <select class="form-select" id="serviceState" name="serviceState" required>
-                                    <option value="">Select your state</option>
-                                    <option value="CA">California</option>
-                                    <option value="NY">New York</option>
-                                    <option value="TX">Texas</option>
-                                    <option value="FL">Florida</option>
-                                    <option value="IL">Illinois</option>
-                                    <option value="PA">Pennsylvania</option>
-                                    <option value="OH">Ohio</option>
-                                    <option value="GA">Georgia</option>
-                                    <option value="NC">North Carolina</option>
-                                    <option value="MI">Michigan</option>
+                                    <option value="">Select your service area</option>
+                                    <option value="CA">San Francisco Bay Area</option>
+                                    <option value="EXT">Outside Bay Area (up to 300 miles)</option>
                                 </select>
-                                <span class="form-hint">We'll confirm if your specific city is covered</span>
+                                <span class="form-hint">Travel fee applies outside the Bay Area</span>
                                 <span class="form-error" id="serviceStateError"></span>
                             </div>
 
@@ -175,6 +155,19 @@
                         </p>
 
                         <div class="step-fields">
+                            <div class="form-group">
+                                <label class="form-label form-label--required" for="partyType">Party Type</label>
+                                <select class="form-select" id="partyType" name="partyType" required>
+                                    <option value="">Select party type</option>
+                                    <option value="birthday">Birthday</option>
+                                    <option value="friendsgiving">Friendsgiving</option>
+                                    <option value="business">Business</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <span class="form-hint">This helps us tailor the experience.</span>
+                                <span class="form-error" id="partyTypeError"></span>
+                            </div>
+
                             <div class="field-group--inline">
                                 <div class="form-group">
                                     <label class="form-label form-label--required" for="numAdults">Number of Adults</label>
@@ -250,16 +243,16 @@
                                 ← Back
                             </button>
                             <button type="button" class="btn btn--primary booking-nav__next" data-next-step="3">
-                                Continue to Package Selection →
+                                Continue to Package & Add-ons →
                             </button>
                         </div>
                     </div>
 
-                    <!-- Step 3: Package Selection -->
+                    <!-- Step 3: Package & Add-ons -->
                     <div class="booking-step" data-step="3">
-                        <h2 class="step-title">Choose Your Package</h2>
+                        <h2 class="step-title">Package & Add-ons</h2>
                         <p class="step-description">
-                            Select the dining experience that best fits your event. All packages include setup, service, and cleanup.
+                            Select your dining experience and optional add-ons. All packages include setup, service, and cleanup.
                         </p>
 
                         <div class="step-fields">
@@ -349,26 +342,12 @@
                                     View Detailed Menu Comparison →
                                 </a>
                             </div>
-                        </div>
+                            <div class="section-divider" style="margin: var(--spacing-3xl) 0;"></div>
 
-                        <div class="booking-nav">
-                            <button type="button" class="btn btn--outline booking-nav__back" data-prev-step="2">
-                                ← Back
-                            </button>
-                            <button type="button" class="btn btn--primary booking-nav__next" data-next-step="4">
-                                Continue to Add-ons →
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Step 4: Add-ons -->
-                    <div class="booking-step" data-step="4">
-                        <h2 class="step-title">Enhance Your Experience</h2>
-                        <p class="step-description">
-                            Optional add-ons to make your event even more memorable. All items are priced per event.
-                        </p>
-
-                        <div class="step-fields">
+                            <h3 class="step-subtitle" style="font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-md);">Enhance Your Experience</h3>
+                            <p class="step-description" style="margin-bottom: var(--spacing-xl);">
+                                Optional add-ons to make your event even more memorable. All items are priced per event.
+                            </p>
                             <!-- Beverages Section -->
                             <div class="addon-category">
                                 <h3 class="addon-category__title">🍹 Beverages</h3>
@@ -535,23 +514,24 @@
                         </div>
 
                         <div class="booking-nav">
-                            <button type="button" class="btn btn--outline booking-nav__back" data-prev-step="3">
+                            <button type="button" class="btn btn--outline booking-nav__back" data-prev-step="2">
                                 ← Back
                             </button>
-                            <button type="button" class="btn btn--primary booking-nav__next" data-next-step="5">
-                                Continue to Event Details →
+                            <button type="button" class="btn btn--primary booking-nav__next" data-next-step="4">
+                                Continue to Event, Contact & Payment →
                             </button>
                         </div>
                     </div>
 
-                    <!-- Step 5: Event Details -->
-                    <div class="booking-step" data-step="5">
-                        <h2 class="step-title">Event Details & Venue</h2>
+                    <!-- Step 4: Event, Contact & Payment -->
+                    <div class="booking-step" data-step="4">
+                        <h2 class="step-title">Event, Contact & Payment</h2>
                         <p class="step-description">
-                            Help us prepare for your event. Let us know where you'll be hosting and what setup you need.
+                            Share venue details, contact info, and payment to secure your booking.
                         </p>
 
                         <div class="step-fields">
+                            <h3 style="font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-lg); padding-bottom: var(--spacing-sm); border-bottom: 2px solid var(--color-border-light);">Event Details</h3>
                             <!-- Address Information -->
                             <div class="form-group">
                                 <label class="form-label form-label--required" for="streetAddress">Street Address</label>
@@ -641,26 +621,6 @@
                                 <textarea class="form-textarea" id="specialRequests" name="specialRequests" rows="4" placeholder="Any special setup requirements, parking instructions, or other details we should know?"></textarea>
                                 <span class="form-hint">Max 500 characters</span>
                             </div>
-                        </div>
-
-                        <div class="booking-nav">
-                            <button type="button" class="btn btn--outline booking-nav__back" data-prev-step="4">
-                                ← Back
-                            </button>
-                            <button type="button" class="btn btn--primary booking-nav__next" data-next-step="6">
-                                Continue to Contact Info →
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Step 6: Contact Information & Final Details -->
-                    <div class="booking-step" data-step="6">
-                        <h2 class="step-title">Almost Done!</h2>
-                        <p class="step-description">
-                            Final step: your contact information and dietary needs. We'll review and confirm within 24 hours.
-                        </p>
-
-                        <div class="step-fields">
                             <!-- Contact Information -->
                             <h3 style="font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-lg); padding-bottom: var(--spacing-sm); border-bottom: 2px solid var(--color-border-light);">Contact Information</h3>
                             
@@ -684,6 +644,29 @@
                                 </div>
                             </div>
 
+                            <!-- Allergy Safety (Prominent) -->
+                            <div class="allergy-callout" role="alert" aria-live="polite">
+                                <div class="allergy-callout__header">
+                                    <span class="allergy-callout__icon">⚠️</span>
+                                    <div>
+                                        <h3 class="allergy-callout__title">Allergy Safety Check</h3>
+                                        <p class="allergy-callout__subtitle">We take food allergies seriously. Please tell us now.</p>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-top: var(--spacing-lg);">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="hasAllergies" id="hasAllergies">
+                                        <span>One or more guests have food allergies</span>
+                                    </label>
+                                </div>
+                                <div class="form-group hidden" id="allergiesGroup">
+                                    <label class="form-label form-label--required" for="allergies">List allergies (Required)</label>
+                                    <textarea class="form-textarea" id="allergies" name="allergies" rows="3" placeholder="Peanuts, shellfish, tree nuts, eggs, dairy, soy, etc."></textarea>
+                                    <span class="form-hint">Please be specific - this is critical for guest safety</span>
+                                    <span class="form-error" id="allergiesError"></span>
+                                </div>
+                            </div>
+
                             <!-- Dietary Restrictions -->
                             <h3 style="font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); margin: var(--spacing-2xl) 0 var(--spacing-lg); padding-bottom: var(--spacing-sm); border-bottom: 2px solid var(--color-border-light);">Dietary Needs</h3>
                             
@@ -691,20 +674,6 @@
                                 <label class="form-label" for="dietaryRestrictions">Dietary Restrictions & Preferences</label>
                                 <textarea class="form-textarea" id="dietaryRestrictions" name="dietaryRestrictions" rows="4" placeholder="Vegetarian, vegan, gluten-free, kosher, halal, etc. Please list all dietary needs for your guests."></textarea>
                                 <span class="form-hint">List all dietary requirements so we can customize the menu</span>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="hasAllergies" id="hasAllergies">
-                                    <span>One or more guests have food allergies</span>
-                                </label>
-                            </div>
-
-                            <div class="form-group hidden" id="allergiesGroup">
-                                <label class="form-label form-label--required" for="allergies">Food Allergies (Required if checked above)</label>
-                                <textarea class="form-textarea" id="allergies" name="allergies" rows="3" placeholder="Peanuts, shellfish, tree nuts, eggs, dairy, soy, etc."></textarea>
-                                <span class="form-hint">⚠️ Please be specific - this is critical for guest safety</span>
-                                <span class="form-error" id="allergiesError"></span>
                             </div>
 
                             <!-- Policies & Agreement -->
@@ -743,26 +712,8 @@
                                     <strong>What happens next?</strong> After submitting, you'll receive a confirmation email within 24 hours with next steps, deposit payment link, and your chef assignment. We're excited to cook for you!
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="booking-nav">
-                            <button type="button" class="btn btn--outline booking-nav__back" data-prev-step="5">
-                                ← Back
-                            </button>
-                            <button type="button" class="btn btn--primary booking-nav__next" data-next-step="7">
-                                Continue to Payment →
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Step 7: Payment -->
-                    <div class="booking-step" data-step="7">
-                        <h2 class="step-title">Secure Your Booking</h2>
-                        <p class="step-description">
-                            Choose how you'd like to pay. A deposit secures your chef and date instantly.
-                        </p>
-
-                        <div class="step-fields">
+                            <!-- Payment -->
+                            <h3 style="font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); margin: var(--spacing-2xl) 0 var(--spacing-lg); padding-bottom: var(--spacing-sm); border-bottom: 2px solid var(--color-border-light);">Payment</h3>
                             <div class="payment-option-grid" role="radiogroup" aria-label="Payment options">
                                 <label class="payment-option-card payment-option-card--selected">
                                     <input type="radio" name="paymentOption" value="deposit" checked>
@@ -826,7 +777,7 @@
                         </div>
 
                         <div class="booking-nav">
-                            <button type="button" class="btn btn--outline booking-nav__back" data-prev-step="6">
+                            <button type="button" class="btn btn--outline booking-nav__back" data-prev-step="3">
                                 ← Back
                             </button>
                             <button type="submit" class="btn btn--primary booking-nav__next" id="submitBookingBtn">
