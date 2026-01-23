@@ -64,7 +64,7 @@ Location landing pages (high ROI in this niche)
 
 Legal + Trust
 
-Terms, privacy, insurance requests, safety notes
+Terms, privacy, safety notes
 Hibachi Omakase explicitly surfaces terms and related policies in the footer. 
 hibachiomakase.com
 
@@ -328,7 +328,7 @@ Price transparency: always show base + upgrades + travel fee state + minimum spe
 Hibachi Omakase - Hibachi At Home
 +1
 
-Trust near CTAs: ratings + insurance/license note (if applicable) + clear responsibilities. 
+Trust near CTAs: ratings + clear responsibilities. 
 Hibachi Omakase - Hibachi At Home
 +1
 
@@ -769,7 +769,7 @@ Gallery masonry + lightbox
 
 Trust band
 
-“Licensed/insured” copy slot if true; reference mentions insured and provides an insurance request form link. 
+
 Hibachi Omakase - Hibachi At Home
 +1
 
