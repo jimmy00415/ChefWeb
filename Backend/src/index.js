@@ -10,6 +10,7 @@ import videosRouter from './routes/videos.js';
 import chatbotRouter from './routes/chatbot.js';
 import analyticsRouter from './routes/analytics.js';
 import configRouter from './routes/config.js';
+import setupRouter from './routes/setup.js';
 
 dotenv.config();
 
@@ -61,6 +62,7 @@ app.use('/api/payments', paymentsRouter);
 app.use('/api/videos', videosRouter);
 app.use('/api/chatbot', chatbotRouter);
 app.use('/api/analytics', analyticsRouter);
+app.use('/api/setup', setupRouter);
 app.use('/api', configRouter);
 
 // Error handling middleware
