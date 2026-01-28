@@ -6,7 +6,7 @@ steps:
       - 'deploy'
       - 'chefweb-backend'
       - '--source'
-      - 'Backend'
+      - './Backend'
       - '--region'
       - 'us-central1'
       - '--allow-unauthenticated'
