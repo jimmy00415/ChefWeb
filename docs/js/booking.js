@@ -1272,7 +1272,7 @@ async function initStripeElements() {
     }
 
     try {
-        const configResponse = await fetch('../api/config/stripe');
+        const configResponse = await fetch(`${API_BASE_URL}/api/config/stripe`);
         if (!configResponse.ok) {
             throw new Error('Stripe config failed');
         }
@@ -1314,7 +1314,7 @@ async function processStripePayment() {
     const deposit = Math.round(total * 0.25);
     const amount = paymentOption === 'full' ? total : deposit;
 
-    const response = await fetch('../api/payments/create-intent', {
+    const response = await fetch(`${API_BASE_URL}/api/payments/create-intent`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

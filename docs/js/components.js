@@ -566,7 +566,7 @@ function initChatbotLogic({ windowEl, bubble, input }) {
         try {
             const controller = new AbortController();
             const timeout = setTimeout(() => controller.abort(), 6000);
-            const response = await fetch('/api/chatbot/message', {
+            const response = await fetch(`${API_BASE_URL}/api/chatbot/message`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ message: text, page: window.location.pathname }),

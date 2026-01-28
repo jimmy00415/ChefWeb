@@ -146,7 +146,7 @@ async function fetchVideoConfig(container) {
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 2500);
 
-        const response = await fetch('/api/videos/homepage', { signal: controller.signal });
+        const response = await fetch(`${API_BASE_URL}/api/videos/homepage`, { signal: controller.signal });
         clearTimeout(timeout);
 
         if (!response.ok) {
@@ -286,7 +286,7 @@ function trackVideoEvent(eventName, config, details = {}) {
     }
 
     if (navigator.onLine) {
-        fetch('/api/analytics/video', {
+        fetch(`${API_BASE_URL}/api/analytics/video`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
