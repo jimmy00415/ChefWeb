@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Dashboard - POP Habachi Admin</title>
+    
+    <link rel="stylesheet" href="../../css/reset.css">
+    <link rel="stylesheet" href="../../css/variables.css">
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="../../css/components.css">
+    <link rel="stylesheet" href="../../css/admin.css">
+</head>
+<body class="admin-body">
+    <!-- Admin Header -->
+    <header class="admin-header">
+        <div class="admin-header__left">
+            <h1 class="admin-header__logo">🍽️ POP Habachi</h1>
+            <span class="admin-header__badge">Admin</span>
+        </div>
+        <nav class="admin-header__nav">
+            <a href="dashboard.html" class="admin-nav-link admin-nav-link--active">Dashboard</a>
+            <a href="bookings.html" class="admin-nav-link">Bookings</a>
+            <a href="contacts.html" class="admin-nav-link">Contacts</a>
+        </nav>
+        <div class="admin-header__right">
+            <button id="logoutBtn" class="btn btn--outline btn--sm">Logout</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <div class="admin-container">
+            <!-- Page Header -->
+            <div class="admin-page-header">
+                <h2 class="admin-page-title">Dashboard</h2>
+                <p class="admin-page-subtitle" id="dashboardDate"></p>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card stat-card--primary">
+                    <div class="stat-card__icon">📅</div>
+                    <div class="stat-card__content">
+                        <span class="stat-card__value" id="statTodaysEvents">-</span>
+                        <span class="stat-card__label">Today's Events</span>
+                    </div>
+                </div>
+                <div class="stat-card stat-card--warning">
+                    <div class="stat-card__icon">⏳</div>
+                    <div class="stat-card__content">
+                        <span class="stat-card__value" id="statPendingPayments">-</span>
+                        <span class="stat-card__label">Pending Payments</span>
+                    </div>
+                </div>
+                <div class="stat-card stat-card--success">
+                    <div class="stat-card__icon">💰</div>
+                    <div class="stat-card__content">
+                        <span class="stat-card__value" id="statMonthlyRevenue">-</span>
+                        <span class="stat-card__label">This Month</span>
+                    </div>
+                </div>
+                <div class="stat-card stat-card--info">
+                    <div class="stat-card__icon">📩</div>
+                    <div class="stat-card__content">
+                        <span class="stat-card__value" id="statNewContacts">-</span>
+                        <span class="stat-card__label">New Inquiries</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Two Column Layout -->
+            <div class="admin-grid admin-grid--2col">
+                <!-- Recent Bookings -->
+                <div class="admin-card">
+                    <div class="admin-card__header">
+                        <h3 class="admin-card__title">Recent Bookings</h3>
+                        <a href="bookings.html" class="admin-card__action">View All →</a>
+                    </div>
+                    <div class="admin-card__body">
+                        <table class="admin-table" id="recentBookingsTable">
+                            <thead>
+                                <tr>
+                                    <th>Confirmation</th>
+                                    <th>Customer</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentBookingsBody">
+                                <tr><td colspan="5" class="admin-table__loading">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Upcoming Events -->
+                <div class="admin-card">
+                    <div class="admin-card__header">
+                        <h3 class="admin-card__title">Upcoming Events (7 days)</h3>
+                    </div>
+                    <div class="admin-card__body">
+                        <div class="upcoming-events" id="upcomingEvents">
+                            <p class="admin-table__loading">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../../js/api-config.js"></script>
+    <script src="../../js/admin.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set date
+            document.getElementById('dashboardDate').textContent = 
+                new Date().toLocaleDateString('en-US', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+            
+            // Load dashboard
+            if (typeof AdminApp !== 'undefined') {
+                AdminApp.loadDashboard();
+            }
+        });
+    </script>
+</body>
+</html>

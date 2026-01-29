@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Bookings - POP Habachi Admin</title>
+    
+    <link rel="stylesheet" href="../../css/reset.css">
+    <link rel="stylesheet" href="../../css/variables.css">
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="../../css/components.css">
+    <link rel="stylesheet" href="../../css/admin.css">
+</head>
+<body class="admin-body">
+    <!-- Admin Header -->
+    <header class="admin-header">
+        <div class="admin-header__left">
+            <h1 class="admin-header__logo">🍽️ POP Habachi</h1>
+            <span class="admin-header__badge">Admin</span>
+        </div>
+        <nav class="admin-header__nav">
+            <a href="dashboard.html" class="admin-nav-link">Dashboard</a>
+            <a href="bookings.html" class="admin-nav-link admin-nav-link--active">Bookings</a>
+            <a href="contacts.html" class="admin-nav-link">Contacts</a>
+        </nav>
+        <div class="admin-header__right">
+            <button id="logoutBtn" class="btn btn--outline btn--sm">Logout</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <div class="admin-container">
+            <!-- Page Header -->
+            <div class="admin-page-header">
+                <h2 class="admin-page-title">Bookings</h2>
+                <p class="admin-page-subtitle">Manage all customer bookings</p>
+            </div>
+
+            <!-- Filters -->
+            <div class="admin-filters">
+                <div class="filter-group">
+                    <label for="filterStatus">Status:</label>
+                    <select id="filterStatus" class="form-select form-select--sm">
+                        <option value="">All Statuses</option>
+                        <option value="pending_payment">Pending Payment</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="fulfilled">Fulfilled</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filterPayment">Payment:</label>
+                    <select id="filterPayment" class="form-select form-select--sm">
+                        <option value="">All</option>
+                        <option value="unpaid">Unpaid</option>
+                        <option value="deposit_paid">Deposit Paid</option>
+                        <option value="paid">Paid</option>
+                        <option value="refunded">Refunded</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filterSearch">Search:</label>
+                    <input type="text" id="filterSearch" class="form-input form-input--sm" placeholder="Confirmation # or name...">
+                </div>
+                <button class="btn btn--primary btn--sm" id="applyFilters">Apply</button>
+                <button class="btn btn--outline btn--sm" id="clearFilters">Clear</button>
+            </div>
+
+            <!-- Bookings Table -->
+            <div class="admin-card">
+                <div class="admin-card__body">
+                    <table class="admin-table admin-table--full" id="bookingsTable">
+                        <thead>
+                            <tr>
+                                <th>Confirmation</th>
+                                <th>Customer</th>
+                                <th>Email</th>
+                                <th>Event Date</th>
+                                <th>Package</th>
+                                <th>Guests</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Payment</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookingsBody">
+                            <tr><td colspan="10" class="admin-table__loading">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Pagination -->
+                <div class="admin-card__footer">
+                    <div class="pagination" id="pagination">
+                        <span class="pagination__info" id="paginationInfo">Showing 0-0 of 0</span>
+                        <div class="pagination__buttons">
+                            <button class="btn btn--outline btn--sm" id="prevPage" disabled>← Previous</button>
+                            <button class="btn btn--outline btn--sm" id="nextPage" disabled>Next →</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Booking Detail Modal -->
+    <div class="modal" id="bookingModal">
+        <div class="modal__backdrop" id="modalBackdrop"></div>
+        <div class="modal__content">
+            <div class="modal__header">
+                <h3 class="modal__title">Booking Details</h3>
+                <button class="modal__close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal__body" id="bookingDetail">
+                <!-- Filled dynamically -->
+            </div>
+            <div class="modal__footer">
+                <button class="btn btn--outline" id="closeModalBtn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../js/api-config.js"></script>
+    <script src="../../js/admin.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof AdminApp !== 'undefined') {
+                AdminApp.loadBookings();
+            }
+        });
+    </script>
+</body>
+</html>

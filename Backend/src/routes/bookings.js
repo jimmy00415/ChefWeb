@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { query, isPostgres, getMemoryDb, createId, createConfirmationNumber } from '../db/index.js';
 import { validateBookingPayload, calculateTotals } from '../validators.js';
+import { sendBookingConfirmation, sendAdminBookingAlert } from '../services/email.js';
 
 const router = Router();
 
@@ -43,6 +44,18 @@ router.post('/', async (req, res) => {
       ]);
 
       const booking = result.rows[0];
+      
+      // Send confirmation emails (fire and forget - don't block response)
+      const bookingForEmail = {
+        ...booking,
+        ...payload,
+        total: totals.total
+      };
+      Promise.all([
+        sendBookingConfirmation(bookingForEmail),
+        sendAdminBookingAlert(bookingForEmail)
+      ]).catch(err => console.error('Email send error:', err));
+      
       return res.status(201).json({ 
         bookingId: booking.id, 
         confirmationNumber: booking.confirmation_number, 
@@ -62,6 +75,13 @@ router.post('/', async (req, res) => {
         ...totals
       };
       getMemoryDb().bookings.set(id, booking);
+      
+      // Send confirmation emails for in-memory mode too
+      Promise.all([
+        sendBookingConfirmation(booking),
+        sendAdminBookingAlert(booking)
+      ]).catch(err => console.error('Email send error:', err));
+      
       return res.status(201).json({ bookingId: id, confirmationNumber, status });
     }
   } catch (error) {

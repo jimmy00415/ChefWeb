@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Admin Login - POP Habachi</title>
+    
+    <link rel="stylesheet" href="../../css/reset.css">
+    <link rel="stylesheet" href="../../css/variables.css">
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="../../css/components.css">
+    <link rel="stylesheet" href="../../css/admin.css">
+</head>
+<body class="admin-body">
+    <div class="admin-login">
+        <div class="admin-login__card">
+            <div class="admin-login__header">
+                <h1>🍽️ POP Habachi</h1>
+                <p>Admin Dashboard</p>
+            </div>
+            
+            <form id="loginForm" class="admin-login__form">
+                <div class="form-group">
+                    <label class="form-label" for="apiKey">Admin API Key</label>
+                    <input 
+                        type="password" 
+                        class="form-input" 
+                        id="apiKey" 
+                        name="apiKey" 
+                        placeholder="Enter your admin API key"
+                        required
+                        autocomplete="current-password"
+                    >
+                    <span class="form-error" id="loginError"></span>
+                </div>
+                
+                <button type="submit" class="btn btn--primary btn--full" id="loginBtn">
+                    Sign In
+                </button>
+            </form>
+            
+            <p class="admin-login__footer">
+                <a href="../../index.html">← Back to Website</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="../../js/api-config.js"></script>
+    <script src="../../js/admin.js"></script>
+</body>
+</html>

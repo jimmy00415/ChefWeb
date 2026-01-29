@@ -36,7 +36,7 @@ function initContactForm() {
     }
 
     // Form submission
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
         // Validate consent
@@ -48,23 +48,60 @@ function initContactForm() {
 
         // Get form data
         const formData = {
-            name: document.getElementById('contactName')?.value,
-            email: document.getElementById('contactEmail')?.value,
-            phone: document.getElementById('contactPhone')?.value,
+            name: document.getElementById('contactName')?.value?.trim(),
+            email: document.getElementById('contactEmail')?.value?.trim(),
+            phone: document.getElementById('contactPhone')?.value?.trim(),
             reason: document.getElementById('contactReason')?.value,
-            subject: document.getElementById('contactSubject')?.value,
-            message: document.getElementById('contactMessage')?.value,
-            consent: consent?.checked,
-            timestamp: new Date().toISOString()
+            subject: document.getElementById('contactSubject')?.value?.trim(),
+            message: document.getElementById('contactMessage')?.value?.trim()
         };
 
-        // In production, this would submit to backend
-        console.log('Contact form submission:', formData);
+        // Basic validation
+        if (!formData.name || !formData.email || !formData.message) {
+            alert('Please fill in all required fields (name, email, and message)');
+            return;
+        }
 
-        // Show success message
-        alert('Thank you for contacting us! We\'ll respond within 2 hours during business hours.');
-        
-        // Reset form
-        form.reset();
+        // Email validation
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+            alert('Please enter a valid email address');
+            return;
+        }
+
+        // Disable submit button to prevent double submission
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn?.textContent;
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+        }
+
+        try {
+            // Submit to backend API
+            const response = await window.apiRequest('/api/contact', {
+                method: 'POST',
+                body: JSON.stringify(formData)
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                // Show success message
+                alert('Thank you for contacting us! We\'ll respond within 2 hours during business hours.');
+                form.reset();
+            } else {
+                // Show error
+                alert(result.error || 'Failed to submit. Please try again or call us directly.');
+            }
+        } catch (error) {
+            console.error('Contact form error:', error);
+            alert('Unable to connect to server. Please try again later or call us at (555) 123-4567.');
+        } finally {
+            // Re-enable submit button
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            }
+        }
     });
 }

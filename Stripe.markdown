@@ -404,51 +404,96 @@ gcloud logs read "resource.type=cloud_run_revision AND resource.labels.service_n
 | Component | Status | Notes |
 |-----------|--------|-------|
 | Frontend Stripe Elements | ✅ Implemented | Uses `stripe.confirmCardPayment()` |
-| `/api/config/stripe` | ✅ Implemented | Returns publishable key |
-| `/api/payments/create-intent` | ⚠️ Mock | Returns mock clientSecret - needs real Stripe SDK |
-| `/api/payments/webhook` | ⚠️ Stub | Returns `{received: true}` - needs signature verification |
-| `/api/payments/refund` | ⚠️ Mock | Updates DB only - needs real Stripe SDK |
-| Secret Manager integration | ❌ Not done | Keys currently in plain env vars |
-| Idempotency keys | ❌ Not done | Need to add to create-intent |
-| Webhook signature verification | ❌ Not done | Need raw body middleware |
+| `/api/config/stripe` | ✅ Implemented | Returns publishableKey + configured flag |
+| `/api/payments/create-intent` | ✅ Implemented | Real Stripe SDK with idempotency keys |
+| `/api/payments/webhook` | ✅ Implemented | Signature verification with raw body |
+| `/api/payments/refund` | ✅ Implemented | Real Stripe refunds with fallback |
+| Stripe SDK installed | ✅ Done | `stripe` npm package v16.x |
+| Raw body middleware | ✅ Done | Before express.json() in index.js |
+| Idempotency keys | ✅ Done | Auto-generated from email+timestamp |
+| Graceful fallback | ✅ Done | Mock mode when keys not configured |
+| Secret Manager integration | ⏳ Pending | See Section 10 for setup commands |
+| Webhook signature verification | ✅ Code Ready | Needs STRIPE_WEBHOOK_SECRET |
 
 ---
 
-## 10. Next Steps to Production-Ready Payments
+## 10. Final Setup Commands (Run These to Activate Payments)
 
-### Step 1: Install Stripe SDK
-```bash
-cd Backend
-npm install stripe
-```
+### Step 1: Create Secrets in Google Secret Manager
 
-### Step 2: Create Secrets in Google Secret Manager
 ```bash
-# Create secrets
+# Create secrets (run once)
 gcloud secrets create stripe-secret-key --replication-policy="automatic" --project=smiling-mark-476404-h0
 gcloud secrets create stripe-webhook-secret --replication-policy="automatic" --project=smiling-mark-476404-h0
 
-# Add your keys (replace with actual keys)
-echo -n "sk_test_YOUR_KEY" | gcloud secrets versions add stripe-secret-key --data-file=- --project=smiling-mark-476404-h0
+# Add TEST keys first (replace with your actual test keys from https://dashboard.stripe.com/test/apikeys)
+echo -n "sk_test_YOUR_SECRET_KEY" | gcloud secrets versions add stripe-secret-key --data-file=- --project=smiling-mark-476404-h0
 ```
 
-### Step 3: Update payments.js with Real Stripe SDK
-Replace the mock implementation with the code in Section 4.1
+### Step 2: Grant Cloud Run Access to Secrets
 
-### Step 4: Add Raw Body Middleware for Webhooks
-Update index.js as shown in Section 4.2
-
-### Step 5: Configure Webhook in Stripe Dashboard
-Follow instructions in Section 6.2
-
-### Step 6: Deploy and Test with Test Keys
 ```bash
-cd Backend
-gcloud run deploy chefweb-backend --source=. --region=us-central1 --project=smiling-mark-476404-h0 --allow-unauthenticated
+# Get the Cloud Run service account
+gcloud run services describe chefweb-backend --region=us-central1 --project=smiling-mark-476404-h0 --format="value(spec.template.spec.serviceAccountName)"
+
+# Grant access (usually 775848565797-compute@developer.gserviceaccount.com)
+gcloud secrets add-iam-policy-binding stripe-secret-key \
+  --member="serviceAccount:775848565797-compute@developer.gserviceaccount.com" \
+  --role="roles/secretmanager.secretAccessor" \
+  --project=smiling-mark-476404-h0
+
+gcloud secrets add-iam-policy-binding stripe-webhook-secret \
+  --member="serviceAccount:775848565797-compute@developer.gserviceaccount.com" \
+  --role="roles/secretmanager.secretAccessor" \
+  --project=smiling-mark-476404-h0
 ```
 
-### Step 7: Switch to Live Keys After Testing
-Update secrets with `sk_live_...` and `pk_live_...` keys
+### Step 3: Configure Cloud Run with Secrets
+
+```bash
+# Set publishable key (safe as env var) and secrets
+gcloud run services update chefweb-backend \
+  --region=us-central1 \
+  --project=smiling-mark-476404-h0 \
+  --update-env-vars="STRIPE_PUBLISHABLE_KEY=pk_test_YOUR_PUBLISHABLE_KEY" \
+  --update-secrets="STRIPE_SECRET_KEY=stripe-secret-key:latest,STRIPE_WEBHOOK_SECRET=stripe-webhook-secret:latest"
+```
+
+### Step 4: Configure Webhook in Stripe Dashboard
+
+1. Go to [Stripe Dashboard → Developers → Webhooks](https://dashboard.stripe.com/test/webhooks)
+2. Click "Add endpoint"
+3. Endpoint URL: `https://chefweb-backend-775848565797.us-central1.run.app/api/payments/webhook`
+4. Select events:
+   - `payment_intent.succeeded`
+   - `payment_intent.payment_failed`
+   - `charge.refunded`
+   - `charge.dispute.created`
+5. Copy the webhook signing secret (`whsec_...`)
+6. Add to Secret Manager:
+   ```bash
+   echo -n "whsec_YOUR_WEBHOOK_SECRET" | gcloud secrets versions add stripe-webhook-secret --data-file=- --project=smiling-mark-476404-h0
+   ```
+
+### Step 5: Verify Configuration
+
+```bash
+# Test the config endpoint - should show configured: true
+curl https://chefweb-backend-775848565797.us-central1.run.app/api/payments/config/stripe
+```
+
+### Step 6: Switch to Live Keys (After Testing)
+
+```bash
+# Update secret with live key
+echo -n "sk_live_YOUR_LIVE_SECRET_KEY" | gcloud secrets versions add stripe-secret-key --data-file=- --project=smiling-mark-476404-h0
+
+# Update publishable key
+gcloud run services update chefweb-backend \
+  --region=us-central1 \
+  --project=smiling-mark-476404-h0 \
+  --update-env-vars="STRIPE_PUBLISHABLE_KEY=pk_live_YOUR_LIVE_PUBLISHABLE_KEY"
+```
 
 ---
 

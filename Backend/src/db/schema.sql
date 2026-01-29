@@ -116,3 +116,186 @@ CREATE TRIGGER update_payments_updated_at
     BEFORE UPDATE ON payments
     FOR EACH ROW
     EXECUTE FUNCTION update_updated_at_column();
+
+-- ============================================
+-- ANALYTICS VIEWS FOR BUSINESS INTELLIGENCE
+-- ============================================
+
+-- Daily Revenue Dashboard
+CREATE OR REPLACE VIEW v_daily_revenue AS
+SELECT 
+    DATE(p.created_at) as date,
+    COUNT(*) as transaction_count,
+    SUM(CASE WHEN p.status = 'succeeded' THEN p.amount ELSE 0 END) / 100.0 as revenue_usd,
+    SUM(CASE WHEN p.status = 'refunded' THEN p.amount ELSE 0 END) / 100.0 as refunds_usd,
+    SUM(CASE WHEN p.status = 'failed' THEN 1 ELSE 0 END) as failed_count
+FROM payments p
+GROUP BY DATE(p.created_at)
+ORDER BY date DESC;
+
+-- Customer Lifetime Value Analysis
+CREATE OR REPLACE VIEW v_customer_insights AS
+SELECT 
+    b.contact_email,
+    b.contact_name,
+    COUNT(*) as total_bookings,
+    SUM(CASE WHEN b.status = 'confirmed' OR b.status = 'fulfilled' THEN 1 ELSE 0 END) as completed_bookings,
+    SUM(b.total) as lifetime_value,
+    AVG(b.total) as avg_order_value,
+    MIN(b.event_date) as first_booking,
+    MAX(b.event_date) as last_booking,
+    MAX(b.num_adults + b.num_children) as max_party_size
+FROM bookings b
+WHERE b.payment_status IN ('paid', 'deposit_paid')
+GROUP BY b.contact_email, b.contact_name
+ORDER BY lifetime_value DESC;
+
+-- Package Performance Analysis
+CREATE OR REPLACE VIEW v_package_performance AS
+SELECT 
+    b.package,
+    COUNT(*) as bookings_count,
+    SUM(b.total) as total_revenue,
+    AVG(b.total) as avg_revenue,
+    AVG(b.num_adults) as avg_adults,
+    AVG(b.num_children) as avg_children,
+    ROUND(COUNT(*) * 100.0 / NULLIF(SUM(COUNT(*)) OVER (), 0), 2) as percentage_share
+FROM bookings b
+WHERE b.payment_status IN ('paid', 'deposit_paid')
+GROUP BY b.package
+ORDER BY total_revenue DESC;
+
+-- Geographic Demand Analysis
+CREATE OR REPLACE VIEW v_geographic_demand AS
+SELECT 
+    b.service_state,
+    b.city,
+    COUNT(*) as booking_count,
+    SUM(b.total) as revenue,
+    AVG(b.travel_fee) as avg_travel_fee,
+    COUNT(DISTINCT b.contact_email) as unique_customers
+FROM bookings b
+WHERE b.status != 'cancelled'
+GROUP BY b.service_state, b.city
+ORDER BY revenue DESC;
+
+-- Payment Reconciliation Report
+CREATE OR REPLACE VIEW v_payment_reconciliation AS
+SELECT 
+    p.payment_intent_id,
+    p.status as payment_status,
+    p.amount / 100.0 as amount_usd,
+    p.payment_type,
+    b.confirmation_number,
+    b.contact_email,
+    b.contact_name,
+    b.total as booking_total,
+    b.status as booking_status,
+    b.payment_status as booking_payment_status,
+    p.created_at as payment_date,
+    b.event_date,
+    CASE 
+        WHEN p.status = 'succeeded' AND b.payment_status != 'paid' THEN 'SYNC_NEEDED'
+        WHEN p.status = 'failed' AND b.status = 'confirmed' THEN 'CRITICAL'
+        WHEN p.booking_id IS NULL THEN 'ORPHANED'
+        ELSE 'OK'
+    END as reconciliation_status
+FROM payments p
+LEFT JOIN bookings b ON p.booking_id = b.id
+ORDER BY p.created_at DESC;
+
+-- Booking Funnel Analysis
+CREATE OR REPLACE VIEW v_booking_funnel AS
+SELECT 
+    DATE_TRUNC('week', created_at) as week,
+    COUNT(*) as total_started,
+    SUM(CASE WHEN status = 'pending_payment' THEN 1 ELSE 0 END) as pending,
+    SUM(CASE WHEN status = 'confirmed' THEN 1 ELSE 0 END) as confirmed,
+    SUM(CASE WHEN status = 'fulfilled' THEN 1 ELSE 0 END) as fulfilled,
+    SUM(CASE WHEN status = 'cancelled' THEN 1 ELSE 0 END) as cancelled,
+    ROUND(
+        SUM(CASE WHEN status IN ('confirmed', 'fulfilled') THEN 1 ELSE 0 END) * 100.0 / 
+        NULLIF(COUNT(*), 0), 2
+    ) as conversion_rate
+FROM bookings
+GROUP BY DATE_TRUNC('week', created_at)
+ORDER BY week DESC;
+
+-- ============================================
+-- BILLING MANAGEMENT PROCEDURE
+-- ============================================
+
+-- Sync Payment Status to Bookings (run daily)
+CREATE OR REPLACE PROCEDURE sync_payment_status()
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- Sync succeeded payments → confirmed bookings
+    UPDATE bookings b
+    SET 
+        payment_status = 'paid',
+        status = CASE 
+            WHEN status = 'pending_payment' THEN 'confirmed'
+            ELSE status
+        END,
+        updated_at = NOW()
+    FROM payments p
+    WHERE p.booking_id = b.id
+    AND p.status = 'succeeded'
+    AND b.payment_status != 'paid';
+    
+    -- Sync refunded payments
+    UPDATE bookings b
+    SET 
+        payment_status = 'refunded',
+        updated_at = NOW()
+    FROM payments p
+    WHERE p.booking_id = b.id
+    AND p.status = 'refunded'
+    AND b.payment_status != 'refunded';
+END;
+$$;
+
+-- ============================================
+-- CONTACT INQUIRIES TABLE
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS contact_inquiries (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phone VARCHAR(30),
+    reason VARCHAR(50),
+    subject VARCHAR(200),
+    message TEXT NOT NULL,
+    status VARCHAR(20) DEFAULT 'new',  -- new, in_progress, replied, closed
+    admin_notes TEXT,
+    replied_at TIMESTAMPTZ,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_contact_email ON contact_inquiries(email);
+CREATE INDEX IF NOT EXISTS idx_contact_status ON contact_inquiries(status);
+CREATE INDEX IF NOT EXISTS idx_contact_created ON contact_inquiries(created_at);
+
+DROP TRIGGER IF EXISTS update_contact_inquiries_updated_at ON contact_inquiries;
+CREATE TRIGGER update_contact_inquiries_updated_at
+    BEFORE UPDATE ON contact_inquiries
+    FOR EACH ROW
+    EXECUTE FUNCTION update_updated_at_column();
+
+-- ============================================
+-- ADMIN SESSIONS TABLE
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS admin_sessions (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    token VARCHAR(100) UNIQUE NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    expires_at TIMESTAMPTZ NOT NULL,
+    last_activity TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_admin_token ON admin_sessions(token);
+CREATE INDEX IF NOT EXISTS idx_admin_expires ON admin_sessions(expires_at);

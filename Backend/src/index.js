@@ -11,6 +11,8 @@ import chatbotRouter from './routes/chatbot.js';
 import analyticsRouter from './routes/analytics.js';
 import configRouter from './routes/config.js';
 import setupRouter from './routes/setup.js';
+import contactRouter from './routes/contact.js';
+import adminRouter from './routes/admin.js';
 
 dotenv.config();
 
@@ -48,6 +50,9 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
+// CRITICAL: Webhook needs raw body for signature verification - MUST be before express.json()
+app.use('/api/payments/webhook', express.raw({ type: 'application/json' }));
+
 app.use(express.json({ limit: '2mb' }));
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 
@@ -62,6 +67,8 @@ app.use('/api/payments', paymentsRouter);
 app.use('/api/videos', videosRouter);
 app.use('/api/chatbot', chatbotRouter);
 app.use('/api/analytics', analyticsRouter);
+app.use('/api/contact', contactRouter);
+app.use('/api/admin', adminRouter);
 app.use('/api/setup', setupRouter);
 app.use('/api', configRouter);
 
