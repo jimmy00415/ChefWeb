@@ -81,6 +81,7 @@ router.post('/message', chatbotLimiter, async (req, res) => {
         logger.logError(error, { context: 'Chatbot message' });
         return res.status(500).json({ 
             error: 'Failed to process message',
+            code: 'CHATBOT_ERROR',
             response: "I'm having a bit of trouble right now. Please try again or contact our team directly at info@pophabachi.com.",
             intent: 'error',
             confidence: 0,
@@ -105,7 +106,8 @@ router.get('/status', (req, res) => {
         logger.logError(error, { context: 'Chatbot status' });
         return res.status(500).json({ 
             ok: false, 
-            error: 'Chatbot service error'
+            error: 'Chatbot service error',
+            code: 'STATUS_CHECK_FAILED'
         });
     }
 });
@@ -116,7 +118,7 @@ router.get('/status', (req, res) => {
  */
 router.get('/intents', (req, res) => {
     if (process.env.NODE_ENV === 'production') {
-        return res.status(404).json({ error: 'Not found' });
+        return res.status(404).json({ error: 'Not found', code: 'NOT_FOUND' });
     }
     
     const intents = getAvailableIntents();

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { query, isPostgres, getMemoryDb, createId, createConfirmationNumber } from '../db/index.js';
-import { validateBookingPayload, calculateTotals } from '../validators.js';
+import { validateBookingPayload, calculateTotals, sanitizeInput, sanitizeName, validatePhone, LENGTH_LIMITS } from '../validators.js';
 import { 
     sendBookingConfirmation, 
     sendAdminBookingAlert,
@@ -129,8 +129,24 @@ router.post('/', bookingLimiter, async (req, res) => {
     const errors = validateBookingPayload(payload);
 
     if (errors.length) {
-      return res.status(400).json({ errors });
+      return res.status(400).json({ 
+        error: 'Validation failed',
+        code: 'VALIDATION_ERROR',
+        details: errors 
+      });
     }
+
+    // Sanitize all text inputs
+    const sanitizedPayload = {
+      ...payload,
+      contactName: sanitizeName(payload.contactName),
+      contactEmail: payload.contactEmail?.trim().toLowerCase(),
+      contactPhone: validatePhone(payload.contactPhone).normalized || payload.contactPhone,
+      city: sanitizeInput(payload.city, LENGTH_LIMITS.CITY),
+      venueAddress: payload.venueAddress ? sanitizeInput(payload.venueAddress, LENGTH_LIMITS.ADDRESS) : null,
+      dietaryNotes: payload.dietaryNotes ? sanitizeInput(payload.dietaryNotes, LENGTH_LIMITS.DIETARY_NOTES) : null,
+      specialRequests: payload.specialRequests ? sanitizeInput(payload.specialRequests, LENGTH_LIMITS.SPECIAL_REQUESTS) : null
+    };
 
     const confirmationNumber = createConfirmationNumber();
     const totals = calculateTotals(payload);
@@ -151,11 +167,11 @@ router.post('/', bookingLimiter, async (req, res) => {
         RETURNING id, confirmation_number, status
       `, [
         confirmationNumber, status, paymentStatus,
-        payload.serviceState, payload.city, payload.eventDate, payload.eventTime,
-        payload.venueType || null, payload.venueAddress || null,
+        payload.serviceState, sanitizedPayload.city, payload.eventDate, payload.eventTime,
+        payload.venueType || null, sanitizedPayload.venueAddress,
         payload.numAdults || 0, payload.numChildren || 0, payload.package || 'signature',
-        payload.dietaryNotes || null, payload.specialRequests || null,
-        payload.contactName, payload.contactEmail, payload.contactPhone,
+        sanitizedPayload.dietaryNotes, sanitizedPayload.specialRequests,
+        sanitizedPayload.contactName, sanitizedPayload.contactEmail, sanitizedPayload.contactPhone,
         totals.base, totals.addonsTotal, payload.travelFeeAmount || 0, totals.subtotal, totals.total,
         payload.paymentOption || 'later', payload.agreeToTerms
       ]);
@@ -165,7 +181,7 @@ router.post('/', bookingLimiter, async (req, res) => {
       // Send confirmation emails (fire and forget - don't block response)
       const bookingForEmail = {
         ...booking,
-        ...payload,
+        ...sanitizedPayload,
         total: totals.total
       };
       Promise.all([
@@ -174,6 +190,7 @@ router.post('/', bookingLimiter, async (req, res) => {
       ]).catch(err => logger.logEmail('send_error', { type: 'booking_confirmation', error: err.message }));
       
       return res.status(201).json({ 
+        success: true,
         bookingId: booking.id, 
         confirmationNumber: booking.confirmation_number, 
         status: booking.status 
@@ -188,7 +205,7 @@ router.post('/', bookingLimiter, async (req, res) => {
         paymentStatus,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        ...payload,
+        ...sanitizedPayload,
         ...totals
       };
       getMemoryDb().bookings.set(id, booking);

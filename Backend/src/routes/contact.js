@@ -7,6 +7,7 @@ import { query, isPostgres, getMemoryDb, createId } from '../db/index.js';
 import { sendContactInquiryAlert, sendContactAutoReply } from '../services/email.js';
 import { contactLimiter } from '../middleware/rateLimit.js';
 import logger from '../services/logger.js';
+import { validateContactPayload, sanitizeInput, sanitizeName, validatePhone, LENGTH_LIMITS } from '../validators.js';
 
 const router = Router();
 
@@ -18,21 +19,31 @@ router.post('/', contactLimiter, async (req, res) => {
     try {
         const { name, email, phone, reason, subject, message } = req.body || {};
 
-        // Validate required fields
-        if (!name || !email || !message) {
+        // Comprehensive validation
+        const validationErrors = validateContactPayload({ name, email, phone, message });
+        if (validationErrors.length > 0) {
             return res.status(400).json({ 
-                error: 'Missing required fields', 
-                required: ['name', 'email', 'message'] 
+                error: 'Validation failed',
+                code: 'VALIDATION_ERROR',
+                details: validationErrors
             });
         }
 
-        // Basic email validation
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            return res.status(400).json({ error: 'Invalid email format' });
+        // Sanitize all inputs
+        const sanitizedName = sanitizeName(name);
+        const sanitizedEmail = email.trim().toLowerCase();
+        const sanitizedMessage = sanitizeInput(message, LENGTH_LIMITS.MESSAGE);
+        const sanitizedSubject = subject ? sanitizeInput(subject, 200) : null;
+        const sanitizedReason = reason ? sanitizeInput(reason, 100) : null;
+        
+        // Normalize phone if provided
+        let normalizedPhone = null;
+        if (phone) {
+            const phoneResult = validatePhone(phone);
+            if (phoneResult.valid) {
+                normalizedPhone = phoneResult.normalized;
+            }
         }
-
-        // Sanitize message (prevent XSS)
-        const sanitizedMessage = message.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
 
         let inquiryId;
 
@@ -41,7 +52,7 @@ router.post('/', contactLimiter, async (req, res) => {
                 INSERT INTO contact_inquiries (name, email, phone, reason, subject, message)
                 VALUES ($1, $2, $3, $4, $5, $6)
                 RETURNING id, created_at
-            `, [name, email, phone || null, reason || null, subject || null, sanitizedMessage]);
+            `, [sanitizedName, sanitizedEmail, normalizedPhone, sanitizedReason, sanitizedSubject, sanitizedMessage]);
 
             inquiryId = result.rows[0].id;
         } else {
@@ -49,11 +60,11 @@ router.post('/', contactLimiter, async (req, res) => {
             inquiryId = createId('contact');
             const inquiry = {
                 id: inquiryId,
-                name,
-                email,
-                phone,
-                reason,
-                subject,
+                name: sanitizedName,
+                email: sanitizedEmail,
+                phone: normalizedPhone,
+                reason: sanitizedReason,
+                subject: sanitizedSubject,
                 message: sanitizedMessage,
                 status: 'new',
                 createdAt: new Date().toISOString()
@@ -66,14 +77,21 @@ router.post('/', contactLimiter, async (req, res) => {
         }
 
         // Send emails (don't await - fire and forget for speed)
-        const inquiry = { name, email, phone, reason, subject, message: sanitizedMessage };
+        const inquiry = { 
+            name: sanitizedName, 
+            email: sanitizedEmail, 
+            phone: normalizedPhone, 
+            reason: sanitizedReason, 
+            subject: sanitizedSubject, 
+            message: sanitizedMessage 
+        };
         
         Promise.all([
             sendContactInquiryAlert(inquiry),
             sendContactAutoReply(inquiry)
         ]).catch(err => logger.logEmail('send_error', { type: 'contact_inquiry', error: err.message }));
 
-        logger.logInfo('Contact form submitted', { inquiryId, reason });
+        logger.logInfo('Contact form submitted', { inquiryId, reason: sanitizedReason });
         
         return res.status(201).json({ 
             success: true, 
@@ -82,7 +100,10 @@ router.post('/', contactLimiter, async (req, res) => {
         });
     } catch (error) {
         logger.logError(error, { context: 'Contact form submission' });
-        return res.status(500).json({ error: 'Failed to submit contact form' });
+        return res.status(500).json({ 
+            error: 'Failed to submit contact form',
+            code: 'SERVER_ERROR'
+        });
     }
 });
 

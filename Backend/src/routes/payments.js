@@ -37,11 +37,20 @@ router.post('/create-intent', async (req, res) => {
     // Validate amount
     const amount = requestedAmount || totalCents;
     if (amount < 50) { // Stripe minimum is 50 cents
-      return res.status(400).json({ error: 'Amount must be at least $0.50' });
+      return res.status(400).json({ 
+        error: 'Amount must be at least $0.50',
+        code: 'AMOUNT_TOO_LOW',
+        minimum: 50
+      });
     }
 
     if (requestedAmount && requestedAmount > totalCents) {
-      return res.status(400).json({ error: 'Invalid amount' });
+      return res.status(400).json({ 
+        error: 'Requested amount exceeds calculated total',
+        code: 'AMOUNT_EXCEEDS_TOTAL',
+        requestedAmount,
+        calculatedTotal: totalCents
+      });
     }
 
     // Generate idempotency key to prevent double charges

@@ -28,7 +28,10 @@ router.post('/login', adminLoginLimiter, async (req, res) => {
         const { apiKey } = req.body;
 
         if (!apiKey) {
-            return res.status(400).json({ error: 'API key required' });
+            return res.status(400).json({ 
+                error: 'API key required',
+                code: 'MISSING_API_KEY'
+            });
         }
 
         const session = await validateAdminKey(apiKey);
@@ -36,7 +39,10 @@ router.post('/login', adminLoginLimiter, async (req, res) => {
         if (!session) {
             // Add delay to prevent brute force
             await new Promise(resolve => setTimeout(resolve, 1000));
-            return res.status(401).json({ error: 'Invalid API key' });
+            return res.status(401).json({ 
+                error: 'Invalid API key',
+                code: 'INVALID_CREDENTIALS'
+            });
         }
 
         return res.json({
@@ -46,7 +52,10 @@ router.post('/login', adminLoginLimiter, async (req, res) => {
         });
     } catch (error) {
         console.error('Admin login error:', error);
-        return res.status(500).json({ error: 'Login failed' });
+        return res.status(500).json({ 
+            error: 'Login failed',
+            code: 'SERVER_ERROR'
+        });
     }
 });
 
