@@ -420,3 +420,266 @@ export async function sendContactAutoReply(inquiry) {
 
 // Export configuration status
 export const isEmailConfigured = () => isConfigured;
+
+// ============================================
+// PHASE 2: MODIFICATION & CANCELLATION EMAILS
+// ============================================
+
+/**
+ * Send booking modification confirmation to customer
+ */
+export async function sendBookingModificationConfirmation(booking, oldValues, changes) {
+    // Build changes summary
+    const changesList = [];
+    if (changes.event_date) {
+        changesList.push(`<li><strong>Date:</strong> ${formatDate(oldValues.event_date)} → ${formatDate(changes.event_date)}</li>`);
+    }
+    if (changes.event_time) {
+        changesList.push(`<li><strong>Time:</strong> ${oldValues.event_time} → ${changes.event_time}</li>`);
+    }
+    if (changes.num_adults) {
+        changesList.push(`<li><strong>Adults:</strong> ${oldValues.num_adults} → ${changes.num_adults}</li>`);
+    }
+    if (changes.num_children !== undefined) {
+        changesList.push(`<li><strong>Children:</strong> ${oldValues.num_children || 0} → ${changes.num_children}</li>`);
+    }
+    if (changes.dietary_notes !== undefined) {
+        changesList.push(`<li><strong>Dietary Notes:</strong> Updated</li>`);
+    }
+    if (changes.special_requests !== undefined) {
+        changesList.push(`<li><strong>Special Requests:</strong> Updated</li>`);
+    }
+    
+    const html = `
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #3498db, #2980b9); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
+        .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 8px 8px; }
+        .changes-box { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #3498db; }
+        .confirmation-number { font-size: 24px; font-weight: bold; color: #3498db; }
+        .detail-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; }
+        .footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
+        ul { margin: 10px 0; padding-left: 20px; }
+        li { margin: 8px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📝 Booking Modified</h1>
+            <p>Your changes have been saved</p>
+        </div>
+        <div class="content">
+            <p>Dear ${booking.contact_name},</p>
+            <p>Your booking has been successfully modified. Here's a summary of the changes:</p>
+            
+            <div class="changes-box">
+                <p style="margin: 0 0 10px 0; color: #666;">Confirmation Number</p>
+                <p class="confirmation-number">${booking.confirmation_number}</p>
+                <hr style="margin: 15px 0; border: none; border-top: 1px solid #eee;">
+                <p><strong>Changes Made:</strong></p>
+                <ul>
+                    ${changesList.join('\n                    ')}
+                </ul>
+            </div>
+            
+            <div class="changes-box">
+                <h3 style="margin-top: 0;">Updated Booking Details</h3>
+                <div class="detail-row">
+                    <span>Date</span>
+                    <span><strong>${formatDate(booking.event_date)}</strong></span>
+                </div>
+                <div class="detail-row">
+                    <span>Time</span>
+                    <span><strong>${booking.event_time}</strong></span>
+                </div>
+                <div class="detail-row">
+                    <span>Guests</span>
+                    <span><strong>${booking.num_adults} Adults, ${booking.num_children || 0} Children</strong></span>
+                </div>
+                ${changes.total ? `
+                <div class="detail-row" style="font-size: 18px; border-top: 2px solid #3498db; padding-top: 15px;">
+                    <span>New Total</span>
+                    <span><strong>${formatCurrency(booking.total)}</strong></span>
+                </div>
+                ` : ''}
+            </div>
+            
+            <p>If you didn't make these changes, please contact us immediately.</p>
+            <p>Questions? Reply to this email or contact us at <a href="mailto:${EMAIL_FROM}">${EMAIL_FROM}</a></p>
+        </div>
+        <div class="footer">
+            <p>POP Habachi - Premium At-Home Hibachi Experience</p>
+            <p><a href="${SITE_URL}">pophabachi.com</a></p>
+        </div>
+    </div>
+</body>
+</html>
+    `;
+
+    return sendEmail({
+        to: booking.contact_email,
+        subject: `Booking Modified: ${booking.confirmation_number} - POP Habachi`,
+        html
+    });
+}
+
+/**
+ * Send booking cancellation confirmation to customer
+ */
+export async function sendBookingCancellationConfirmation(booking, refundInfo) {
+    const refundSection = refundInfo.refundAmount > 0 ? `
+            <div class="refund-box">
+                <h3 style="margin-top: 0; color: #27ae60;">💰 Refund Information</h3>
+                <div class="detail-row">
+                    <span>Amount Paid</span>
+                    <span>${formatCurrency(refundInfo.totalPaid)}</span>
+                </div>
+                <div class="detail-row">
+                    <span>Refund Percentage</span>
+                    <span>${refundInfo.refundPercentage}%</span>
+                </div>
+                <div class="detail-row" style="font-size: 18px; font-weight: bold; color: #27ae60;">
+                    <span>Refund Amount</span>
+                    <span>${formatCurrency(refundInfo.refundAmount)}</span>
+                </div>
+                <p style="margin-top: 15px; font-size: 14px; color: #666;">
+                    Your refund will be processed within 5-10 business days to your original payment method.
+                </p>
+            </div>
+    ` : `
+            <div class="refund-box" style="border-left-color: #e74c3c;">
+                <h3 style="margin-top: 0; color: #e74c3c;">❌ No Refund Eligible</h3>
+                <p>Per our cancellation policy, cancellations made within 3 days of the event are not eligible for a refund.</p>
+                <p>Days until event: ${refundInfo.daysUntilEvent}</p>
+            </div>
+    `;
+
+    const html = `
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #95a5a6, #7f8c8d); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
+        .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 8px 8px; }
+        .cancelled-box { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center; }
+        .confirmation-number { font-size: 24px; font-weight: bold; color: #95a5a6; text-decoration: line-through; }
+        .refund-box { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #27ae60; }
+        .detail-row { display: flex; justify-content: space-between; padding: 8px 0; }
+        .footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Booking Cancelled</h1>
+            <p>We're sorry to see you go</p>
+        </div>
+        <div class="content">
+            <p>Dear ${booking.contact_name},</p>
+            <p>Your booking has been successfully cancelled.</p>
+            
+            <div class="cancelled-box">
+                <p style="margin: 0; color: #666;">Cancelled Booking</p>
+                <p class="confirmation-number">${booking.confirmation_number}</p>
+                <p style="margin: 10px 0 0 0; color: #e74c3c;">
+                    Originally scheduled for ${formatDate(booking.event_date)} at ${booking.event_time}
+                </p>
+            </div>
+            
+            ${refundSection}
+            
+            <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                <p style="margin: 0;"><strong>🔄 Changed your mind?</strong></p>
+                <p style="margin: 10px 0 0 0;">Book again anytime! We'd love to serve you in the future.</p>
+                <p style="margin: 10px 0 0 0;">
+                    <a href="${SITE_URL}/pages/booking.html" style="color: #d4af37; font-weight: bold;">Book a New Experience →</a>
+                </p>
+            </div>
+            
+            <p>Questions about your refund? Reply to this email or contact us at <a href="mailto:${EMAIL_FROM}">${EMAIL_FROM}</a></p>
+        </div>
+        <div class="footer">
+            <p>POP Habachi - Premium At-Home Hibachi Experience</p>
+            <p><a href="${SITE_URL}">pophabachi.com</a></p>
+        </div>
+    </div>
+</body>
+</html>
+    `;
+
+    return sendEmail({
+        to: booking.contact_email,
+        subject: `Booking Cancelled: ${booking.confirmation_number} - POP Habachi`,
+        html
+    });
+}
+
+/**
+ * Send cancellation alert to admin
+ */
+export async function sendAdminCancellationAlert(booking, details) {
+    const html = `
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: #e74c3c; color: white; padding: 20px; text-align: center; }
+        .content { padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        td { padding: 10px; border-bottom: 1px solid #eee; }
+        td:first-child { font-weight: bold; width: 40%; color: #666; }
+        .alert-box { background: #fdf2f2; border: 1px solid #e74c3c; border-radius: 8px; padding: 15px; margin: 20px 0; }
+        .refund-info { background: #e8f5e9; border-radius: 8px; padding: 15px; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>❌ Booking Cancelled</h2>
+            <p>${booking.confirmation_number}</p>
+        </div>
+        <div class="content">
+            <div class="alert-box">
+                <strong>⚠️ Action Required:</strong> ${details.refundAmount > 0 ? `Process refund of ${formatCurrency(details.refundAmount)}` : 'No refund required'}
+            </div>
+            
+            <table>
+                <tr><td>Customer</td><td>${booking.contact_name}</td></tr>
+                <tr><td>Email</td><td><a href="mailto:${booking.contact_email}">${booking.contact_email}</a></td></tr>
+                <tr><td>Phone</td><td>${booking.contact_phone}</td></tr>
+                <tr><td>Original Date</td><td>${formatDate(booking.event_date)} at ${booking.event_time}</td></tr>
+                <tr><td>Days Until Event</td><td>${details.daysUntilEvent} days</td></tr>
+                <tr><td>Cancellation Reason</td><td>${details.reason}</td></tr>
+            </table>
+            
+            <div class="refund-info">
+                <h3 style="margin-top: 0;">Refund Details</h3>
+                <table style="margin: 0;">
+                    <tr><td>Total Paid</td><td>${formatCurrency(details.totalPaid)}</td></tr>
+                    <tr><td>Refund Percentage</td><td>${details.refundPercentage}%</td></tr>
+                    <tr><td>Refund Amount</td><td><strong>${formatCurrency(details.refundAmount)}</strong></td></tr>
+                </table>
+            </div>
+            
+            <p><a href="${SITE_URL}/pages/admin/dashboard.html">View in Admin Dashboard →</a></p>
+        </div>
+    </div>
+</body>
+</html>
+    `;
+
+    return sendEmail({
+        to: EMAIL_ADMIN,
+        subject: `🚨 Cancellation: ${booking.confirmation_number} - Refund ${formatCurrency(details.refundAmount)}`,
+        html
+    });
+}

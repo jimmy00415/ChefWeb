@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Look up your POP Habachi booking status, modify or cancel your reservation">
+    <title>Check Your Booking - POP Habachi</title>
+    
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/booking-manage.css">
+</head>
+<body>
+    <!-- Skip Navigation -->
+    <a href="#mainContent" class="skip-link">Skip to main content</a>
+    
+    <!-- Header -->
+    <header class="header" id="header" role="banner">
+        <div class="header__container">
+            <a href="../index.html" class="header__logo">POP Habachi</a>
+            
+            <button class="header__menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <nav class="header__nav" id="mainNav" role="navigation">
+                <ul class="header__nav-list">
+                    <li><a href="../index.html" class="header__nav-link">Home</a></li>
+                    <li><a href="packages.html" class="header__nav-link">Packages & Pricing</a></li>
+                    <li><a href="service-areas.html" class="header__nav-link">Service Areas</a></li>
+                    <li><a href="gallery.html" class="header__nav-link">Photo Gallery</a></li>
+                    <li><a href="reviews.html" class="header__nav-link">Customer Reviews</a></li>
+                    <li><a href="faq.html" class="header__nav-link">Help & FAQ</a></li>
+                    <li><a href="contact.html" class="header__nav-link">Contact Us</a></li>
+                </ul>
+                <a href="booking.html" class="btn btn--primary">Book Now</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="section" id="mainContent" role="main" style="background: var(--color-background-alt); min-height: 100vh;">
+        <div class="container" style="max-width: 800px;">
+            
+            <!-- Lookup Form Section -->
+            <div id="lookupSection">
+                <div class="lookup-header">
+                    <h1 class="heading-1">Check Your Booking</h1>
+                    <p class="text-large text-muted">Enter your confirmation number and email to view, modify, or cancel your booking.</p>
+                </div>
+
+                <div class="card lookup-card">
+                    <div class="card__body">
+                        <form id="lookupForm" class="lookup-form">
+                            <div class="form-group">
+                                <label for="confirmation" class="form-label">Confirmation Number</label>
+                                <input 
+                                    type="text" 
+                                    id="confirmation" 
+                                    class="form-input confirmation-input"
+                                    placeholder="CHF-XXXXXX"
+                                    required
+                                    autocomplete="off"
+                                >
+                                <span class="form-hint">Found in your confirmation email</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input 
+                                    type="email" 
+                                    id="email" 
+                                    class="form-input"
+                                    placeholder="your.email@example.com"
+                                    required
+                                >
+                                <span class="form-hint">The email you used when booking</span>
+                            </div>
+
+                            <div id="lookupError" class="alert alert--error" style="display: none;"></div>
+
+                            <button type="submit" class="btn btn--primary btn--full" id="lookupBtn">
+                                <span class="btn-text">Find My Booking</span>
+                                <span class="btn-loader" style="display: none;">
+                                    <span class="spinner"></span> Searching...
+                                </span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="help-links">
+                    <p>Can't find your confirmation number?</p>
+                    <a href="contact.html" class="link">Contact us for help</a>
+                </div>
+            </div>
+
+            <!-- Booking Details Section (shown after successful lookup) -->
+            <div id="bookingDetails" style="display: none;">
+                <!-- Populated by JavaScript -->
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer__bottom">
+                <p>&copy; 2026 POP Habachi. All rights reserved.</p>
+                <div class="footer__links">
+                    <a href="faq.html#cancellation">Cancellation Policy</a>
+                    <a href="contact.html">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/api-config.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/booking-manage.js"></script>
+</body>
+</html>

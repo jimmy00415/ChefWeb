@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Modify your POP Habachi booking - change date, time, or guest count">
+    <title>Modify Booking - POP Habachi</title>
+    
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/booking-manage.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header" role="banner">
+        <div class="header__container">
+            <a href="../index.html" class="header__logo">POP Habachi</a>
+            <nav class="header__nav" id="mainNav" role="navigation">
+                <ul class="header__nav-list">
+                    <li><a href="../index.html" class="header__nav-link">Home</a></li>
+                    <li><a href="packages.html" class="header__nav-link">Packages</a></li>
+                    <li><a href="contact.html" class="header__nav-link">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="section" id="mainContent" role="main" style="background: var(--color-background-alt); min-height: 100vh;">
+        <div class="container" style="max-width: 800px;">
+            
+            <!-- Back Link -->
+            <a href="booking-lookup.html" class="back-link">← Back to Booking Lookup</a>
+
+            <div class="modify-header">
+                <h1 class="heading-1">Modify Your Booking</h1>
+                <p class="text-large text-muted">Update your event details below. Changes must be made at least 3 days before your event.</p>
+            </div>
+
+            <!-- Current Booking Info -->
+            <div class="card current-booking-card" id="currentBookingCard">
+                <div class="card__header">
+                    <h3 class="card__title">Current Booking</h3>
+                    <span class="confirmation-badge" id="confirmationBadge">Loading...</span>
+                </div>
+                <div class="card__body" id="currentBookingInfo">
+                    <p class="text-muted">Loading booking details...</p>
+                </div>
+            </div>
+
+            <!-- Modification Form -->
+            <div class="card modify-card" id="modifyCard" style="display: none;">
+                <div class="card__header">
+                    <h3 class="card__title">Make Changes</h3>
+                </div>
+                <div class="card__body">
+                    <form id="modifyForm">
+                        <input type="hidden" id="bookingId" value="">
+                        <input type="hidden" id="bookingEmail" value="">
+
+                        <!-- Date & Time -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="eventDate" class="form-label">Event Date</label>
+                                <input type="date" id="eventDate" class="form-input" required>
+                                <span class="form-hint">Must be at least 3 days from today</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="eventTime" class="form-label">Event Time</label>
+                                <select id="eventTime" class="form-input" required>
+                                    <option value="">Select time...</option>
+                                    <option value="11:00">11:00 AM</option>
+                                    <option value="12:00">12:00 PM</option>
+                                    <option value="13:00">1:00 PM</option>
+                                    <option value="14:00">2:00 PM</option>
+                                    <option value="15:00">3:00 PM</option>
+                                    <option value="16:00">4:00 PM</option>
+                                    <option value="17:00">5:00 PM</option>
+                                    <option value="18:00">6:00 PM</option>
+                                    <option value="19:00">7:00 PM</option>
+                                    <option value="20:00">8:00 PM</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Guest Count -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="numAdults" class="form-label">Number of Adults</label>
+                                <input type="number" id="numAdults" class="form-input" min="6" max="50" required>
+                                <span class="form-hint">Minimum 6 adults required</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="numChildren" class="form-label">Number of Children</label>
+                                <input type="number" id="numChildren" class="form-input" min="0" max="20">
+                                <span class="form-hint">Under 12 years old</span>
+                            </div>
+                        </div>
+
+                        <!-- Price Update Preview -->
+                        <div class="price-preview" id="pricePreview" style="display: none;">
+                            <div class="price-preview__header">
+                                <span>Price Update</span>
+                            </div>
+                            <div class="price-preview__body">
+                                <div class="price-row">
+                                    <span>Original Total</span>
+                                    <span id="originalTotal">$0.00</span>
+                                </div>
+                                <div class="price-row price-row--new">
+                                    <span>New Total</span>
+                                    <span id="newTotal">$0.00</span>
+                                </div>
+                                <div class="price-row price-row--diff" id="priceDiffRow" style="display: none;">
+                                    <span>Difference</span>
+                                    <span id="priceDiff">$0.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Special Notes -->
+                        <div class="form-group">
+                            <label for="dietaryNotes" class="form-label">Dietary Requirements</label>
+                            <textarea id="dietaryNotes" class="form-input" rows="2" placeholder="Any allergies or dietary restrictions..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="specialRequests" class="form-label">Special Requests</label>
+                            <textarea id="specialRequests" class="form-input" rows="2" placeholder="Birthday celebration, seating preferences, etc."></textarea>
+                        </div>
+
+                        <!-- Error Display -->
+                        <div id="modifyError" class="alert alert--error" style="display: none;"></div>
+
+                        <!-- Submit Button -->
+                        <div class="form-actions">
+                            <a href="booking-lookup.html" class="btn btn--secondary">Cancel</a>
+                            <button type="submit" class="btn btn--primary" id="modifyBtn">
+                                <span class="btn-text">Save Changes</span>
+                                <span class="btn-loader" style="display: none;">
+                                    <span class="spinner"></span> Saving...
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modification Not Allowed -->
+            <div class="card alert-card" id="notAllowedCard" style="display: none;">
+                <div class="card__body">
+                    <div class="alert-icon">⚠️</div>
+                    <h3>Modifications Not Available</h3>
+                    <p id="notAllowedReason">This booking cannot be modified.</p>
+                    <a href="contact.html" class="btn btn--primary">Contact Us for Help</a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer__bottom">
+                <p>&copy; 2026 POP Habachi. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/api-config.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/booking-manage.js"></script>
+</body>
+</html>

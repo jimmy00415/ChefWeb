@@ -299,3 +299,46 @@ CREATE TABLE IF NOT EXISTS admin_sessions (
 
 CREATE INDEX IF NOT EXISTS idx_admin_token ON admin_sessions(token);
 CREATE INDEX IF NOT EXISTS idx_admin_expires ON admin_sessions(expires_at);
+
+-- ============================================
+-- PHASE 2: CANCELLATION FIELDS
+-- ============================================
+
+-- Add cancellation-related columns to bookings table if they don't exist
+DO $$ 
+BEGIN
+    -- Add cancelled_at column
+    IF NOT EXISTS (
+        SELECT 1 FROM information_schema.columns 
+        WHERE table_name = 'bookings' AND column_name = 'cancelled_at'
+    ) THEN
+        ALTER TABLE bookings ADD COLUMN cancelled_at TIMESTAMPTZ;
+    END IF;
+    
+    -- Add cancellation_reason column
+    IF NOT EXISTS (
+        SELECT 1 FROM information_schema.columns 
+        WHERE table_name = 'bookings' AND column_name = 'cancellation_reason'
+    ) THEN
+        ALTER TABLE bookings ADD COLUMN cancellation_reason TEXT;
+    END IF;
+    
+    -- Add refund_amount column
+    IF NOT EXISTS (
+        SELECT 1 FROM information_schema.columns 
+        WHERE table_name = 'bookings' AND column_name = 'refund_amount'
+    ) THEN
+        ALTER TABLE bookings ADD COLUMN refund_amount DECIMAL(10,2) DEFAULT 0;
+    END IF;
+    
+    -- Add original_total column (to preserve original total before modifications)
+    IF NOT EXISTS (
+        SELECT 1 FROM information_schema.columns 
+        WHERE table_name = 'bookings' AND column_name = 'original_total'
+    ) THEN
+        ALTER TABLE bookings ADD COLUMN original_total DECIMAL(10,2);
+    END IF;
+END $$;
+
+-- Index for finding cancelled bookings
+CREATE INDEX IF NOT EXISTS idx_bookings_cancelled ON bookings(cancelled_at) WHERE cancelled_at IS NOT NULL;

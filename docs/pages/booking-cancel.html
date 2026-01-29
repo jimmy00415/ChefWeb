@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cancel your POP Habachi booking">
+    <title>Cancel Booking - POP Habachi</title>
+    
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/booking-manage.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header" role="banner">
+        <div class="header__container">
+            <a href="../index.html" class="header__logo">POP Habachi</a>
+            <nav class="header__nav" id="mainNav" role="navigation">
+                <ul class="header__nav-list">
+                    <li><a href="../index.html" class="header__nav-link">Home</a></li>
+                    <li><a href="packages.html" class="header__nav-link">Packages</a></li>
+                    <li><a href="contact.html" class="header__nav-link">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="section" id="mainContent" role="main" style="background: var(--color-background-alt); min-height: 100vh;">
+        <div class="container" style="max-width: 700px;">
+            
+            <!-- Back Link -->
+            <a href="booking-lookup.html" class="back-link">← Back to Booking Lookup</a>
+
+            <!-- Cancellation Flow -->
+            <div id="cancelSection">
+                <div class="cancel-header">
+                    <div class="cancel-icon">⚠️</div>
+                    <h1 class="heading-1">Cancel Your Booking</h1>
+                    <p class="text-large text-muted">We're sorry to see you go. Please review the cancellation details below.</p>
+                </div>
+
+                <!-- Booking Summary -->
+                <div class="card booking-summary-card" id="bookingSummaryCard">
+                    <div class="card__header">
+                        <h3 class="card__title">Booking to Cancel</h3>
+                        <span class="confirmation-badge" id="confirmationBadge">Loading...</span>
+                    </div>
+                    <div class="card__body" id="bookingSummary">
+                        <p class="text-muted">Loading booking details...</p>
+                    </div>
+                </div>
+
+                <!-- Refund Information -->
+                <div class="card refund-card" id="refundCard" style="display: none;">
+                    <div class="card__header">
+                        <h3 class="card__title">💰 Refund Information</h3>
+                    </div>
+                    <div class="card__body">
+                        <div class="refund-policy">
+                            <h4>Our Cancellation Policy</h4>
+                            <ul class="policy-list">
+                                <li class="policy-item" id="policy7days">
+                                    <span class="policy-badge policy-badge--green">100% Refund</span>
+                                    <span>More than 7 days before event</span>
+                                </li>
+                                <li class="policy-item" id="policy3to7days">
+                                    <span class="policy-badge policy-badge--yellow">50% Refund</span>
+                                    <span>3-7 days before event</span>
+                                </li>
+                                <li class="policy-item" id="policy1to3days">
+                                    <span class="policy-badge policy-badge--red">No Refund</span>
+                                    <span>Less than 3 days before event</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="refund-calculation" id="refundCalculation">
+                            <div class="refund-row">
+                                <span>Days Until Event</span>
+                                <span id="daysUntilEvent">--</span>
+                            </div>
+                            <div class="refund-row">
+                                <span>Your Refund Tier</span>
+                                <span id="refundTier">--</span>
+                            </div>
+                            <div class="refund-row refund-row--total">
+                                <span>Estimated Refund</span>
+                                <span id="estimatedRefund">$0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cancellation Form -->
+                <div class="card cancel-form-card" id="cancelFormCard" style="display: none;">
+                    <div class="card__header">
+                        <h3 class="card__title">Confirm Cancellation</h3>
+                    </div>
+                    <div class="card__body">
+                        <form id="cancelForm">
+                            <input type="hidden" id="bookingId" value="">
+                            <input type="hidden" id="bookingEmail" value="">
+
+                            <div class="form-group">
+                                <label for="cancelReason" class="form-label">Reason for Cancellation (Optional)</label>
+                                <select id="cancelReason" class="form-input">
+                                    <option value="">Select a reason...</option>
+                                    <option value="change_of_plans">Change of plans</option>
+                                    <option value="scheduling_conflict">Scheduling conflict</option>
+                                    <option value="weather">Weather concerns</option>
+                                    <option value="illness">Illness</option>
+                                    <option value="financial">Financial reasons</option>
+                                    <option value="found_alternative">Found alternative</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group" id="otherReasonGroup" style="display: none;">
+                                <label for="otherReason" class="form-label">Please specify</label>
+                                <textarea id="otherReason" class="form-input" rows="2"></textarea>
+                            </div>
+
+                            <div class="warning-box">
+                                <strong>⚠️ This action cannot be undone</strong>
+                                <p>Once cancelled, you will need to create a new booking if you change your mind.</p>
+                            </div>
+
+                            <div id="cancelError" class="alert alert--error" style="display: none;"></div>
+
+                            <div class="form-actions">
+                                <a href="booking-lookup.html" class="btn btn--secondary">Keep My Booking</a>
+                                <button type="submit" class="btn btn--danger" id="cancelBtn">
+                                    <span class="btn-text">Cancel Booking</span>
+                                    <span class="btn-loader" style="display: none;">
+                                        <span class="spinner"></span> Cancelling...
+                                    </span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Cancellation Not Allowed -->
+                <div class="card alert-card" id="notAllowedCard" style="display: none;">
+                    <div class="card__body">
+                        <div class="alert-icon">❌</div>
+                        <h3>Cancellation Not Available</h3>
+                        <p id="notAllowedReason">This booking cannot be cancelled online.</p>
+                        <p>Please contact us directly for assistance.</p>
+                        <a href="contact.html" class="btn btn--primary">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success Section (shown after cancellation) -->
+            <div id="successSection" style="display: none;">
+                <div class="success-header">
+                    <div class="success-icon">✓</div>
+                    <h1 class="heading-1">Booking Cancelled</h1>
+                    <p class="text-large text-muted">Your booking has been successfully cancelled.</p>
+                </div>
+
+                <div class="card success-card">
+                    <div class="card__body">
+                        <div class="cancelled-booking-info" id="cancelledBookingInfo">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="next-steps">
+                    <h3>What's Next?</h3>
+                    <ul>
+                        <li>You'll receive a confirmation email shortly</li>
+                        <li>If eligible, your refund will be processed within 5-10 business days</li>
+                        <li>The refund will appear on your original payment method</li>
+                    </ul>
+                </div>
+
+                <div class="action-buttons">
+                    <a href="booking.html" class="btn btn--primary">Book Again</a>
+                    <a href="../index.html" class="btn btn--secondary">Return to Home</a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer__bottom">
+                <p>&copy; 2026 POP Habachi. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/api-config.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/booking-manage.js"></script>
+</body>
+</html>

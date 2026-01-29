@@ -476,4 +476,81 @@ router.post('/cleanup', requireAdmin, async (req, res) => {
     }
 });
 
+/**
+ * POST /api/admin/migrate - Run database migrations
+ */
+router.post('/migrate', requireAdmin, async (req, res) => {
+    try {
+        if (!isPostgres()) {
+            return res.json({ success: true, message: 'In-memory mode, no migration needed' });
+        }
+
+        const migrations = [];
+
+        // Phase 2: Add cancellation columns
+        try {
+            await query(`
+                DO $$ 
+                BEGIN
+                    IF NOT EXISTS (
+                        SELECT 1 FROM information_schema.columns 
+                        WHERE table_name = 'bookings' AND column_name = 'cancelled_at'
+                    ) THEN
+                        ALTER TABLE bookings ADD COLUMN cancelled_at TIMESTAMPTZ;
+                    END IF;
+                END $$;
+            `);
+            migrations.push('cancelled_at column');
+        } catch (e) { console.log('cancelled_at already exists or error:', e.message); }
+
+        try {
+            await query(`
+                DO $$ 
+                BEGIN
+                    IF NOT EXISTS (
+                        SELECT 1 FROM information_schema.columns 
+                        WHERE table_name = 'bookings' AND column_name = 'cancellation_reason'
+                    ) THEN
+                        ALTER TABLE bookings ADD COLUMN cancellation_reason TEXT;
+                    END IF;
+                END $$;
+            `);
+            migrations.push('cancellation_reason column');
+        } catch (e) { console.log('cancellation_reason already exists or error:', e.message); }
+
+        try {
+            await query(`
+                DO $$ 
+                BEGIN
+                    IF NOT EXISTS (
+                        SELECT 1 FROM information_schema.columns 
+                        WHERE table_name = 'bookings' AND column_name = 'refund_amount'
+                    ) THEN
+                        ALTER TABLE bookings ADD COLUMN refund_amount DECIMAL(10,2) DEFAULT 0;
+                    END IF;
+                END $$;
+            `);
+            migrations.push('refund_amount column');
+        } catch (e) { console.log('refund_amount already exists or error:', e.message); }
+
+        // Create index for cancelled bookings
+        try {
+            await query(`
+                CREATE INDEX IF NOT EXISTS idx_bookings_cancelled 
+                ON bookings(cancelled_at) WHERE cancelled_at IS NOT NULL
+            `);
+            migrations.push('idx_bookings_cancelled index');
+        } catch (e) { console.log('Index creation skipped:', e.message); }
+
+        return res.json({
+            success: true,
+            message: 'Migrations completed',
+            migrations
+        });
+    } catch (error) {
+        console.error('Migration error:', error);
+        return res.status(500).json({ error: 'Migration failed: ' + error.message });
+    }
+});
+
 export default router;
