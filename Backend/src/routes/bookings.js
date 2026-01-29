@@ -8,6 +8,7 @@ import {
     sendBookingCancellationConfirmation,
     sendAdminCancellationAlert
 } from '../services/email.js';
+import { bookingLimiter, lookupLimiter, modifyLimiter } from '../middleware/rateLimit.js';
 
 const router = Router();
 
@@ -19,7 +20,7 @@ const router = Router();
  * Lookup booking by confirmation number and email (for security)
  * GET /api/bookings/lookup?confirmation=CHF-XXX&email=xxx@xxx.com
  */
-router.get('/lookup', async (req, res) => {
+router.get('/lookup', lookupLimiter, async (req, res) => {
     try {
         const { confirmation, email } = req.query;
 
@@ -120,8 +121,8 @@ router.get('/lookup', async (req, res) => {
     }
 });
 
-// Create booking
-router.post('/', async (req, res) => {
+// Create booking (rate limited to prevent spam)
+router.post('/', bookingLimiter, async (req, res) => {
   try {
     const payload = req.body || {};
     const errors = validateBookingPayload(payload);
@@ -286,7 +287,7 @@ router.patch('/:id', async (req, res) => {
  * PATCH /api/bookings/:id/modify
  * Requires email verification in body
  */
-router.patch('/:id/modify', async (req, res) => {
+router.patch('/:id/modify', modifyLimiter, async (req, res) => {
     try {
         const { email, eventDate, eventTime, numAdults, numChildren, dietaryNotes, specialRequests } = req.body;
 
@@ -437,7 +438,7 @@ router.patch('/:id/modify', async (req, res) => {
  * POST /api/bookings/:id/cancel
  * Requires email verification in body
  */
-router.post('/:id/cancel', async (req, res) => {
+router.post('/:id/cancel', modifyLimiter, async (req, res) => {
     try {
         const { email, reason } = req.body;
 

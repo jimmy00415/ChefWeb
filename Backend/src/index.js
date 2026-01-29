@@ -14,6 +14,9 @@ import setupRouter from './routes/setup.js';
 import contactRouter from './routes/contact.js';
 import adminRouter from './routes/admin.js';
 
+// Rate limiting middleware
+import { globalLimiter } from './middleware/rateLimit.js';
+
 dotenv.config();
 
 const app = express();
@@ -56,7 +59,10 @@ app.use('/api/payments/webhook', express.raw({ type: 'application/json' }));
 app.use(express.json({ limit: '2mb' }));
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 
-// Health check
+// Apply global rate limiting to all /api routes
+app.use('/api', globalLimiter);
+
+// Health check (not rate limited)
 app.get('/health', (req, res) => {
   res.json({ ok: true, timestamp: new Date().toISOString() });
 });

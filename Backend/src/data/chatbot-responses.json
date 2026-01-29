@@ -1,0 +1,160 @@
+{
+  "intents": {
+    "greeting": {
+      "patterns": ["hello", "hi", "hey", "good morning", "good afternoon", "good evening", "howdy", "what's up", "sup"],
+      "responses": [
+        "Hello! 👋 Welcome to POP Habachi! I'm here to help you plan an amazing private hibachi experience. What would you like to know?",
+        "Hi there! 🍳 Ready to bring the hibachi experience to your home? Ask me about packages, pricing, or how to book!",
+        "Hey! Great to see you! I can help with pricing, availability, booking questions, or dietary needs. What's on your mind?"
+      ],
+      "quickReplies": ["View packages", "Check pricing", "Book now", "Service areas"]
+    },
+    
+    "pricing_inquiry": {
+      "patterns": ["price", "cost", "how much", "pricing", "rate", "expensive", "cheap", "affordable", "fee", "charges", "per person", "minimum spend", "deposit"],
+      "responses": [
+        "💰 Our packages start at:\n\n• **Essential** — $65/person\n• **Signature** — $75/person (most popular!)\n• **Premium** — $95/person\n\nMinimum spend is $500. A 50% deposit is required at booking. Need details on what's included?",
+        "Great question! Here's our pricing breakdown:\n\n🥢 **Essential** ($65/pp): Core hibachi experience\n⭐ **Signature** ($75/pp): Enhanced menu + extras\n👑 **Premium** ($95/pp): Full gourmet experience\n\nMinimum order: $500. What package interests you?"
+      ],
+      "quickReplies": ["Package details", "Book Essential", "Book Signature", "Book Premium"]
+    },
+    
+    "package_info": {
+      "patterns": ["package", "what's included", "what do you offer", "menu", "options", "essential", "signature", "premium", "difference between", "compare"],
+      "responses": [
+        "📦 Here's what each package includes:\n\n**Essential ($65/pp):**\n• Hibachi fried rice & vegetables\n• Choice of 2 proteins\n• House salad with ginger dressing\n\n**Signature ($75/pp):**\n• Everything in Essential, plus:\n• Choice of 3 proteins\n• Shrimp appetizer\n• Premium sauces\n\n**Premium ($95/pp):**\n• Everything in Signature, plus:\n• Lobster tail\n• Filet mignon upgrade\n• Specialty cocktails setup\n\nWhich sounds right for your event?"
+      ],
+      "quickReplies": ["See full menu", "Book now", "Ask about dietary options"]
+    },
+    
+    "availability": {
+      "patterns": ["available", "availability", "open", "schedule", "date", "when can you", "serve my area", "do you come to", "location", "where do you serve", "service area", "travel"],
+      "responses": [
+        "📍 We primarily serve the **San Francisco Bay Area**, but we can travel up to **300 miles** for events!\n\nWe serve:\n• CA, NY, TX, FL, IL, PA, OH, GA, NC, and MI\n\nTravel fees may apply for locations beyond 50 miles. What's your event date and location?",
+        "We'd love to cook for you! 🚗 Our chefs serve the Bay Area and can travel up to 300 miles. We're also available in major metros across CA, NY, TX, FL, and more.\n\nWhere's your event located?"
+      ],
+      "quickReplies": ["Check my area", "View all areas", "Book now"]
+    },
+    
+    "booking_help": {
+      "patterns": ["how to book", "booking process", "book", "reserve", "reservation", "schedule", "make a booking", "place an order", "get started", "next steps"],
+      "responses": [
+        "Booking is easy! Here's how it works:\n\n1️⃣ **Choose your date** and party size\n2️⃣ **Select a package** (Essential, Signature, or Premium)\n3️⃣ **Pay 50% deposit** to confirm\n4️⃣ **We arrive** and handle everything!\n\n✨ We bring all equipment, ingredients, and clean up after!\n\nReady to book?",
+        "Let me walk you through booking:\n\n📅 Pick your date\n👥 Enter guest count (minimum 6)\n🍱 Select your package\n💳 Pay deposit (50%)\n\nThat's it! We handle the rest. Want to start now?"
+      ],
+      "quickReplies": ["Book now", "Minimum guests?", "Payment options"]
+    },
+    
+    "dietary_questions": {
+      "patterns": ["vegetarian", "vegan", "gluten", "allergy", "allergies", "dietary", "restrictions", "halal", "kosher", "pescatarian", "shellfish", "nut", "dairy", "special diet", "accommodation"],
+      "responses": [
+        "🥗 Absolutely! We accommodate many dietary needs:\n\n✅ Vegetarian/Vegan options\n✅ Gluten-free preparation\n✅ Shellfish/nut/dairy allergies\n✅ Other restrictions (just let us know!)\n\nPlease mention any dietary requirements in your booking notes, and we'll customize the menu for your guests.",
+        "Great question! We take dietary restrictions seriously. 🍳\n\nOur chefs can prepare:\n• Vegetarian & vegan dishes\n• Gluten-free meals\n• Allergy-safe options\n\nJust add your requirements to the booking form or tell your chef before the event. What dietary needs do you have?"
+      ],
+      "quickReplies": ["Book with dietary notes", "Contact us", "View menu"]
+    },
+    
+    "cancellation": {
+      "patterns": ["cancel", "cancellation", "refund", "policy", "change my booking", "modify", "reschedule", "postpone", "move my date"],
+      "responses": [
+        "📋 Here's our cancellation policy:\n\n• **More than 7 days** before: Full refund\n• **3-7 days** before: 50% refund\n• **Less than 3 days**: No refund\n\nNeed to modify or cancel? Visit our **Check Booking** page with your confirmation number and email.\n\nWant to modify your booking?",
+        "I understand plans change! Here's what you need to know:\n\n✅ **7+ days out**: 100% refund\n⚠️ **3-7 days out**: 50% refund\n❌ **Under 3 days**: No refund\n\nYou can modify your date, time, or guest count up to 3 days before your event. Need help making changes?"
+      ],
+      "quickReplies": ["Modify booking", "Check booking", "Contact support"]
+    },
+    
+    "payment": {
+      "patterns": ["payment", "pay", "deposit", "credit card", "venmo", "cash", "zelle", "how do i pay", "payment methods", "secure", "stripe"],
+      "responses": [
+        "💳 We accept secure payments via **Stripe**:\n\n• Credit/debit cards (Visa, MC, Amex)\n• Apple Pay & Google Pay\n\n**Payment Structure:**\n• 50% deposit at booking\n• Remaining 50% due on event day\n\nAll transactions are secure and encrypted. Ready to book?",
+        "Payment is simple and secure! 🔒\n\nWe use Stripe for all payments:\n• Major credit/debit cards accepted\n• 50% deposit holds your date\n• Balance due on event day\n\nNo cash required — everything is handled online!"
+      ],
+      "quickReplies": ["Book now", "View pricing", "Contact us"]
+    },
+    
+    "contact_human": {
+      "patterns": ["speak to someone", "talk to a person", "human", "real person", "customer service", "phone", "call", "email", "contact", "support", "help me", "agent"],
+      "responses": [
+        "Of course! Our team is happy to help. 📞\n\n📧 **Email:** info@pophabachi.com\n📱 **Phone:** (555) 123-4567\n📋 **Contact Form:** Use our Contact page\n\nWe typically respond within 24 hours. For urgent matters, please call. Would you like to fill out our contact form?",
+        "I'll connect you with our team! You can reach us:\n\n✉️ Email: info@pophabachi.com\n📞 Phone: (555) 123-4567\n\nOr fill out our contact form and we'll get back to you ASAP. What's the best way to reach you?"
+      ],
+      "quickReplies": ["Contact form", "Send email", "Go back to booking"]
+    },
+    
+    "event_types": {
+      "patterns": ["birthday", "wedding", "corporate", "party", "celebration", "event type", "what events", "anniversary", "graduation", "baby shower", "rehearsal dinner"],
+      "responses": [
+        "🎉 We cater all kinds of events!\n\n• Birthday parties 🎂\n• Weddings & rehearsal dinners 💒\n• Corporate events 💼\n• Anniversaries ❤️\n• Graduations 🎓\n• Family gatherings 👨‍👩‍👧‍👦\n• Baby/bridal showers 👶\n\nNo event is too special! What are you celebrating?",
+        "Hibachi is perfect for any celebration! We've cooked for:\n\n✨ Milestone birthdays\n✨ Intimate weddings\n✨ Team building events\n✨ Holiday gatherings\n✨ And so much more!\n\nWhat's your special occasion?"
+      ],
+      "quickReplies": ["Book for birthday", "Corporate inquiry", "Book now"]
+    },
+    
+    "party_size": {
+      "patterns": ["minimum", "how many people", "guest count", "party size", "guests", "large party", "small party", "minimum guests", "max", "maximum", "group size"],
+      "responses": [
+        "👥 Here's what you need to know about party sizes:\n\n• **Minimum:** 6 adults (or $500 minimum spend)\n• **Standard events:** 6-30 guests\n• **Large events:** 30+ guests (contact us for special arrangements)\n\nChildren under 12 count as 0.5 guests for pricing. How many guests are you expecting?",
+        "Great question! 👨‍👩‍👧‍👦\n\n**Minimum:** 6 guests or $500 spend\n**Typical range:** 8-25 guests\n**Large events:** We can accommodate 50+ with advance notice!\n\nKids under 12 get reduced pricing. What's your guest count?"
+      ],
+      "quickReplies": ["Get estimate", "Book now", "Large event inquiry"]
+    },
+    
+    "timing": {
+      "patterns": ["how long", "duration", "time", "hours", "start time", "end time", "how early", "setup", "cleanup", "when should"],
+      "responses": [
+        "⏰ Here's how our service timeline works:\n\n• **Setup:** Chef arrives 30-45 min early\n• **Cooking show:** 1-1.5 hours (depending on group size)\n• **Cleanup:** 30 minutes after\n\nTotal time on-site: ~2.5-3 hours. You just enjoy the show! What time is your event?",
+        "Timing breakdown:\n\n🕐 **Setup:** 30-45 minutes before\n🍳 **Live cooking:** 1-1.5 hours\n🧹 **Cleanup:** We handle it all!\n\nFor a 6pm dinner, chef arrives around 5:15pm. When's your event scheduled?"
+      ],
+      "quickReplies": ["Book now", "Contact with questions"]
+    },
+    
+    "what_you_provide": {
+      "patterns": ["what do i need", "what should i have", "what do i provide", "bring", "equipment", "grill", "setup requirements", "outdoor", "indoor", "space needed"],
+      "responses": [
+        "🏠 Here's what you need to provide:\n\n✅ **Space:** Outdoor patio or well-ventilated indoor area\n✅ **Seating:** Chairs/tables for your guests\n✅ **Outlets:** Standard electrical outlet nearby\n\n**We bring everything else:**\n• Hibachi grill & equipment\n• All ingredients & sauces\n• Plates, utensils, napkins\n• Cooking oils & seasonings\n\nQuestions about your setup?",
+        "You provide the guests, we provide the feast! 🍳\n\n**Your part:**\n• Outdoor/indoor space (10x10 ft min)\n• Seating for guests\n• Electrical outlet access\n\n**We bring:**\n• Professional hibachi grill\n• Fresh ingredients\n• All serveware\n• Cleanup supplies\n\nDoes your space work?"
+      ],
+      "quickReplies": ["Book now", "Contact with questions", "View service areas"]
+    },
+    
+    "thanks": {
+      "patterns": ["thank", "thanks", "appreciate", "helpful", "great", "awesome", "perfect", "wonderful"],
+      "responses": [
+        "You're welcome! 😊 So glad I could help. Is there anything else you'd like to know about our hibachi experience?",
+        "Happy to help! 🙌 Let me know if you have any other questions. We'd love to cook for you!",
+        "Anytime! 🍳 When you're ready to book, I'm here to help. Anything else on your mind?"
+      ],
+      "quickReplies": ["Book now", "View packages", "No, I'm all set"]
+    },
+    
+    "goodbye": {
+      "patterns": ["bye", "goodbye", "see you", "later", "talk soon", "that's all", "done", "finished", "all set"],
+      "responses": [
+        "Goodbye! 👋 Thanks for chatting with us. We hope to cook for you soon! Feel free to come back anytime with questions.",
+        "Take care! 🍳 We're excited to bring the hibachi experience to your next event. See you soon!",
+        "Thanks for visiting! Have an amazing day, and we hope to serve you soon! 🔥"
+      ],
+      "quickReplies": ["Book now", "Start over"]
+    }
+  },
+  
+  "fallback": {
+    "responses": [
+      "I'm not quite sure about that, but I'd love to help! You can ask me about:\n\n• Pricing & packages\n• Availability & service areas\n• Booking process\n• Dietary accommodations\n• Cancellation policy\n\nOr would you like to speak with our team?",
+      "Hmm, I didn't catch that. I can help with pricing, packages, booking questions, and more. What would you like to know?",
+      "I'm still learning! For complex questions, our team is happy to help directly. Would you like me to connect you?"
+    ],
+    "quickReplies": ["Contact support", "View packages", "Book now"]
+  },
+  
+  "contextual": {
+    "after_pricing": {
+      "prompt": "Would you like to know what's included in each package, or are you ready to book?",
+      "quickReplies": ["Package details", "Book now", "Have a question"]
+    },
+    "after_dietary": {
+      "prompt": "We'll make sure your guests are well taken care of. Ready to book with your dietary requirements noted?",
+      "quickReplies": ["Book with notes", "More questions", "Contact chef"]
+    }
+  }
+}

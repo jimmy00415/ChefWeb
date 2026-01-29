@@ -10,6 +10,7 @@ import {
     requireAdmin,
     cleanupSessions 
 } from '../middleware/auth.js';
+import { adminLoginLimiter } from '../middleware/rateLimit.js';
 
 const router = Router();
 
@@ -19,8 +20,9 @@ const router = Router();
 
 /**
  * POST /api/admin/login - Authenticate with API key
+ * Rate limited to 5 attempts per 15 minutes per IP
  */
-router.post('/login', async (req, res) => {
+router.post('/login', adminLoginLimiter, async (req, res) => {
     try {
         const { apiKey } = req.body;
 

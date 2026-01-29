@@ -5,13 +5,15 @@
 import { Router } from 'express';
 import { query, isPostgres, getMemoryDb, createId } from '../db/index.js';
 import { sendContactInquiryAlert, sendContactAutoReply } from '../services/email.js';
+import { contactLimiter } from '../middleware/rateLimit.js';
 
 const router = Router();
 
 /**
  * POST /api/contact - Submit a contact form
+ * Rate limited to 5 submissions per hour per IP
  */
-router.post('/', async (req, res) => {
+router.post('/', contactLimiter, async (req, res) => {
     try {
         const { name, email, phone, reason, subject, message } = req.body || {};
 
