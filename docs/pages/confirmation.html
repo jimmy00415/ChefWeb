@@ -182,11 +182,40 @@
                 </button>
             </div>
 
-            <!-- Calendar Download -->
-            <div class="card" style="margin-bottom: var(--spacing-2xl); text-align: center;">
-                <h3 class="heading-3" style="margin-bottom: var(--spacing-md);">📅 Add to Calendar</h3>
-                <p class="text-muted" style="margin-bottom: var(--spacing-lg);">Save your event date to your calendar so you don't forget!</p>
-                <button id="downloadCalendarBtn" class="btn btn--primary btn--lg">Download Calendar Event (.ics)</button>
+            <!-- Calendar Integration -->
+            <div class="card" style="margin-bottom: var(--spacing-2xl);">
+                <div class="card__header" style="text-align: center;">
+                    <h3 class="card__title">📅 Add to Your Calendar</h3>
+                </div>
+                <div class="card__body">
+                    <p class="text-muted" style="text-align: center; margin-bottom: var(--spacing-lg);">Never forget your hibachi experience! Add it to your favorite calendar app.</p>
+                    
+                    <div class="calendar-buttons" style="display: flex; flex-wrap: wrap; gap: var(--spacing-md); justify-content: center;">
+                        <!-- Download .ics file -->
+                        <button id="downloadCalendarBtn" class="btn btn--primary" style="min-width: 180px;">
+                            📥 Download .ics File
+                        </button>
+                        
+                        <!-- Google Calendar -->
+                        <a id="googleCalendarLink" href="#" target="_blank" rel="noopener" class="btn btn--outline" style="min-width: 180px;">
+                            <span style="color: #4285F4;">📆</span> Google Calendar
+                        </a>
+                        
+                        <!-- Outlook Calendar -->
+                        <a id="outlookCalendarLink" href="#" target="_blank" rel="noopener" class="btn btn--outline" style="min-width: 180px;">
+                            <span style="color: #0078D4;">📧</span> Outlook Calendar
+                        </a>
+                        
+                        <!-- Yahoo Calendar -->
+                        <a id="yahooCalendarLink" href="#" target="_blank" rel="noopener" class="btn btn--outline" style="min-width: 180px;">
+                            <span style="color: #6001D2;">📅</span> Yahoo Calendar
+                        </a>
+                    </div>
+                    
+                    <p class="text-sm text-muted" style="text-align: center; margin-top: var(--spacing-md);">
+                        Tip: The .ics file works with Apple Calendar, Outlook desktop, and most calendar apps.
+                    </p>
+                </div>
             </div>
 
             <!-- Additional Info -->

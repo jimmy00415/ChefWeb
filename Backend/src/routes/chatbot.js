@@ -6,6 +6,7 @@
 import { Router } from 'express';
 import { generateResponse, getAvailableIntents, testMessage } from '../services/chatbot.js';
 import { chatbotLimiter } from '../middleware/rateLimit.js';
+import logger from '../services/logger.js';
 
 const router = Router();
 

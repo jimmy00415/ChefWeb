@@ -3,6 +3,7 @@ import Stripe from 'stripe';
 import { query, isPostgres, getMemoryDb, createId } from '../db/index.js';
 import { calculateTotals } from '../validators.js';
 import { sendPaymentReceipt } from '../services/email.js';
+import logger from '../services/logger.js';
 
 const router = Router();
 
@@ -85,7 +86,7 @@ router.post('/create-intent', async (req, res) => {
     }
 
     // Fallback to mock mode if Stripe not configured (for development)
-    console.warn('⚠️ Stripe not configured - using mock mode');
+    logger.logPayment('mock_mode', { reason: 'Stripe not configured' });
     const paymentIntentId = createId('pi');
     const clientSecret = `${paymentIntentId}_secret_mock`;
 
@@ -104,7 +105,7 @@ router.post('/create-intent', async (req, res) => {
 
     return res.json({ clientSecret, client_secret: clientSecret, paymentIntentId });
   } catch (error) {
-    console.error('Create intent error:', error);
+    logger.logError(error, { context: 'Create payment intent' });
     // Don't expose internal error details to client
     return res.status(500).json({ error: 'Failed to create payment intent' });
   }
@@ -117,13 +118,13 @@ router.post('/webhook', async (req, res) => {
 
   // If Stripe not configured, return stub response
   if (!isStripeConfigured()) {
-    console.warn('⚠️ Webhook received but Stripe not configured');
+    logger.logPayment('webhook_mock', { reason: 'Stripe not configured' });
     return res.status(200).json({ received: true, mode: 'mock' });
   }
 
   // Verify webhook signature
   if (!webhookSecret) {
-    console.error('❌ STRIPE_WEBHOOK_SECRET not configured');
+    logger.logError(new Error('STRIPE_WEBHOOK_SECRET not configured'), { context: 'Webhook' });
     return res.status(500).json({ error: 'Webhook secret not configured' });
   }
 
@@ -131,7 +132,7 @@ router.post('/webhook', async (req, res) => {
   try {
     event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
   } catch (err) {
-    console.error('❌ Webhook signature verification failed:', err.message);
+    logger.logError(err, { context: 'Webhook signature verification' });
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
@@ -145,17 +146,17 @@ router.post('/webhook', async (req, res) => {
         await handlePaymentFailure(event.data.object);
         break;
       case 'charge.refunded':
-        console.log('Refund processed:', event.data.object.id);
+        logger.logPayment('refund_processed', { refundId: event.data.object.id });
         break;
       case 'charge.dispute.created':
-        console.error('⚠️ DISPUTE CREATED:', event.data.object.id);
+        logger.logPayment('dispute_created', { disputeId: event.data.object.id, severity: 'critical' });
         // TODO: Alert support team
         break;
       default:
-        console.log(`Unhandled event type: ${event.type}`);
+        logger.logInfo(`Unhandled Stripe event: ${event.type}`);
     }
   } catch (handlerError) {
-    console.error('Webhook handler error:', handlerError);
+    logger.logError(handlerError, { context: 'Webhook handler', eventType: event.type });
     // Still return 200 to acknowledge receipt - Stripe will retry on 4xx/5xx
   }
 
@@ -164,7 +165,7 @@ router.post('/webhook', async (req, res) => {
 
 // Handle successful payment
 async function handlePaymentSuccess(paymentIntent) {
-  console.log('✅ Payment succeeded:', paymentIntent.id);
+  logger.logPayment('succeeded', { paymentIntentId: paymentIntent.id });
   
   if (isPostgres()) {
     // Update payment status
@@ -188,7 +189,7 @@ async function handlePaymentSuccess(paymentIntent) {
         amount: paymentIntent.amount 
       };
       sendPaymentReceipt(booking, payment)
-        .catch(err => console.error('Payment receipt email error:', err));
+        .catch(err => logger.logEmail('send_error', { type: 'payment_receipt', error: err.message }));
     }
   } else {
     const payment = getMemoryDb().payments.get(paymentIntent.id);
@@ -201,7 +202,10 @@ async function handlePaymentSuccess(paymentIntent) {
 
 // Handle failed payment
 async function handlePaymentFailure(paymentIntent) {
-  console.log('❌ Payment failed:', paymentIntent.id, paymentIntent.last_payment_error?.message);
+  logger.logPayment('failed', { 
+    paymentIntentId: paymentIntent.id, 
+    error: paymentIntent.last_payment_error?.message 
+  });
   
   if (isPostgres()) {
     await query(`
@@ -241,11 +245,12 @@ router.post('/refund', async (req, res) => {
         `, [refund.id, paymentIntentId]);
       }
 
+      logger.logPayment('refund_issued', { refundId: refund.id, paymentIntentId, amount });
       return res.json({ refundId: refund.id, status: refund.status });
     }
 
     // Fallback to mock mode
-    console.warn('⚠️ Stripe not configured - mock refund');
+    logger.logPayment('refund_mock', { paymentIntentId, reason: 'Stripe not configured' });
     if (isPostgres()) {
       const refundId = createId('re');
       const result = await query(`
@@ -267,7 +272,7 @@ router.post('/refund', async (req, res) => {
       return res.json({ refundId: createId('re'), status: 'succeeded' });
     }
   } catch (error) {
-    console.error('Refund error:', error);
+    logger.logError(error, { context: 'Process refund', paymentIntentId: req.body?.paymentIntentId });
     return res.status(500).json({ error: 'Failed to process refund' });
   }
 });

@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { query, isPostgres, getMemoryDb, createId } from '../db/index.js';
+import logger from '../services/logger.js';
 
 const router = Router();
 

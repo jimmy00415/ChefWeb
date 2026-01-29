@@ -9,6 +9,7 @@ import {
     sendAdminCancellationAlert
 } from '../services/email.js';
 import { bookingLimiter, lookupLimiter, modifyLimiter } from '../middleware/rateLimit.js';
+import logger from '../services/logger.js';
 
 const router = Router();
 
@@ -116,7 +117,7 @@ router.get('/lookup', lookupLimiter, async (req, res) => {
             });
         }
     } catch (error) {
-        console.error('Booking lookup error:', error);
+        logger.logError(error, { context: 'Booking lookup', confirmationNumber });
         return res.status(500).json({ error: 'Failed to lookup booking' });
     }
 });
@@ -170,7 +171,7 @@ router.post('/', bookingLimiter, async (req, res) => {
       Promise.all([
         sendBookingConfirmation(bookingForEmail),
         sendAdminBookingAlert(bookingForEmail)
-      ]).catch(err => console.error('Email send error:', err));
+      ]).catch(err => logger.logEmail('send_error', { type: 'booking_confirmation', error: err.message }));
       
       return res.status(201).json({ 
         bookingId: booking.id, 
@@ -196,12 +197,12 @@ router.post('/', bookingLimiter, async (req, res) => {
       Promise.all([
         sendBookingConfirmation(booking),
         sendAdminBookingAlert(booking)
-      ]).catch(err => console.error('Email send error:', err));
+      ]).catch(err => logger.logEmail('send_error', { type: 'booking_confirmation', error: err.message }));
       
       return res.status(201).json({ bookingId: id, confirmationNumber, status });
     }
   } catch (error) {
-    console.error('Booking creation error:', error);
+    logger.logError(error, { context: 'Booking creation' });
     return res.status(500).json({ error: 'Failed to create booking' });
   }
 });
@@ -221,7 +222,7 @@ router.get('/:id', async (req, res) => {
       return res.json(booking);
     }
   } catch (error) {
-    console.error('Get booking error:', error);
+    logger.logError(error, { context: 'Get booking', bookingId: req.params.id });
     return res.status(500).json({ error: 'Failed to retrieve booking' });
   }
 });
@@ -236,7 +237,7 @@ router.get('/', async (req, res) => {
       return res.json({ bookings: Array.from(getMemoryDb().bookings.values()) });
     }
   } catch (error) {
-    console.error('List bookings error:', error);
+    logger.logError(error, { context: 'List bookings' });
     return res.status(500).json({ error: 'Failed to list bookings' });
   }
 });
@@ -273,10 +274,221 @@ router.patch('/:id', async (req, res) => {
       return res.json(updated);
     }
   } catch (error) {
-    console.error('Update booking error:', error);
+    logger.logError(error, { context: 'Update booking', bookingId: req.params.id });
     return res.status(500).json({ error: 'Failed to update booking' });
   }
 });
+
+// ============================================
+// CALENDAR INTEGRATION
+// ============================================
+
+/**
+ * Generate iCal (.ics) file for a booking
+ * GET /api/bookings/:id/calendar.ics
+ * Requires email query parameter for verification
+ */
+router.get('/:id/calendar.ics', async (req, res) => {
+    try {
+        const { email } = req.query;
+        
+        if (!email) {
+            return res.status(400).json({ error: 'Email is required for verification' });
+        }
+        
+        const normalizedEmail = email.trim().toLowerCase();
+        let booking = null;
+        
+        if (isPostgres()) {
+            const result = await query(`
+                SELECT * FROM bookings 
+                WHERE id = $1 AND LOWER(contact_email) = $2
+            `, [req.params.id, normalizedEmail]);
+            
+            if (result.rows.length > 0) {
+                booking = result.rows[0];
+            }
+        } else {
+            const memBooking = getMemoryDb().bookings.get(req.params.id);
+            if (memBooking && memBooking.contactEmail?.toLowerCase() === normalizedEmail) {
+                booking = memBooking;
+            }
+        }
+        
+        if (!booking) {
+            return res.status(404).json({ error: 'Booking not found or email mismatch' });
+        }
+        
+        // Generate iCal content
+        const icsContent = generateICalendar(booking);
+        
+        // Set headers for .ics file download
+        res.setHeader('Content-Type', 'text/calendar; charset=utf-8');
+        res.setHeader('Content-Disposition', `attachment; filename="pophabachi-${booking.confirmation_number || booking.confirmationNumber}.ics"`);
+        
+        logger.logBooking('calendar_download', { 
+            confirmationNumber: booking.confirmation_number || booking.confirmationNumber 
+        });
+        
+        return res.send(icsContent);
+        
+    } catch (error) {
+        logger.logError(error, { context: 'Calendar generation', bookingId: req.params.id });
+        return res.status(500).json({ error: 'Failed to generate calendar file' });
+    }
+});
+
+/**
+ * Generate iCal content for a booking
+ * @param {object} booking - Booking data
+ * @returns {string} - iCal formatted string
+ */
+function generateICalendar(booking) {
+    const lines = [];
+    
+    // Calendar header
+    lines.push('BEGIN:VCALENDAR');
+    lines.push('VERSION:2.0');
+    lines.push('PRODID:-//POP Habachi//Booking System//EN');
+    lines.push('CALSCALE:GREGORIAN');
+    lines.push('METHOD:PUBLISH');
+    lines.push('X-WR-CALNAME:POP Habachi Booking');
+    
+    // Event
+    lines.push('BEGIN:VEVENT');
+    
+    // Unique ID
+    const confirmNum = booking.confirmation_number || booking.confirmationNumber || 'BOOKING';
+    lines.push(`UID:${confirmNum}@pophabachi.com`);
+    
+    // Timestamps
+    const now = new Date();
+    const dtstamp = formatICalDate(now);
+    lines.push(`DTSTAMP:${dtstamp}`);
+    
+    // Event date and time
+    const eventDate = new Date(booking.event_date || booking.eventDate);
+    const eventTime = booking.event_time || booking.eventTime || '18:00';
+    
+    // Parse time
+    const [hours, minutes] = parseTimeString(eventTime);
+    eventDate.setHours(hours, minutes, 0, 0);
+    
+    // Start time
+    const dtstart = formatICalDate(eventDate);
+    lines.push(`DTSTART:${dtstart}`);
+    
+    // End time (2.5 hours later)
+    const endDate = new Date(eventDate);
+    endDate.setHours(endDate.getHours() + 2, endDate.getMinutes() + 30);
+    const dtend = formatICalDate(endDate);
+    lines.push(`DTEND:${dtend}`);
+    
+    // Summary
+    const packageName = capitalizeFirst(booking.package || 'Signature');
+    lines.push(`SUMMARY:🍳 POP Habachi - ${packageName} Package`);
+    
+    // Description
+    const adults = booking.num_adults || booking.numAdults || 0;
+    const children = booking.num_children || booking.numChildren || 0;
+    const guestStr = `${adults} adults${children > 0 ? `, ${children} children` : ''}`;
+    
+    let description = `POP Habachi Private Chef Experience\\n\\n`;
+    description += `Confirmation: ${confirmNum}\\n`;
+    description += `Package: ${packageName}\\n`;
+    description += `Guests: ${guestStr}\\n\\n`;
+    description += `Your chef will arrive 30-45 minutes early for setup.\\n`;
+    description += `We bring everything - just enjoy!\\n\\n`;
+    description += `Questions? Contact us:\\n`;
+    description += `Email: info@pophabachi.com\\n`;
+    description += `Website: https://jimmy00415.github.io/ChefWeb/`;
+    
+    lines.push(`DESCRIPTION:${description}`);
+    
+    // Location
+    const address = booking.venue_address || booking.venueAddress || '';
+    const city = booking.city || '';
+    const state = booking.service_state || booking.serviceState || '';
+    let location = address;
+    if (city && state) {
+        location += location ? `, ${city}, ${state}` : `${city}, ${state}`;
+    }
+    if (location) {
+        lines.push(`LOCATION:${escapeICalText(location)}`);
+    }
+    
+    // Status
+    lines.push('STATUS:CONFIRMED');
+    lines.push('SEQUENCE:0');
+    
+    // Reminder: 1 day before
+    lines.push('BEGIN:VALARM');
+    lines.push('TRIGGER:-P1D');
+    lines.push('ACTION:DISPLAY');
+    lines.push('DESCRIPTION:Reminder: Your POP Habachi chef experience is tomorrow!');
+    lines.push('END:VALARM');
+    
+    // Reminder: 2 hours before
+    lines.push('BEGIN:VALARM');
+    lines.push('TRIGGER:-PT2H');
+    lines.push('ACTION:DISPLAY');
+    lines.push('DESCRIPTION:Your POP Habachi chef arrives in about 2 hours. Get ready for an amazing experience!');
+    lines.push('END:VALARM');
+    
+    lines.push('END:VEVENT');
+    lines.push('END:VCALENDAR');
+    
+    return lines.join('\r\n');
+}
+
+/**
+ * Format date for iCal (YYYYMMDDTHHMMSSZ)
+ */
+function formatICalDate(date) {
+    return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+}
+
+/**
+ * Parse time string to hours and minutes
+ */
+function parseTimeString(timeStr) {
+    // Handle formats: "18:00", "6:00 PM", "18:00:00"
+    let hours = 18;
+    let minutes = 0;
+    
+    const match = timeStr.match(/(\d{1,2}):(\d{2})/);
+    if (match) {
+        hours = parseInt(match[1], 10);
+        minutes = parseInt(match[2], 10);
+        
+        // Handle AM/PM
+        if (timeStr.toLowerCase().includes('pm') && hours < 12) {
+            hours += 12;
+        } else if (timeStr.toLowerCase().includes('am') && hours === 12) {
+            hours = 0;
+        }
+    }
+    
+    return [hours, minutes];
+}
+
+/**
+ * Escape special characters for iCal text
+ */
+function escapeICalText(text) {
+    return text
+        .replace(/\\/g, '\\\\')
+        .replace(/;/g, '\\;')
+        .replace(/,/g, '\\,')
+        .replace(/\n/g, '\\n');
+}
+
+/**
+ * Capitalize first letter
+ */
+function capitalizeFirst(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
 
 // ============================================
 // CUSTOMER SELF-SERVICE: MODIFY BOOKING
@@ -402,7 +614,12 @@ router.patch('/:id/modify', modifyLimiter, async (req, res) => {
 
             // Send modification confirmation email
             sendBookingModificationConfirmation(updatedBooking, oldValues, updates)
-                .catch(err => console.error('Modification email error:', err));
+                .catch(err => logger.logEmail('send_error', { type: 'modification_confirmation', error: err.message }));
+
+            logger.logBooking('modified', {
+                confirmationNumber: updatedBooking.confirmation_number,
+                changes: Object.keys(updates)
+            });
 
             return res.json({
                 success: true,
@@ -421,10 +638,12 @@ router.patch('/:id/modify', modifyLimiter, async (req, res) => {
             const updated = { ...booking, ...updates, updatedAt: new Date().toISOString() };
             getMemoryDb().bookings.set(req.params.id, updated);
             
+            logger.logBooking('modified', { confirmationNumber: booking.confirmationNumber });
+            
             return res.json({ success: true, booking: updated });
         }
     } catch (error) {
-        console.error('Modify booking error:', error);
+        logger.logError(error, { context: 'Modify booking', bookingId: req.params.id });
         return res.status(500).json({ error: 'Failed to modify booking' });
     }
 });
@@ -530,7 +749,13 @@ router.post('/:id/cancel', modifyLimiter, async (req, res) => {
                     totalPaid: totalPaidCents / 100,
                     reason: reason || 'Not specified'
                 })
-            ]).catch(err => console.error('Cancellation email error:', err));
+            ]).catch(err => logger.logEmail('send_error', { type: 'cancellation_confirmation', error: err.message }));
+
+            logger.logBooking('cancelled', {
+                confirmationNumber: cancelledBooking.confirmation_number,
+                refundPercentage,
+                refundAmount
+            });
 
             return res.json({
                 success: true,
@@ -559,10 +784,12 @@ router.post('/:id/cancel', modifyLimiter, async (req, res) => {
             booking.cancellationReason = reason || 'Customer requested';
             getMemoryDb().bookings.set(req.params.id, booking);
             
+            logger.logBooking('cancelled', { confirmationNumber: booking.confirmationNumber });
+            
             return res.json({ success: true, booking });
         }
     } catch (error) {
-        console.error('Cancel booking error:', error);
+        logger.logError(error, { context: 'Cancel booking', bookingId: req.params.id });
         return res.status(500).json({ error: 'Failed to cancel booking' });
     }
 });

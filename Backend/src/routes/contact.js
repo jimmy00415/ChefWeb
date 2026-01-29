@@ -6,6 +6,7 @@ import { Router } from 'express';
 import { query, isPostgres, getMemoryDb, createId } from '../db/index.js';
 import { sendContactInquiryAlert, sendContactAutoReply } from '../services/email.js';
 import { contactLimiter } from '../middleware/rateLimit.js';
+import logger from '../services/logger.js';
 
 const router = Router();
 
@@ -70,15 +71,17 @@ router.post('/', contactLimiter, async (req, res) => {
         Promise.all([
             sendContactInquiryAlert(inquiry),
             sendContactAutoReply(inquiry)
-        ]).catch(err => console.error('Email send error:', err));
+        ]).catch(err => logger.logEmail('send_error', { type: 'contact_inquiry', error: err.message }));
 
+        logger.logInfo('Contact form submitted', { inquiryId, reason });
+        
         return res.status(201).json({ 
             success: true, 
             message: 'Thank you for contacting us! We will respond within 2 hours during business hours.',
             inquiryId 
         });
     } catch (error) {
-        console.error('Contact form error:', error);
+        logger.logError(error, { context: 'Contact form submission' });
         return res.status(500).json({ error: 'Failed to submit contact form' });
     }
 });
@@ -131,7 +134,7 @@ router.get('/', async (req, res) => {
             });
         }
     } catch (error) {
-        console.error('List contacts error:', error);
+        logger.logError(error, { context: 'List contacts' });
         return res.status(500).json({ error: 'Failed to list contact inquiries' });
     }
 });
@@ -161,7 +164,7 @@ router.get('/:id', async (req, res) => {
             return res.json(inquiry);
         }
     } catch (error) {
-        console.error('Get contact error:', error);
+        logger.logError(error, { context: 'Get contact', contactId: req.params.id });
         return res.status(500).json({ error: 'Failed to get contact inquiry' });
     }
 });
@@ -231,7 +234,7 @@ router.patch('/:id', async (req, res) => {
             return res.json(inquiry);
         }
     } catch (error) {
-        console.error('Update contact error:', error);
+        logger.logError(error, { context: 'Update contact', contactId: req.params.id });
         return res.status(500).json({ error: 'Failed to update contact inquiry' });
     }
 });

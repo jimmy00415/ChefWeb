@@ -17,6 +17,9 @@ import adminRouter from './routes/admin.js';
 // Rate limiting middleware
 import { globalLimiter } from './middleware/rateLimit.js';
 
+// Structured logging
+import logger from './services/logger.js';
+
 dotenv.config();
 
 const app = express();
@@ -57,7 +60,9 @@ app.use(cors({
 app.use('/api/payments/webhook', express.raw({ type: 'application/json' }));
 
 app.use(express.json({ limit: '2mb' }));
-app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
+
+// HTTP request logging with Winston stream
+app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev', { stream: logger.stream }));
 
 // Apply global rate limiting to all /api routes
 app.use('/api', globalLimiter);
@@ -80,7 +85,12 @@ app.use('/api', configRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error('Unhandled error:', err);
+  logger.logError(err, {
+    path: req.path,
+    method: req.method,
+    ip: req.ip,
+    userAgent: req.get('User-Agent')
+  });
   res.status(500).json({ 
     error: process.env.NODE_ENV === 'production' ? 'Internal server error' : err.message 
   });
@@ -88,12 +98,17 @@ app.use((err, req, res, next) => {
 
 // 404 handler
 app.use((req, res) => {
+  logger.logWarn('Route not found', {
+    path: req.path,
+    method: req.method,
+    ip: req.ip
+  });
   res.status(404).json({ error: 'Not found' });
 });
 
 // Graceful shutdown
 process.on('SIGTERM', async () => {
-  console.log('SIGTERM received, shutting down gracefully');
+  logger.logInfo('SIGTERM received, shutting down gracefully');
   await closeDb();
   process.exit(0);
 });
@@ -103,12 +118,14 @@ async function start() {
   await initDb();
   
   app.listen(PORT, () => {
-    console.log(`ChefWeb backend running on port ${PORT}`);
-    console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+    logger.logInfo(`ChefWeb backend running on port ${PORT}`, {
+      environment: process.env.NODE_ENV || 'development',
+      port: PORT
+    });
   });
 }
 
 start().catch(err => {
-  console.error('Failed to start server:', err);
+  logger.logError(err, { context: 'Server startup failed' });
   process.exit(1);
 });

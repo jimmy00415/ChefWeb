@@ -11,6 +11,7 @@ import {
     cleanupSessions 
 } from '../middleware/auth.js';
 import { adminLoginLimiter } from '../middleware/rateLimit.js';
+import logger from '../services/logger.js';
 
 const router = Router();
 

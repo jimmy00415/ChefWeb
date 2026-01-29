@@ -274,14 +274,181 @@ function formatCurrency(amount) {
 }
 
 /**
- * Calendar Download (.ics file generation)
+ * Calendar Download (.ics file generation) and Calendar Links
  */
 document.addEventListener('DOMContentLoaded', () => {
     const downloadBtn = document.getElementById('downloadCalendarBtn');
     if (downloadBtn) {
         downloadBtn.addEventListener('click', generateCalendarFile);
     }
+    
+    // Generate calendar links
+    generateCalendarLinks();
 });
+
+/**
+ * Generate links for Google Calendar, Outlook, and Yahoo
+ */
+function generateCalendarLinks() {
+    const bookingState = sessionStorage.getItem('bookingState');
+    if (!bookingState) return;
+    
+    try {
+        const state = JSON.parse(bookingState);
+        const data = state.formData;
+        const bookingRef = sessionStorage.getItem('bookingReference') || 'PENDING';
+        
+        if (!data.eventDate) return;
+        
+        // Parse event date and time
+        const eventDate = new Date(data.eventDate);
+        const eventTime = data.eventTime || '18:00';
+        const [hours, minutes] = parseEventTime(eventTime);
+        eventDate.setHours(hours, minutes, 0, 0);
+        
+        // End time (2.5 hours later)
+        const endDate = new Date(eventDate);
+        endDate.setHours(endDate.getHours() + 2, endDate.getMinutes() + 30);
+        
+        // Event details
+        const packageName = data.package ? data.package.charAt(0).toUpperCase() + data.package.slice(1) : 'Signature';
+        const title = `🍳 POP Habachi - ${packageName} Package`;
+        
+        const adults = data.numAdults || 0;
+        const children = data.numChildren || 0;
+        const guestStr = `${adults} adults${children > 0 ? `, ${children} children` : ''}`;
+        
+        let description = `POP Habachi Private Chef Experience\n\n`;
+        description += `Confirmation: ${bookingRef}\n`;
+        description += `Package: ${packageName}\n`;
+        description += `Guests: ${guestStr}\n\n`;
+        description += `Your chef arrives 30-45 min early for setup.\n`;
+        description += `Questions? Email: info@pophabachi.com`;
+        
+        // Location
+        let location = data.address || '';
+        if (data.city && data.serviceState) {
+            location += location ? `, ${data.city}, ${data.serviceState}` : `${data.city}, ${data.serviceState}`;
+        }
+        if (data.zipCode) {
+            location += ` ${data.zipCode}`;
+        }
+        
+        // Google Calendar Link
+        const googleLink = document.getElementById('googleCalendarLink');
+        if (googleLink) {
+            const googleUrl = generateGoogleCalendarUrl(title, description, location, eventDate, endDate);
+            googleLink.href = googleUrl;
+        }
+        
+        // Outlook Calendar Link
+        const outlookLink = document.getElementById('outlookCalendarLink');
+        if (outlookLink) {
+            const outlookUrl = generateOutlookCalendarUrl(title, description, location, eventDate, endDate);
+            outlookLink.href = outlookUrl;
+        }
+        
+        // Yahoo Calendar Link
+        const yahooLink = document.getElementById('yahooCalendarLink');
+        if (yahooLink) {
+            const yahooUrl = generateYahooCalendarUrl(title, description, location, eventDate, endDate);
+            yahooLink.href = yahooUrl;
+        }
+        
+    } catch (error) {
+        console.error('Error generating calendar links:', error);
+    }
+}
+
+/**
+ * Parse event time string to hours and minutes
+ */
+function parseEventTime(timeStr) {
+    let hours = 18;
+    let minutes = 0;
+    
+    const match = timeStr.match(/(\d{1,2}):(\d{2})/);
+    if (match) {
+        hours = parseInt(match[1], 10);
+        minutes = parseInt(match[2], 10);
+        
+        if (timeStr.toLowerCase().includes('pm') && hours < 12) {
+            hours += 12;
+        } else if (timeStr.toLowerCase().includes('am') && hours === 12) {
+            hours = 0;
+        }
+    }
+    
+    return [hours, minutes];
+}
+
+/**
+ * Format date for Google Calendar (YYYYMMDDTHHMMSSZ)
+ */
+function formatGoogleDate(date) {
+    return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+}
+
+/**
+ * Generate Google Calendar URL
+ */
+function generateGoogleCalendarUrl(title, description, location, startDate, endDate) {
+    const params = new URLSearchParams({
+        action: 'TEMPLATE',
+        text: title,
+        dates: `${formatGoogleDate(startDate)}/${formatGoogleDate(endDate)}`,
+        details: description,
+        location: location,
+        sf: 'true',
+        output: 'xml'
+    });
+    
+    return `https://calendar.google.com/calendar/render?${params.toString()}`;
+}
+
+/**
+ * Generate Outlook Calendar URL (Outlook.com/Office 365)
+ */
+function generateOutlookCalendarUrl(title, description, location, startDate, endDate) {
+    const params = new URLSearchParams({
+        path: '/calendar/action/compose',
+        rru: 'addevent',
+        subject: title,
+        body: description.replace(/\n/g, '<br>'),
+        location: location,
+        startdt: startDate.toISOString(),
+        enddt: endDate.toISOString()
+    });
+    
+    return `https://outlook.live.com/calendar/0/deeplink/compose?${params.toString()}`;
+}
+
+/**
+ * Generate Yahoo Calendar URL
+ */
+function generateYahooCalendarUrl(title, description, location, startDate, endDate) {
+    // Yahoo uses a different date format
+    const formatYahooDate = (date) => {
+        return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    };
+    
+    // Calculate duration in hours and minutes
+    const durationMs = endDate - startDate;
+    const durationHours = Math.floor(durationMs / (1000 * 60 * 60));
+    const durationMinutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
+    const duration = `${String(durationHours).padStart(2, '0')}${String(durationMinutes).padStart(2, '0')}`;
+    
+    const params = new URLSearchParams({
+        v: '60',
+        title: title,
+        st: formatYahooDate(startDate),
+        dur: duration,
+        desc: description,
+        in_loc: location
+    });
+    
+    return `https://calendar.yahoo.com/?${params.toString()}`;
+}
 
 function generateCalendarFile() {
     const bookingState = sessionStorage.getItem('bookingState');
