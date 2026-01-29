@@ -1,23 +1,38 @@
 /**
- * Chatbot Service - Intent Classification & Response Generation
+ * Chatbot Service - Gemini AI + Pattern Matching Fallback
  * 
- * This service provides natural language understanding for the chatbot,
- * using pattern matching, keyword analysis, and confidence scoring
- * to determine user intent and generate appropriate responses.
+ * This service provides intelligent chat responses using:
+ * 1. Primary: Gemini 2.0 Flash via Vertex AI (when available)
+ * 2. Fallback: Pattern matching with predefined responses (when Gemini unavailable)
+ * 
+ * The fallback ensures the chatbot always works, even if:
+ * - Gemini quota is exceeded
+ * - API is temporarily unavailable
+ * - Running in local development without GCP credentials
  */
 
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { 
+    generateGeminiResponse, 
+    isGeminiAvailable, 
+    extractQuickReplies,
+    getGeminiConfig 
+} from './gemini.js';
+import logger from './logger.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Load response templates
+// ============================================
+// PATTERN MATCHING FALLBACK
+// ============================================
+
 let responseData = null;
 
 /**
- * Load chatbot responses from JSON file
+ * Load chatbot responses from JSON file (for fallback mode)
  * Cached in memory for performance
  */
 function loadResponses() {
@@ -27,8 +42,14 @@ function loadResponses() {
             const rawData = readFileSync(dataPath, 'utf8');
             responseData = JSON.parse(rawData);
         } catch (error) {
-            console.error('Failed to load chatbot responses:', error);
-            responseData = { intents: {}, fallback: { responses: ['I apologize, but I encountered an error. Please try again.'] } };
+            logger.logError(error, { context: 'Load chatbot responses' });
+            responseData = { 
+                intents: {}, 
+                fallback: { 
+                    responses: ['I apologize, but I encountered an error. Please try again or contact us at info@pophabachi.com.'],
+                    quickReplies: ['Contact us', 'Book now']
+                } 
+            };
         }
     }
     return responseData;
@@ -36,13 +57,6 @@ function loadResponses() {
 
 /**
  * Preprocess user message for intent matching
- * - Lowercase
- * - Remove punctuation
- * - Normalize whitespace
- * - Handle common contractions
- * 
- * @param {string} message - Raw user input
- * @returns {string} - Normalized message
  */
 function preprocessMessage(message) {
     if (!message || typeof message !== 'string') return '';
@@ -51,45 +65,19 @@ function preprocessMessage(message) {
     
     // Expand common contractions
     const contractions = {
-        "what's": "what is",
-        "where's": "where is",
-        "how's": "how is",
-        "i'm": "i am",
-        "you're": "you are",
-        "it's": "it is",
-        "that's": "that is",
-        "there's": "there is",
-        "don't": "do not",
-        "doesn't": "does not",
-        "didn't": "did not",
-        "can't": "cannot",
-        "couldn't": "could not",
-        "won't": "will not",
-        "wouldn't": "would not",
-        "i'd": "i would",
-        "you'd": "you would",
-        "he'd": "he would",
-        "she'd": "she would",
-        "we'd": "we would",
-        "they'd": "they would",
-        "i'll": "i will",
-        "you'll": "you will",
-        "we'll": "we will",
-        "they'll": "they will",
-        "i've": "i have",
-        "you've": "you have",
-        "we've": "we have",
-        "they've": "they have"
+        "what's": "what is", "where's": "where is", "how's": "how is",
+        "i'm": "i am", "you're": "you are", "it's": "it is",
+        "don't": "do not", "doesn't": "does not", "can't": "cannot",
+        "won't": "will not", "i'd": "i would", "i'll": "i will",
+        "i've": "i have", "we'll": "we will", "they'll": "they will"
     };
     
     for (const [contraction, expansion] of Object.entries(contractions)) {
         normalized = normalized.replace(new RegExp(contraction, 'gi'), expansion);
     }
     
-    // Remove special characters but keep spaces and basic punctuation
+    // Remove special characters but keep spaces
     normalized = normalized.replace(/[^a-z0-9\s?!.,]/g, ' ');
-    
-    // Normalize multiple spaces
     normalized = normalized.replace(/\s+/g, ' ').trim();
     
     return normalized;
@@ -97,14 +85,6 @@ function preprocessMessage(message) {
 
 /**
  * Calculate match score between message and intent patterns
- * Uses multiple strategies:
- * 1. Exact pattern match (highest weight)
- * 2. Pattern word overlap (medium weight)
- * 3. Keyword density (lower weight)
- * 
- * @param {string} message - Preprocessed user message
- * @param {string[]} patterns - Intent patterns to match
- * @returns {number} - Match score (0-1)
  */
 function calculateMatchScore(message, patterns) {
     if (!message || !patterns || !patterns.length) return 0;
@@ -116,14 +96,13 @@ function calculateMatchScore(message, patterns) {
         let score = 0;
         const patternLower = pattern.toLowerCase();
         
-        // Strategy 1: Exact substring match (highest confidence)
+        // Exact substring match (highest confidence)
         if (message.includes(patternLower)) {
-            // Weight by pattern length relative to message length
             const lengthRatio = patternLower.length / message.length;
             score = Math.max(score, 0.6 + (lengthRatio * 0.4));
         }
         
-        // Strategy 2: Word-level match
+        // Word-level match
         const patternWords = patternLower.split(' ').filter(w => w.length > 1);
         let matchedWords = 0;
         for (const word of patternWords) {
@@ -144,11 +123,7 @@ function calculateMatchScore(message, patterns) {
 }
 
 /**
- * Detect intent from user message
- * Returns the best matching intent with confidence score
- * 
- * @param {string} message - Raw user message
- * @returns {object} - { intent, confidence, patterns }
+ * Detect intent from user message using pattern matching
  */
 function detectIntent(message) {
     const data = loadResponses();
@@ -162,7 +137,6 @@ function detectIntent(message) {
     let bestScore = 0;
     let matchedPattern = null;
     
-    // Score each intent
     for (const [intentName, intentData] of Object.entries(data.intents)) {
         if (!intentData.patterns) continue;
         
@@ -179,7 +153,6 @@ function detectIntent(message) {
     }
     
     // Apply confidence threshold
-    // If score is too low, fall back to fallback intent
     const confidenceThreshold = 0.3;
     if (bestScore < confidenceThreshold) {
         return { intent: 'fallback', confidence: bestScore, matchedPattern: null };
@@ -187,16 +160,13 @@ function detectIntent(message) {
     
     return { 
         intent: bestIntent, 
-        confidence: Math.min(bestScore, 0.99), // Cap at 0.99 to indicate room for improvement
+        confidence: Math.min(bestScore, 0.99),
         matchedPattern 
     };
 }
 
 /**
  * Select a random response from available responses
- * 
- * @param {string[]} responses - Array of possible responses
- * @returns {string} - Selected response
  */
 function selectResponse(responses) {
     if (!responses || !responses.length) {
@@ -206,12 +176,9 @@ function selectResponse(responses) {
 }
 
 /**
- * Generate chatbot response for user message
- * 
- * @param {string} message - User's message
- * @returns {object} - { response, intent, confidence, quickReplies }
+ * Generate response using pattern matching (fallback mode)
  */
-export function generateResponse(message) {
+function generatePatternResponse(message) {
     const data = loadResponses();
     const { intent, confidence, matchedPattern } = detectIntent(message);
     
@@ -232,6 +199,7 @@ export function generateResponse(message) {
         intent,
         confidence: Math.round(confidence * 100) / 100,
         quickReplies,
+        source: 'pattern',
         debug: process.env.NODE_ENV !== 'production' ? {
             normalizedMessage: preprocessMessage(message),
             matchedPattern
@@ -239,10 +207,93 @@ export function generateResponse(message) {
     };
 }
 
+// ============================================
+// MAIN CHAT FUNCTION (GEMINI + FALLBACK)
+// ============================================
+
 /**
- * Get all available intents for documentation/testing
+ * Generate chatbot response for user message
+ * Uses Gemini when available, falls back to pattern matching
  * 
- * @returns {string[]} - Array of intent names
+ * @param {string} message - User's message
+ * @param {Array} history - Conversation history [{ role: 'user'|'assistant', content: string }]
+ * @returns {Promise<object>} - { response, intent, confidence, quickReplies, source }
+ */
+export async function generateResponse(message, history = []) {
+    // Input validation
+    if (!message || typeof message !== 'string' || message.trim().length === 0) {
+        return {
+            response: "I didn't catch that. How can I help you with your hibachi event?",
+            intent: 'invalid_input',
+            confidence: 0,
+            quickReplies: ['View packages', 'Book now', 'Contact us'],
+            source: 'validation'
+        };
+    }
+
+    const trimmedMessage = message.trim();
+    
+    // Check message length
+    if (trimmedMessage.length > 1000) {
+        return {
+            response: "That's quite a long message! Could you break it down into smaller questions? I'm happy to help with each one.",
+            intent: 'message_too_long',
+            confidence: 0,
+            quickReplies: ['Ask about pricing', 'Ask about booking', 'Contact us'],
+            source: 'validation'
+        };
+    }
+
+    // Try Gemini first if available
+    if (isGeminiAvailable()) {
+        try {
+            const geminiResult = await generateGeminiResponse(trimmedMessage, history);
+            
+            if (geminiResult.success && geminiResult.response) {
+                const quickReplies = extractQuickReplies(geminiResult.response);
+                
+                logger.logChatbot({
+                    action: 'response_generated',
+                    source: 'gemini',
+                    messageLength: trimmedMessage.length,
+                    responseLength: geminiResult.response.length
+                });
+                
+                return {
+                    response: geminiResult.response,
+                    intent: 'gemini',
+                    confidence: 0.95,
+                    quickReplies,
+                    source: 'gemini'
+                };
+            }
+            
+            // Gemini failed, log and fall through to pattern matching
+            logger.logWarn('Gemini response failed, using fallback', { 
+                error: geminiResult.error 
+            });
+            
+        } catch (error) {
+            logger.logError(error, { context: 'Gemini chat' });
+            // Fall through to pattern matching
+        }
+    }
+
+    // Fallback to pattern matching
+    const patternResult = generatePatternResponse(trimmedMessage);
+    
+    logger.logChatbot({
+        action: 'response_generated',
+        source: 'pattern',
+        intent: patternResult.intent,
+        confidence: patternResult.confidence
+    });
+    
+    return patternResult;
+}
+
+/**
+ * Get all available intents (for documentation/testing)
  */
 export function getAvailableIntents() {
     const data = loadResponses();
@@ -251,9 +302,6 @@ export function getAvailableIntents() {
 
 /**
  * Test a message against all intents (debugging)
- * 
- * @param {string} message - Message to test
- * @returns {object[]} - Array of { intent, score } sorted by score
  */
 export function testMessage(message) {
     const data = loadResponses();
@@ -271,9 +319,26 @@ export function testMessage(message) {
     return results.sort((a, b) => b.score - a.score);
 }
 
+/**
+ * Get chatbot status and configuration
+ */
+export function getChatbotStatus() {
+    const geminiConfig = getGeminiConfig();
+    
+    return {
+        geminiAvailable: geminiConfig.available,
+        geminiModel: geminiConfig.model,
+        geminiLocation: geminiConfig.location,
+        fallbackAvailable: true,
+        intentsLoaded: getAvailableIntents().length,
+        mode: geminiConfig.available ? 'gemini' : 'pattern'
+    };
+}
+
 export default {
     generateResponse,
     detectIntent,
     getAvailableIntents,
-    testMessage
+    testMessage,
+    getChatbotStatus
 };

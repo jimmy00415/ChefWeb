@@ -1,0 +1,290 @@
+{
+  "business": {
+    "name": "POP Habachi",
+    "tagline": "Private Hibachi Dining Experience",
+    "description": "We bring the authentic hibachi experience to your home, office, or event venue. Our professional chefs prepare fresh, delicious Japanese cuisine right before your eyes with entertaining culinary performances.",
+    "website": "https://jimmy00415.github.io/ChefWeb/",
+    "bookingUrl": "https://jimmy00415.github.io/ChefWeb/pages/booking.html",
+    "checkBookingUrl": "https://jimmy00415.github.io/ChefWeb/pages/check-booking.html",
+    "contactUrl": "https://jimmy00415.github.io/ChefWeb/pages/contact.html",
+    "contact": {
+      "email": "info@pophabachi.com",
+      "phone": "(555) 123-4567",
+      "responseTime": "Within 2 hours during business hours"
+    }
+  },
+
+  "packages": {
+    "essential": {
+      "name": "Essential Package",
+      "price": 65,
+      "unit": "per person",
+      "description": "Our core hibachi experience with all the classics",
+      "includes": [
+        "Hibachi fried rice",
+        "Grilled seasonal vegetables",
+        "Choice of 2 proteins",
+        "House salad with ginger dressing",
+        "Clear soup",
+        "Hibachi dipping sauces"
+      ],
+      "proteinOptions": ["Chicken", "Steak", "Shrimp", "Salmon", "Tofu"]
+    },
+    "signature": {
+      "name": "Signature Package",
+      "price": 75,
+      "unit": "per person",
+      "popular": true,
+      "description": "Our most popular package with enhanced menu options",
+      "includes": [
+        "Everything in Essential Package",
+        "Choice of 3 proteins",
+        "Shrimp appetizer",
+        "Premium yum yum and ginger sauces",
+        "Hibachi noodles",
+        "Edamame starter"
+      ],
+      "proteinOptions": ["Chicken", "Filet mignon", "Shrimp", "Salmon", "Scallops", "Tofu"]
+    },
+    "premium": {
+      "name": "Premium Package",
+      "price": 95,
+      "unit": "per person",
+      "description": "The ultimate hibachi experience with premium ingredients",
+      "includes": [
+        "Everything in Signature Package",
+        "Lobster tail",
+        "Filet mignon upgrade",
+        "Specialty cocktails setup assistance",
+        "Chef's special dessert",
+        "Premium sake selection"
+      ],
+      "proteinOptions": ["Filet mignon", "Lobster tail", "Jumbo shrimp", "Sea scallops", "Premium salmon", "Wagyu beef upgrade available"]
+    }
+  },
+
+  "requirements": {
+    "minimumSpend": 500,
+    "minimumSpendNote": "If your party is smaller than 6 adults, you can still book if your total reaches $500",
+    "minimumGuests": 6,
+    "maximumGuests": 50,
+    "largeEventNote": "For events over 30 guests, please contact us for special arrangements and multiple chef options",
+    "depositPercent": 50,
+    "depositNote": "50% deposit required at booking to secure your date",
+    "balanceNote": "Remaining 50% due on the day of the event",
+    "childPricing": "Children under 12 are charged at 50% of the adult rate",
+    "childNote": "Children under 3 eat free"
+  },
+
+  "serviceAreas": {
+    "primary": "San Francisco Bay Area",
+    "primaryCities": ["San Francisco", "Oakland", "San Jose", "Berkeley", "Palo Alto", "Fremont", "Walnut Creek", "Concord"],
+    "maxTravelMiles": 300,
+    "states": ["California", "New York", "Texas", "Florida", "Illinois", "Pennsylvania", "Ohio", "Georgia", "North Carolina", "Michigan"],
+    "stateAbbreviations": ["CA", "NY", "TX", "FL", "IL", "PA", "OH", "GA", "NC", "MI"],
+    "travelFeeNote": "Travel fees may apply for locations beyond 50 miles from our base",
+    "travelFeeRange": "$50-$200 depending on distance"
+  },
+
+  "policies": {
+    "cancellation": {
+      "fullRefund": {
+        "timeframe": "More than 7 days before event",
+        "refundPercent": 100,
+        "description": "Cancel more than a week ahead for a full refund"
+      },
+      "partialRefund": {
+        "timeframe": "3-7 days before event",
+        "refundPercent": 50,
+        "description": "Cancel 3-7 days before for 50% refund"
+      },
+      "noRefund": {
+        "timeframe": "Less than 3 days before event",
+        "refundPercent": 0,
+        "description": "No refund for last-minute cancellations"
+      }
+    },
+    "modification": {
+      "deadline": "3 days before event",
+      "deadlineNote": "Changes must be made at least 3 days before your event",
+      "allowedChanges": [
+        "Date change (subject to availability)",
+        "Time change",
+        "Guest count adjustment",
+        "Package upgrade (additional charges may apply)",
+        "Dietary requirement updates"
+      ],
+      "howToModify": "Visit our Check Booking page with your confirmation number and email"
+    }
+  },
+
+  "eventDetails": {
+    "setupTime": "30-45 minutes before event start",
+    "setupNote": "Chef arrives early to set up equipment and prep station",
+    "cookingDuration": "1-1.5 hours depending on group size",
+    "cookingNote": "Smaller groups (6-10) typically take 1 hour, larger groups up to 1.5 hours",
+    "cleanupTime": "30 minutes after cooking",
+    "cleanupNote": "We handle all cleanup - you don't lift a finger!",
+    "totalTimeOnsite": "2.5-3 hours total",
+    "eventTimingTip": "For a 6:00 PM dinner, our chef arrives around 5:15 PM"
+  },
+
+  "guestProvides": [
+    {
+      "item": "Cooking space",
+      "details": "Outdoor patio, backyard, or well-ventilated indoor area. Minimum 10x10 feet of open space."
+    },
+    {
+      "item": "Seating",
+      "details": "Tables and chairs for your guests. Round or rectangular tables work great."
+    },
+    {
+      "item": "Electrical outlet",
+      "details": "Standard 110V outlet within 25 feet of cooking area for equipment."
+    },
+    {
+      "item": "Water access",
+      "details": "Access to a sink or hose for cleanup (outdoor events)."
+    }
+  ],
+
+  "weProvide": [
+    "Professional hibachi grill and all cooking equipment",
+    "All fresh ingredients and proteins",
+    "Premium sauces and seasonings",
+    "Plates, utensils, and napkins for all guests",
+    "Cooking oils and prep supplies",
+    "Entertainment and cooking show performance",
+    "Complete cleanup after the event"
+  ],
+
+  "dietaryAccommodations": {
+    "available": [
+      "Vegetarian options (tofu, extra vegetables)",
+      "Vegan options (prepared separately with plant-based oils)",
+      "Gluten-free preparation (rice-based sauces, no soy sauce)",
+      "Shellfish-free (no cross-contamination)",
+      "Nut-free preparation",
+      "Dairy-free options",
+      "Low-sodium options",
+      "Halal preparation (upon request)",
+      "Kosher-style preparation (upon request)"
+    ],
+    "howToRequest": "Please specify all dietary requirements in your booking notes or contact us before your event",
+    "allergyNote": "We take allergies seriously. Our chefs are trained in allergen-safe food handling."
+  },
+
+  "eventTypes": {
+    "popular": [
+      {
+        "type": "Birthday Parties",
+        "note": "Perfect for milestone birthdays! We can do a special birthday song and presentation."
+      },
+      {
+        "type": "Corporate Events",
+        "note": "Team building, client entertainment, or office celebrations. We offer corporate invoicing."
+      },
+      {
+        "type": "Weddings & Rehearsal Dinners",
+        "note": "Intimate wedding receptions or fun rehearsal dinners. Multiple chefs available for large parties."
+      }
+    ],
+    "otherEvents": [
+      "Anniversary celebrations",
+      "Graduation parties",
+      "Family reunions",
+      "Baby showers",
+      "Bridal showers",
+      "Holiday gatherings",
+      "Retirement parties",
+      "Engagement parties",
+      "Housewarming events"
+    ]
+  },
+
+  "payment": {
+    "methods": [
+      "Visa",
+      "Mastercard", 
+      "American Express",
+      "Discover",
+      "Apple Pay",
+      "Google Pay"
+    ],
+    "processor": "Stripe",
+    "securityNote": "All payments are securely processed through Stripe with bank-level encryption",
+    "structure": {
+      "deposit": "50% at time of booking",
+      "balance": "Remaining 50% due on event day",
+      "balancePayment": "Can be paid via same card or new payment method"
+    },
+    "tipping": "Tips are not required but greatly appreciated. 100% goes to your chef."
+  },
+
+  "faq": [
+    {
+      "question": "What happens if it rains on the day of my outdoor event?",
+      "answer": "We can cook under covered patios, gazebos, or move indoors if you have adequate ventilation. Contact us 24 hours before if you need to discuss weather contingency plans."
+    },
+    {
+      "question": "Can guests choose their own proteins?",
+      "answer": "Yes! Guests can mix and match proteins from your selected package. Just let the chef know individual preferences before cooking begins."
+    },
+    {
+      "question": "Do you provide alcohol?",
+      "answer": "We don't provide alcohol, but our Premium package includes cocktail setup assistance. You provide the drinks, we'll help with presentation!"
+    },
+    {
+      "question": "How far in advance should I book?",
+      "answer": "We recommend booking 2-4 weeks in advance, especially for weekends. Last-minute bookings may be possible based on availability."
+    },
+    {
+      "question": "What if I need to add more guests after booking?",
+      "answer": "You can modify your guest count up to 3 days before your event through our Check Booking page. Additional charges apply for extra guests."
+    },
+    {
+      "question": "Is the cooking show loud?",
+      "answer": "The hibachi grill makes some sizzling sounds and there may be occasional flames for effect. It's part of the fun! Not suitable for very noise-sensitive environments."
+    },
+    {
+      "question": "Do you offer kids' meals?",
+      "answer": "Children under 12 receive the same delicious food at 50% of the adult price. Portions are slightly smaller. Kids under 3 eat free."
+    }
+  ],
+
+  "chefInfo": {
+    "training": "All our chefs have 5+ years of hibachi cooking experience",
+    "certification": "Food handler certified and insured",
+    "entertainment": "Trained in teppanyaki performance arts - onion volcano, egg tricks, and more!",
+    "uniform": "Professional chef attire and all safety equipment provided"
+  },
+
+  "assistantRules": {
+    "identity": "You are the POP Habachi virtual assistant",
+    "personality": [
+      "Friendly and welcoming",
+      "Enthusiastic about hibachi and Japanese cuisine",
+      "Professional yet approachable",
+      "Helpful and patient with questions"
+    ],
+    "responseGuidelines": [
+      "Keep responses concise - under 150 words unless detailed info is requested",
+      "Use 1-2 emojis per response for warmth, but don't overdo it",
+      "Format with markdown (bold, bullet points) for readability",
+      "End responses with a relevant follow-up question or call-to-action",
+      "Suggest 2-3 quick reply options when helpful"
+    ],
+    "restrictions": [
+      "Only answer questions about POP Habachi services",
+      "Politely redirect off-topic questions back to hibachi services",
+      "Never make up information not in the knowledge base",
+      "For specific availability, direct users to the booking page",
+      "For complex issues (disputes, refunds, complaints), suggest contacting support directly"
+    ],
+    "callToActions": {
+      "booking": "Ready to book? Visit our booking page!",
+      "contact": "Have more questions? Our team is happy to help via our contact form!",
+      "checkBooking": "Need to check or modify your booking? Visit our Check Booking page with your confirmation number."
+    }
+  }
+}

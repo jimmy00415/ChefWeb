@@ -13,17 +13,47 @@
 import rateLimit from 'express-rate-limit';
 
 /**
+ * Normalize IPv6 addresses to /64 subnet for rate limiting
+ * This prevents bypassing limits by rotating IPv6 addresses within the same subnet
+ * @param {string} ip - The IP address to normalize
+ * @returns {string} Normalized IP address
+ */
+const normalizeIpv6 = (ip) => {
+  // Handle IPv4-mapped IPv6 addresses (::ffff:192.168.1.1)
+  if (ip.includes('::ffff:')) {
+    return ip.split('::ffff:')[1] || ip;
+  }
+  
+  // If it's an IPv6 address, normalize to /64 subnet
+  if (ip.includes(':')) {
+    const parts = ip.split(':');
+    // Take first 4 segments (64 bits) for rate limiting
+    if (parts.length >= 4) {
+      return parts.slice(0, 4).join(':') + '::/64';
+    }
+  }
+  
+  return ip;
+};
+
+/**
  * Custom key generator for rate limiting
  * Uses X-Forwarded-For header in production (behind Cloud Run proxy)
  * Falls back to req.ip for local development
+ * Properly handles IPv6 addresses
  */
 const getClientIp = (req) => {
+  let ip;
   const forwardedFor = req.headers['x-forwarded-for'];
   if (forwardedFor) {
     // X-Forwarded-For can contain multiple IPs; the first is the client
-    return forwardedFor.split(',')[0].trim();
+    ip = forwardedFor.split(',')[0].trim();
+  } else {
+    ip = req.ip || '127.0.0.1';
   }
-  return req.ip;
+  
+  // Normalize IPv6 to prevent bypass
+  return normalizeIpv6(ip);
 };
 
 /**
@@ -53,6 +83,9 @@ const shouldSkip = (req) => {
 // Rate Limit Configurations
 // =============================================================================
 
+// Disable all validations - we handle IPv6 normalization manually
+const validationOptions = false;
+
 /**
  * Global Rate Limiter
  * Applied to all API requests
@@ -66,7 +99,8 @@ export const globalLimiter = rateLimit({
   legacyHeaders: false,  // Disable X-RateLimit-* headers
   keyGenerator: getClientIp,
   handler: standardHandler,
-  skip: shouldSkip
+  skip: shouldSkip,
+  validate: validationOptions
 });
 
 /**
@@ -82,7 +116,8 @@ export const bookingLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   keyGenerator: getClientIp,
-  handler: standardHandler
+  handler: standardHandler,
+  validate: validationOptions
 });
 
 /**
@@ -98,7 +133,8 @@ export const contactLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   keyGenerator: getClientIp,
-  handler: standardHandler
+  handler: standardHandler,
+  validate: validationOptions
 });
 
 /**
@@ -114,7 +150,8 @@ export const adminLoginLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   keyGenerator: getClientIp,
-  handler: standardHandler
+  handler: standardHandler,
+  validate: validationOptions
 });
 
 /**
@@ -130,7 +167,8 @@ export const chatbotLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   keyGenerator: getClientIp,
-  handler: standardHandler
+  handler: standardHandler,
+  validate: validationOptions
 });
 
 /**
@@ -146,6 +184,7 @@ export const lookupLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   keyGenerator: getClientIp,
+  validate: validationOptions,
   handler: standardHandler
 });
 
@@ -162,7 +201,8 @@ export const modifyLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   keyGenerator: getClientIp,
-  handler: standardHandler
+  handler: standardHandler,
+  validate: validationOptions
 });
 
 // Export all limiters as a convenience object

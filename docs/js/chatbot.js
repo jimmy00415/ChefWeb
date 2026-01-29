@@ -206,6 +206,23 @@
         }
     }
 
+    /**
+     * Build conversation history for Gemini context
+     * Only includes last 10 messages for efficiency
+     */
+    function buildConversationHistory() {
+        // Get recent messages, excluding system messages
+        const recentMessages = chatState.messages
+            .filter(msg => msg.type === 'user' || msg.type === 'bot')
+            .slice(-10)
+            .map(msg => ({
+                role: msg.type === 'user' ? 'user' : 'assistant',
+                content: msg.text
+            }));
+        
+        return recentMessages;
+    }
+
     async function sendMessage(text) {
         if (!text || !text.trim()) return;
         
@@ -222,10 +239,22 @@
         showTyping();
         
         try {
-            // Send to backend
+            // Build conversation history for context (excluding the message we just added)
+            const history = chatState.messages
+                .filter(msg => msg.type === 'user' || msg.type === 'bot')
+                .slice(-11, -1) // Last 10 before current message
+                .map(msg => ({
+                    role: msg.type === 'user' ? 'user' : 'assistant',
+                    content: msg.text
+                }));
+            
+            // Send to backend with history for Gemini context
             const response = await window.apiRequest('/api/chatbot/message', {
                 method: 'POST',
-                body: JSON.stringify({ message: trimmedText })
+                body: JSON.stringify({ 
+                    message: trimmedText,
+                    history: history
+                })
             });
             
             // Hide typing with delay for natural feel

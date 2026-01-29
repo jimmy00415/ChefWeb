@@ -165,13 +165,21 @@ logger.logAdmin = (action, context = {}) => {
 
 /**
  * Log chatbot interactions
- * @param {string} message - User message
- * @param {string} intent - Detected intent
- * @param {number} confidence - Confidence score
+ * Supports both old format (message, intent, confidence) and new object format
+ * @param {string|object} messageOrContext - User message or context object
+ * @param {string} [intent] - Detected intent (optional if using object format)
+ * @param {number} [confidence] - Confidence score (optional if using object format)
  */
-logger.logChatbot = (message, intent, confidence) => {
+logger.logChatbot = (messageOrContext, intent, confidence) => {
+    // Support object format: { action, inputLength, outputLength, ... }
+    if (typeof messageOrContext === 'object') {
+        logger.debug('Chatbot interaction', messageOrContext);
+        return;
+    }
+    
+    // Original format: (message, intent, confidence)
     logger.debug('Chatbot interaction', {
-        messagePreview: message.substring(0, 50),
+        messagePreview: messageOrContext?.substring?.(0, 50) || String(messageOrContext),
         intent,
         confidence
     });
