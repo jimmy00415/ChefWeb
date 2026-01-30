@@ -1,0 +1,9 @@
+# Allow all search engines to crawl
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://chefweb-frontend-775848565797.us-central1.run.app/sitemap.xml
+
+# Disallow admin pages from indexing
+Disallow: /pages/admin/
