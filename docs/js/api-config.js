@@ -45,16 +45,22 @@ function showRateLimitError(errorData) {
 async function apiRequest(endpoint, options = {}) {
     const url = `${API_BASE_URL}${endpoint}`;
     const defaultHeaders = {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
     };
+    
+    console.log('[API] Request:', options.method || 'GET', url);
     
     const response = await fetch(url, {
         ...options,
+        mode: 'cors',
         headers: {
             ...defaultHeaders,
             ...options.headers
         }
     });
+    
+    console.log('[API] Response:', response.status, response.ok);
     
     // Handle rate limiting specifically
     if (response.status === 429) {

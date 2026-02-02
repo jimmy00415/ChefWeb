@@ -20,7 +20,7 @@
     // ==========================================================================
     const CONFIG = {
         welcomeMessage: "Hi there! 👋 I'm your POP Habachi assistant. I can help with packages, pricing, booking, dietary questions, and more. What would you like to know?",
-        welcomeQuickReplies: ['View packages', 'Check pricing', 'How to book', 'Service areas'],
+        welcomeQuickReplies: ['View packages', 'Check pricing', 'How to book', 'Service areas', '🗑️ Clear chat'],
         typingDelay: 500, // ms to show typing indicator
         storageKey: 'pophabachi_chat_history',
         maxMessages: 50, // Keep only last N messages in storage
@@ -239,45 +239,133 @@
         showTyping();
         
         try {
+            // Check if apiRequest is available
+            if (typeof window.apiRequest !== 'function') {
+                console.error('[Chatbot] apiRequest function not available. Check if api-config.js is loaded.');
+                throw new Error('API not configured');
+            }
+            
             // Build conversation history for context (excluding the message we just added)
+            // Filter out any messages without valid text
             const history = chatState.messages
-                .filter(msg => msg.type === 'user' || msg.type === 'bot')
+                .filter(msg => (msg.type === 'user' || msg.type === 'bot') && msg.text && typeof msg.text === 'string')
                 .slice(-11, -1) // Last 10 before current message
                 .map(msg => ({
                     role: msg.type === 'user' ? 'user' : 'assistant',
-                    content: msg.text
+                    content: msg.text.substring(0, 500) // Limit content length
                 }));
             
+            console.log('[Chatbot] Sending message:', trimmedText);
+            console.log('[Chatbot] History length:', history.length);
+            
+            // Build request body
+            const requestBody = { 
+                message: trimmedText,
+                history: history
+            };
+            
+            console.log('[Chatbot] Request body:', JSON.stringify(requestBody).substring(0, 200));
+            
             // Send to backend with history for Gemini context
-            const response = await window.apiRequest('/api/chatbot/message', {
-                method: 'POST',
-                body: JSON.stringify({ 
-                    message: trimmedText,
-                    history: history
-                })
-            });
+            let response;
+            try {
+                response = await window.apiRequest('/api/chatbot/message', {
+                    method: 'POST',
+                    body: JSON.stringify(requestBody)
+                });
+            } catch (fetchError) {
+                console.error('[Chatbot] Fetch failed:', fetchError.message);
+                throw new Error('Network error: ' + fetchError.message);
+            }
+            
+            if (!response) {
+                console.error('[Chatbot] No response received');
+                throw new Error('No response from server');
+            }
+            
+            console.log('[Chatbot] Response status:', response.status, response.ok);
             
             // Hide typing with delay for natural feel
             await new Promise(resolve => setTimeout(resolve, CONFIG.typingDelay));
             hideTyping();
             
             if (response.ok) {
-                const data = await response.json();
+                // Parse JSON response
+                let data;
+                try {
+                    const responseText = await response.text();
+                    console.log('[Chatbot] Raw response:', responseText.substring(0, 200));
+                    data = JSON.parse(responseText);
+                } catch (jsonError) {
+                    console.error('[Chatbot] Failed to parse JSON:', jsonError);
+                    throw new Error('Invalid response format');
+                }
+                
+                // Validate response has required fields
+                if (!data || typeof data.response !== 'string') {
+                    console.error('[Chatbot] Invalid response structure:', data);
+                    throw new Error('Invalid response structure');
+                }
+                
+                console.log('[Chatbot] Adding bot message');
                 addMessage(data.response, 'bot', data.quickReplies || []);
             } else if (response.status === 429) {
+                console.warn('[Chatbot] Rate limited');
                 addMessage("I'm getting a lot of messages right now. Please wait a moment before sending more. 🙏", 'bot');
             } else {
-                throw new Error('API error');
+                // Try to get error message from response
+                let errorMsg = `API error (${response.status})`;
+                try {
+                    const errorText = await response.text();
+                    const errorData = JSON.parse(errorText);
+                    errorMsg = errorData.error || errorData.message || errorMsg;
+                } catch (e) {
+                    // Ignore JSON parse errors for error response
+                }
+                console.error('[Chatbot] API error:', response.status, errorMsg);
+                throw new Error(errorMsg);
             }
         } catch (error) {
-            console.error('Chatbot error:', error);
+            console.error('[Chatbot] Error:', error.name, error.message);
+            console.error('[Chatbot] Error stack:', error.stack);
             hideTyping();
-            addMessage("Oops! Something went wrong. Please try again or contact us directly.", 'bot', ['Contact us', 'Try again']);
+            addMessage("Oops! Something went wrong. Please try again or contact us directly.", 'bot', ['Contact us', 'Try again', '🗑️ Clear chat']);
         }
     }
 
     function handleQuickReply(text) {
+        // Handle clear chat command
+        if (text === '🗑️ Clear chat' || text.toLowerCase() === 'clear chat') {
+            clearChatHistory();
+            return;
+        }
         sendMessage(text);
+    }
+
+    /**
+     * Clear all chat history and restart fresh
+     */
+    function clearChatHistory() {
+        console.log('[Chatbot] Clearing chat history');
+        
+        // Clear state
+        chatState.messages = [];
+        
+        // Clear storage
+        try {
+            localStorage.removeItem(CONFIG.storageKey);
+        } catch (e) {
+            console.warn('[Chatbot] Could not clear localStorage:', e);
+        }
+        
+        // Clear UI
+        const messagesContainer = document.getElementById('chatMessages');
+        if (messagesContainer) {
+            messagesContainer.innerHTML = '';
+        }
+        
+        // Show welcome message again
+        addMessage(CONFIG.welcomeMessage, 'bot', CONFIG.welcomeQuickReplies);
     }
 
     // ==========================================================================
@@ -376,10 +464,31 @@
         try {
             const saved = localStorage.getItem(CONFIG.storageKey);
             if (saved) {
-                chatState.messages = JSON.parse(saved);
+                const parsed = JSON.parse(saved);
+                
+                // Validate and sanitize loaded messages
+                if (Array.isArray(parsed)) {
+                    chatState.messages = parsed.filter(msg => 
+                        msg && 
+                        typeof msg === 'object' &&
+                        typeof msg.text === 'string' &&
+                        msg.text.trim() !== '' &&
+                        (msg.type === 'user' || msg.type === 'bot') &&
+                        typeof msg.timestamp === 'number'
+                    ).map(msg => ({
+                        text: msg.text,
+                        type: msg.type,
+                        quickReplies: Array.isArray(msg.quickReplies) ? msg.quickReplies : [],
+                        timestamp: msg.timestamp
+                    }));
+                } else {
+                    console.warn('[Chatbot] Invalid saved messages format, resetting');
+                    chatState.messages = [];
+                    localStorage.removeItem(CONFIG.storageKey);
+                }
                 
                 const messagesContainer = document.getElementById('chatMessages');
-                if (messagesContainer) {
+                if (messagesContainer && chatState.messages.length > 0) {
                     // Clear any existing messages
                     messagesContainer.innerHTML = '';
                     
@@ -396,10 +505,13 @@
                     // Scroll to bottom
                     messagesContainer.scrollTop = messagesContainer.scrollHeight;
                 }
+                
+                console.log('[Chatbot] Loaded', chatState.messages.length, 'messages from storage');
             }
         } catch (error) {
-            console.warn('Could not load chat history:', error);
+            console.warn('[Chatbot] Could not load chat history:', error);
             chatState.messages = [];
+            localStorage.removeItem(CONFIG.storageKey);
         }
     }
 
