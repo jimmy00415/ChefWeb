@@ -25,8 +25,9 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// CORS configuration - allow GitHub Pages and local development
+// CORS configuration - allow Cloud Run frontend, GitHub Pages, and local development
 const allowedOrigins = [
+  'https://chefweb-frontend-775848565797.us-central1.run.app',
   'https://jimmy00415.github.io',
   'http://localhost:3000',
   'http://localhost:5500',
@@ -36,11 +37,16 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (mobile apps, curl, etc.)
+    // Allow requests with no origin (mobile apps, curl, Postman, etc.)
     if (!origin) return callback(null, true);
     
-    // Check if origin is allowed
-    if (allowedOrigins.some(allowed => origin.startsWith(allowed))) {
+    // Check if origin is in allowed list
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    
+    // Allow any Cloud Run URL (for preview deployments)
+    if (origin.includes('.run.app')) {
       return callback(null, true);
     }
     
@@ -49,11 +55,13 @@ app.use(cors({
       return callback(null, true);
     }
     
+    console.warn(`CORS blocked origin: ${origin}`);
     callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
   methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  optionsSuccessStatus: 200 // Some legacy browsers choke on 204
 }));
 
 // CRITICAL: Webhook needs raw body for signature verification - MUST be before express.json()
