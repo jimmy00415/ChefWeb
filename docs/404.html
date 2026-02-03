@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Page not found - The page you're looking for doesn't exist. Return to POP Habachi homepage.">
+    <meta name="robots" content="noindex, follow">
+    <title>404 - Page Not Found | POP Habachi</title>
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/components.css">
+    
+    <style>
+        .error-page {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: var(--spacing-2xl);
+        }
+        
+        .error-page__code {
+            font-size: 8rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            line-height: 1;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .error-page__title {
+            font-size: var(--font-size-3xl);
+            margin-bottom: var(--spacing-md);
+            color: var(--color-text);
+        }
+        
+        .error-page__message {
+            font-size: var(--font-size-lg);
+            color: var(--color-text-muted);
+            max-width: 500px;
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .error-page__actions {
+            display: flex;
+            gap: var(--spacing-md);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .error-page__emoji {
+            font-size: 4rem;
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        @media (max-width: 768px) {
+            .error-page__code {
+                font-size: 5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header" role="banner">
+        <div class="header__container">
+            <a href="/index.html" class="header__logo">POP Habachi</a>
+            <nav class="header__nav" id="mainNav" role="navigation">
+                <ul class="header__nav-list">
+                    <li><a href="/index.html" class="header__nav-link">Home</a></li>
+                    <li><a href="/pages/packages.html" class="header__nav-link">Packages</a></li>
+                    <li><a href="/pages/contact.html" class="header__nav-link">Contact</a></li>
+                </ul>
+                <a href="/pages/booking.html" class="btn btn--primary">Book Now</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Error Content -->
+    <main class="error-page" role="main">
+        <div class="error-page__emoji">🍳</div>
+        <div class="error-page__code">404</div>
+        <h1 class="error-page__title">Oops! Page Not Found</h1>
+        <p class="error-page__message">
+            The page you're looking for seems to have wandered off the grill. 
+            Let's get you back to something delicious!
+        </p>
+        <div class="error-page__actions">
+            <a href="/index.html" class="btn btn--primary">Go to Homepage</a>
+            <a href="/pages/packages.html" class="btn btn--secondary">View Packages</a>
+            <a href="/pages/contact.html" class="btn btn--secondary">Contact Us</a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <p>&copy; 2026 POP Habachi. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

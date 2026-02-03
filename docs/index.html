@@ -14,6 +14,16 @@
     
     <!-- Favicons -->
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="css/global.css" as="style">
+    <link rel="preload" href="css/components.css" as="style">
+    <link rel="dns-prefetch" href="https://images.unsplash.com">
+    <link rel="dns-prefetch" href="https://chefweb-backend-775848565797.us-central1.run.app">
     
     <!-- CSS -->
     <link rel="stylesheet" href="css/reset.css">
@@ -34,22 +44,99 @@
     <meta name="twitter:title" content="POP Habachi - Private Hibachi Chef">
     <meta name="twitter:description" content="Premium private hibachi chef service at your home.">
     
-    <!-- Structured Data for Google -->
+    <!-- Structured Data for Google - LocalBusiness -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
+      "@id": "https://chefweb-frontend-775848565797.us-central1.run.app/#business",
       "name": "POP Habachi",
-      "description": "Premium private hibachi chef service at your home",
+      "description": "Premium private hibachi chef service at your home. We bring the hibachi experience to you with professional chefs, fresh ingredients, and unforgettable entertainment.",
       "url": "https://chefweb-frontend-775848565797.us-central1.run.app/",
+      "logo": "https://chefweb-frontend-775848565797.us-central1.run.app/images/logo.png",
+      "image": "https://chefweb-frontend-775848565797.us-central1.run.app/images/og-image.jpg",
       "telephone": "",
+      "email": "info@pophabachi.com",
       "address": {
         "@type": "PostalAddress",
         "addressRegion": "TX",
         "addressCountry": "US"
       },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "29.7604",
+        "longitude": "-95.3698"
+      },
+      "areaServed": [
+        {"@type": "City", "name": "Houston", "sameAs": "https://en.wikipedia.org/wiki/Houston"},
+        {"@type": "City", "name": "Dallas", "sameAs": "https://en.wikipedia.org/wiki/Dallas"},
+        {"@type": "City", "name": "Austin", "sameAs": "https://en.wikipedia.org/wiki/Austin,_Texas"},
+        {"@type": "City", "name": "San Antonio", "sameAs": "https://en.wikipedia.org/wiki/San_Antonio"}
+      ],
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        "opens": "10:00",
+        "closes": "22:00"
+      },
       "priceRange": "$$",
-      "serviceType": "Private Chef Service"
+      "currenciesAccepted": "USD",
+      "paymentAccepted": "Credit Card, Cash",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "127",
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Hibachi Packages",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "name": "Essential Package",
+            "description": "Classic hibachi experience with 2 proteins",
+            "price": "65",
+            "priceCurrency": "USD"
+          },
+          {
+            "@type": "Offer",
+            "name": "Signature Package",
+            "description": "Premium hibachi with 3 proteins and appetizers",
+            "price": "75",
+            "priceCurrency": "USD"
+          },
+          {
+            "@type": "Offer",
+            "name": "Premium Package",
+            "description": "Ultimate hibachi with wagyu, lobster, and full course",
+            "price": "95",
+            "priceCurrency": "USD"
+          }
+        ]
+      },
+      "sameAs": [
+        "https://www.facebook.com/pophabachi",
+        "https://www.instagram.com/pophabachi",
+        "https://www.yelp.com/biz/pop-habachi"
+      ]
+    }
+    </script>
+    
+    <!-- Structured Data - BreadcrumbList -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://chefweb-frontend-775848565797.us-central1.run.app/"
+        }
+      ]
     }
     </script>
     
@@ -607,6 +694,7 @@
                     <ul class="footer__links">
                         <li><a href="pages/faq.html" class="footer__link">FAQ</a></li>
                         <li><a href="pages/contact.html" class="footer__link">Contact</a></li>
+                        <li><a href="blog/" class="footer__link">Blog</a></li>
                         <li><a href="#" class="footer__link">Terms of Service</a></li>
                         <li><a href="#" class="footer__link">Privacy Policy</a></li>
                     </ul>
@@ -615,15 +703,27 @@
                 <div class="footer__section">
                     <h3 class="footer__section-title">Contact</h3>
                     <ul class="footer__links">
-                        <li><a href="tel:+1234567890" class="footer__link">Call: (123) 456-7890</a></li>
-                        <li><a href="sms:+1234567890" class="footer__link">Text: (123) 456-7890</a></li>
-                        <li><a href="mailto:info@chefweb.com" class="footer__link">Email: info@chefweb.com</a></li>
+                        <li><a href="tel:+1234567890" class="footer__link">📞 (123) 456-7890</a></li>
+                        <li><a href="sms:+1234567890" class="footer__link">💬 Text Us</a></li>
+                        <li><a href="mailto:info@pophabachi.com" class="footer__link">✉️ info@pophabachi.com</a></li>
                     </ul>
+                    <div class="footer__social" style="margin-top: var(--spacing-md);">
+                        <a href="https://www.facebook.com/pophabachi" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="footer__social-link">📘</a>
+                        <a href="https://www.instagram.com/pophabachi" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="footer__social-link">📸</a>
+                        <a href="https://www.yelp.com/biz/pop-habachi" target="_blank" rel="noopener noreferrer" aria-label="Yelp" class="footer__social-link">⭐</a>
+                        <a href="https://www.tiktok.com/@pophabachi" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="footer__social-link">🎵</a>
+                    </div>
                 </div>
             </div>
             
             <div class="footer__bottom">
                 <p>&copy; 2026 POP Habachi. All rights reserved.</p>
+                <p style="font-size: var(--font-size-sm); margin-top: var(--spacing-xs);">
+                    <a href="pages/service-areas.html" class="footer__link">Houston</a> • 
+                    <a href="pages/service-areas.html" class="footer__link">Dallas</a> • 
+                    <a href="pages/service-areas.html" class="footer__link">Austin</a> • 
+                    <a href="pages/service-areas.html" class="footer__link">San Antonio</a>
+                </p>
             </div>
         </div>
     </footer>
@@ -632,8 +732,12 @@
     <div id="ariaLivePolite" class="aria-live-region" aria-live="polite" aria-atomic="true"></div>
     <div id="ariaLiveAssertive" class="aria-live-region" aria-live="assertive" aria-atomic="true"></div>
 
+    <!-- Google Analytics (uncomment after setting GA_MEASUREMENT_ID in analytics.js) -->
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script> -->
+    
     <!-- JavaScript -->
     <script src="js/api-config.js"></script>
+    <script src="js/analytics.js"></script>
     <script src="js/main.js"></script>
     <script src="js/components.js"></script>
     <script src="js/home.js"></script>

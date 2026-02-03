@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Expert tips, recipes, and guides for hosting the perfect hibachi party at home. Learn from POP Habachi's professional chefs.">
+    <meta name="keywords" content="hibachi blog, hibachi tips, hibachi party guide, private chef blog">
+    <meta name="author" content="POP Habachi">
+    <meta name="robots" content="index, follow">
+    <title>Blog | POP Habachi - Hibachi Tips & Guides</title>
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://chefweb-frontend-775848565797.us-central1.run.app/blog/">
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../images/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../images/apple-touch-icon.png">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Blog | POP Habachi">
+    <meta property="og:description" content="Expert tips and guides for hosting the perfect hibachi party.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://chefweb-frontend-775848565797.us-central1.run.app/blog/">
+    <meta property="og:site_name" content="POP Habachi">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Blog | POP Habachi">
+    <meta name="twitter:description" content="Hibachi tips and guides from professional chefs.">
+    
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/chatbot.css">
+    
+    <style>
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: var(--spacing-xl);
+            padding: var(--spacing-2xl) 0;
+        }
+        
+        .blog-card {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .blog-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .blog-card__image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .blog-card__content {
+            padding: var(--spacing-lg);
+        }
+        
+        .blog-card__category {
+            display: inline-block;
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+            font-size: var(--font-size-sm);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .blog-card__title {
+            font-size: var(--font-size-xl);
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-text);
+        }
+        
+        .blog-card__excerpt {
+            color: var(--color-text-muted);
+            margin-bottom: var(--spacing-md);
+            line-height: 1.6;
+        }
+        
+        .blog-card__meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--color-text-light);
+            font-size: var(--font-size-sm);
+        }
+        
+        .coming-soon {
+            text-align: center;
+            padding: var(--spacing-3xl);
+        }
+        
+        .coming-soon__icon {
+            font-size: 4rem;
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .coming-soon__title {
+            font-size: var(--font-size-2xl);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .coming-soon__text {
+            color: var(--color-text-muted);
+            max-width: 500px;
+            margin: 0 auto var(--spacing-xl);
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip Navigation -->
+    <a href="#mainContent" class="skip-link">Skip to main content</a>
+    
+    <!-- Header -->
+    <header class="header" id="header" role="banner">
+        <div class="header__container">
+            <a href="../index.html" class="header__logo">POP Habachi</a>
+            
+            <!-- Mobile Menu Toggle -->
+            <button class="header__menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mainNav">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <!-- Navigation -->
+            <nav class="header__nav" id="mainNav" role="navigation" aria-label="Main navigation">
+                <ul class="header__nav-list">
+                    <li><a href="../index.html" class="header__nav-link">Home</a></li>
+                    <li><a href="../pages/packages.html" class="header__nav-link">Packages & Pricing</a></li>
+                    <li><a href="../pages/service-areas.html" class="header__nav-link">Service Areas</a></li>
+                    <li><a href="../pages/gallery.html" class="header__nav-link">Photo Gallery</a></li>
+                    <li><a href="../pages/reviews.html" class="header__nav-link">Customer Reviews</a></li>
+                    <li><a href="../pages/faq.html" class="header__nav-link">Help & FAQ</a></li>
+                    <li><a href="../pages/contact.html" class="header__nav-link">Contact Us</a></li>
+                </ul>
+                <a href="../pages/booking.html" class="btn btn--primary" aria-label="Book your private chef experience">Book Now</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-header__title">Hibachi Tips & Guides</h1>
+            <p class="page-header__subtitle">Expert advice from our professional chefs</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main id="mainContent" role="main">
+        <section class="section">
+            <div class="container">
+                <div class="coming-soon">
+                    <div class="coming-soon__icon">📝</div>
+                    <h2 class="coming-soon__title">Blog Coming Soon!</h2>
+                    <p class="coming-soon__text">
+                        We're preparing expert guides on hosting the perfect hibachi party, 
+                        delicious recipes, and insider tips from our professional chefs. 
+                        Stay tuned!
+                    </p>
+                    <a href="../pages/contact.html" class="btn btn--primary">Contact Us for Tips</a>
+                </div>
+                
+                <!-- Future Blog Posts Preview -->
+                <h3 style="text-align: center; margin-top: var(--spacing-3xl); color: var(--color-text-muted);">Upcoming Articles</h3>
+                <div class="blog-grid">
+                    <article class="blog-card" style="opacity: 0.6;">
+                        <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=600&h=300&fit=crop" alt="Hibachi party setup" class="blog-card__image" loading="lazy">
+                        <div class="blog-card__content">
+                            <span class="blog-card__category">Guide</span>
+                            <h4 class="blog-card__title">How to Host the Perfect Hibachi Party at Home</h4>
+                            <p class="blog-card__excerpt">Everything you need to know about planning, preparing, and hosting an unforgettable hibachi experience...</p>
+                            <div class="blog-card__meta">
+                                <span>Coming Soon</span>
+                                <span>8 min read</span>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <article class="blog-card" style="opacity: 0.6;">
+                        <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&h=300&fit=crop" alt="Hibachi vs Teppanyaki" class="blog-card__image" loading="lazy">
+                        <div class="blog-card__content">
+                            <span class="blog-card__category">Education</span>
+                            <h4 class="blog-card__title">Hibachi vs Teppanyaki: What's the Difference?</h4>
+                            <p class="blog-card__excerpt">Many people use these terms interchangeably, but they're actually quite different cooking styles...</p>
+                            <div class="blog-card__meta">
+                                <span>Coming Soon</span>
+                                <span>5 min read</span>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <article class="blog-card" style="opacity: 0.6;">
+                        <img src="https://images.unsplash.com/photo-1559847844-5315695dadae?w=600&h=300&fit=crop" alt="Private chef cost" class="blog-card__image" loading="lazy">
+                        <div class="blog-card__content">
+                            <span class="blog-card__category">Pricing</span>
+                            <h4 class="blog-card__title">Private Chef Cost Guide 2026</h4>
+                            <p class="blog-card__excerpt">Understanding the costs involved in hiring a private hibachi chef for your next event...</p>
+                            <div class="blog-card__meta">
+                                <span>Coming Soon</span>
+                                <span>6 min read</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer__grid">
+                <div class="footer__section">
+                    <h4 class="footer__title">POP Habachi</h4>
+                    <p class="footer__text">Premium private hibachi chef service at your home.</p>
+                </div>
+                <div class="footer__section">
+                    <h4 class="footer__title">Quick Links</h4>
+                    <ul class="footer__links">
+                        <li><a href="../pages/packages.html">Packages</a></li>
+                        <li><a href="../pages/booking.html">Book Now</a></li>
+                        <li><a href="../pages/faq.html">FAQ</a></li>
+                        <li><a href="../pages/contact.html">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2026 POP Habachi. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="../js/api-config.js"></script>
+    <script src="../js/analytics.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/chatbot.js"></script>
+</body>
+</html>
