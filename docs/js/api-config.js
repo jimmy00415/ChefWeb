@@ -4,8 +4,10 @@
  * Includes rate limit handling and retry logic
  */
 const API_CONFIG = {
-    // Production backend on Cloud Run
-    production: 'https://chefweb-backend-775848565797.us-central1.run.app',
+    // Production backend with custom domain
+    production: 'https://api.pophibachi.com',
+    // Fallback to Cloud Run URL
+    cloudrun: 'https://chefweb-backend-775848565797.us-central1.run.app',
     // Local development
     development: 'http://localhost:4000'
 };

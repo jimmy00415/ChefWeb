@@ -25,8 +25,10 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// CORS configuration - allow Cloud Run frontend, GitHub Pages, and local development
+// CORS configuration - allow custom domain, Cloud Run, GitHub Pages, and local development
 const allowedOrigins = [
+  'https://pophibachi.com',
+  'https://www.pophibachi.com',
   'https://chefweb-frontend-775848565797.us-central1.run.app',
   'https://jimmy00415.github.io',
   'http://localhost:3000',
